@@ -140,3 +140,4 @@ function MainScreen({mainFilmCard}: MainScreenProps): JSX.Element {
 }
 
 export default MainScreen;
+export type {MainFilmCard};
