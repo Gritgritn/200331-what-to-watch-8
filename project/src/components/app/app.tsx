@@ -1,7 +1,6 @@
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import MainScreen from '../main-screen/main-screen';
-import type {MainFilmCard} from '../../types/types';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
@@ -9,6 +8,12 @@ import LoginScreen from '../login-screen/login-screen';
 import MyListscreen from '../my-list-screen/my-list-screen';
 import ReviewScreen from '../review-screen/review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+
+type MainFilmCard = {
+  title: string,
+  genre: string,
+  year: number,
+}
 
 const mainFilmCard: MainFilmCard = {
   title: 'The Grand Budapest Hotel',
@@ -47,3 +52,4 @@ function App(): JSX.Element {
 }
 
 export default App;
+export type {MainFilmCard};

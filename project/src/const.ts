@@ -1,4 +1,4 @@
-export const AppRoute = {
+const AppRoute = {
   Root: '/',
   Login: '/login',
   MyList: '/mylist',
@@ -7,7 +7,9 @@ export const AppRoute = {
   Player: '/player/:id',
 } as const;
 
-export const AuthorizationStatus = {
+const AuthorizationStatus = {
   Auth: 'AUTH',
   NotAuth: 'NOT_AUTH',
 } as const;
+
+export {AppRoute, AuthorizationStatus};

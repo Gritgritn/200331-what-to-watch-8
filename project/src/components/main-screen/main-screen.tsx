@@ -1,5 +1,9 @@
 import SmallFilmCard from '../small-film-card/small-film-card';
-import type { MainScreenProps } from '../../types/types';
+import type { MainFilmCard } from '../app/app';
+
+type MainScreenProps = {
+  mainFilmCard: MainFilmCard,
+}
 
 const SMALL_FILM_CARDS_AMOUNT = 10;
 
