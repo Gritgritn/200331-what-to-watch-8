@@ -1,10 +1,5 @@
 import SmallFilmCard from '../small-film-card/small-film-card';
-
-type MainFilmCard = {
-  title: string,
-  genre: string,
-  year: number,
-}
+import type { MainFilmCard } from '../app/app';
 
 type MainScreenProps = {
   mainFilmCard: MainFilmCard,
@@ -140,4 +135,3 @@ function MainScreen({mainFilmCard}: MainScreenProps): JSX.Element {
 }
 
 export default MainScreen;
-export type {MainFilmCard};
