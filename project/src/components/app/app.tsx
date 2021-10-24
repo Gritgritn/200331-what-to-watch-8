@@ -5,43 +5,46 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
 import LoginScreen from '../login-screen/login-screen';
-import MyListscreen from '../my-list-screen/my-list-screen';
+import MyListScreen from '../my-list-screen/my-list-screen';
 import ReviewScreen from '../review-screen/review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import type { AppProps } from '../../types/types';
 
-type MainFilmCard = {
-  title: string,
-  genre: string,
-  year: number,
-}
+function App({films}: AppProps): JSX.Element {
+  const promoFilm = films[0];
+  const getFilmById = (id: number) => {
+    const foundFilm = films.find((film) => film.id === id);
 
-const mainFilmCard: MainFilmCard = {
-  title: 'The Grand Budapest Hotel',
-  genre:  'Drama',
-  year: 2014,
-};
+    if (!foundFilm) {
+      throw new Error(`Film with id=${id} does not exist`);
+    }
 
-function App(): JSX.Element {
+    return foundFilm;
+  };
+
+  const getSimilarFilms = () => films.slice(2, 6);
+  const getFavoriteFilms = () => films.filter((film) => film.isFavorite);
+
   return (
     <BrowserRouter>
       <Switch>
         <Route path={AppRoute.Root} exact>
-          <MainScreen mainFilmCard={mainFilmCard}/>
+          <MainScreen promoFilm={promoFilm} films={films} />
         </Route>
         <Route path={AppRoute.Film} exact>
-          <FilmScreen />
+          <FilmScreen getFilmById={getFilmById} getSimilarFilms={getSimilarFilms} />
         </Route>
         <Route path={AppRoute.Player} exact>
-          <PlayerScreen />
+          <PlayerScreen getFilmById={getFilmById} />
         </Route>
         <Route path={AppRoute.Login} exact>
           <LoginScreen />
         </Route>
-        <PrivateRoute path={AppRoute.MyList} exact authorizationStatus={AuthorizationStatus.NotAuth}>
-          <MyListscreen />
+        <PrivateRoute path={AppRoute.MyList} exact authorizationStatus={AuthorizationStatus.Auth}>
+          <MyListScreen getFavoriteFilms={getFavoriteFilms} />
         </PrivateRoute>
-        <PrivateRoute path={AppRoute.Review} exact authorizationStatus={AuthorizationStatus.NotAuth}>
-          <ReviewScreen />
+        <PrivateRoute path={AppRoute.Review} exact authorizationStatus={AuthorizationStatus.Auth}>
+          <ReviewScreen getFilmById={getFilmById} />
         </PrivateRoute>
         <Route>
           <NotFoundScreen />
@@ -52,4 +55,3 @@ function App(): JSX.Element {
 }
 
 export default App;
-export type {MainFilmCard};

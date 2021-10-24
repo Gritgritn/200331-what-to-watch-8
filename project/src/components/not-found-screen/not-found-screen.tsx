@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function NotFoundScreen(): JSX.Element {
   return (
     <section className="film-card">
@@ -63,7 +65,7 @@ function NotFoundScreen(): JSX.Element {
           </li>
         </ul>
         <h1>This page does not exist</h1>
-        <a href="/">Go to main page</a>
+        <Link to="/">Go to main page</Link>
         <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
         <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
       </div>
