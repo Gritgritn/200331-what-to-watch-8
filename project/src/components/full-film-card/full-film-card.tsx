@@ -1,28 +1,45 @@
-import { useHistory, Link } from 'react-router-dom';
-import type { FilmCardProps } from '../../types/types';
+
+import { useHistory, Link, useLocation, Redirect } from 'react-router-dom';
+import type { CommentGet, Film } from '../../types/types';
+import { NavigationItem } from '../../const';
 import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
+import FilmNavigation from './film-navigation';
+import FilmOverview from './film-overview';
+import FilmDetails from './film-details';
+import FilmReviews from './film-reviews';
 
-function FullFilmCard({film}: FilmCardProps): JSX.Element {
+type FullFilmCardProps = {
+  film: Film,
+  comments: CommentGet[];
+}
+
+function FullFilmCard({film, comments}: FullFilmCardProps): JSX.Element {
   const history = useHistory();
+  const location = useLocation();
+
+  const currentNavigationItem = location.hash.slice(1);
+  const isNavigationCorrect = Object.values(NavigationItem)
+    .some((navigationItem) => navigationItem === currentNavigationItem);
+
+  if (!isNavigationCorrect) {
+    return <Redirect to={`${location.pathname}#${NavigationItem.Overview}`} />;
+  }
+
   const handlePlayButtonClick = () => {
     history.push(`/player/${film.id}`);
   };
-
   return (
-    <section className="film-card film-card--full">
+    <section className="film-card film-card--full" style={{backgroundColor: film.backgroundColor}}>
       <div className="film-card__hero">
         <div className="film-card__bg">
           <img src={film.backgroundImage} alt={film.name} />
         </div>
-
         <h1 className="visually-hidden">WTW</h1>
-
         <header className="page-header film-card__head">
           <Logo />
           <UserBlock />
         </header>
-
         <div className="film-card__wrap">
           <div className="film-card__desc">
             <h2 className="film-card__title">{film.name}</h2>
@@ -30,7 +47,6 @@ function FullFilmCard({film}: FilmCardProps): JSX.Element {
               <span className="film-card__genre">{film.genre}</span>
               <span className="film-card__year">{film.released}</span>
             </p>
-
             <div className="film-card__buttons">
               <button className="btn btn--play film-card__button" type="button" onClick={handlePlayButtonClick}>
                 <svg viewBox="0 0 19 19" width="19" height="19">
@@ -49,7 +65,6 @@ function FullFilmCard({film}: FilmCardProps): JSX.Element {
           </div>
         </div>
       </div>
-
       <div className="film-card__wrap film-card__translate-top">
         <div className="film-card__info">
           <div className="film-card__poster film-card__poster--big">
@@ -57,35 +72,14 @@ function FullFilmCard({film}: FilmCardProps): JSX.Element {
           </div>
 
           <div className="film-card__desc">
-            <nav className="film-nav film-card__nav">
-              <ul className="film-nav__list">
-                <li className="film-nav__item film-nav__item--active">
-                  <a href="#" className="film-nav__link">Overview</a>
-                </li>
-                <li className="film-nav__item">
-                  <a href="#" className="film-nav__link">Details</a>
-                </li>
-                <li className="film-nav__item">
-                  <a href="#" className="film-nav__link">Reviews</a>
-                </li>
-              </ul>
-            </nav>
-
-            <div className="film-rating">
-              <div className="film-rating__score">{film.rating}</div>
-              <p className="film-rating__meta">
-                <span className="film-rating__level">Very good</span>
-                <span className="film-rating__count">{film.scoresCount} ratings</span>
-              </p>
-            </div>
-
-            <div className="film-card__text">
-              <p>{film.description}</p>
-
-              <p className="film-card__director"><strong>Director: {film.director}</strong></p>
-
-              <p className="film-card__starring"><strong>Starring: {film.starring}</strong></p>
-            </div>
+            <FilmNavigation />
+            {
+              {
+                overview: <FilmOverview film={film} />,
+                details: <FilmDetails film={film} />,
+                reviews: <FilmReviews comments={comments} />,
+              }[location.hash.slice(1)]
+            }
           </div>
         </div>
       </div>

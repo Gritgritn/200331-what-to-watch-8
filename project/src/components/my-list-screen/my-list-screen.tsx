@@ -1,7 +1,7 @@
 import Logo from '../logo/logo';
 import type { MyListScreenProps } from '../../types/types';
 import UserBlock from '../user-block/user-block';
-import SmallFilmCard from '../small-film-card/small-film-card';
+import FilmCardsList from '../films-list/films-list';
 
 function MyListScreen({getFavoriteFilms}: MyListScreenProps): JSX.Element {
   const favoriteFilms = getFavoriteFilms();
@@ -15,9 +15,7 @@ function MyListScreen({getFavoriteFilms}: MyListScreenProps): JSX.Element {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <div className="catalog__films-list">
-          {favoriteFilms.map((favoriteFilm) => <SmallFilmCard key={favoriteFilm.id} film={favoriteFilm} />)}
-        </div>
+        <FilmCardsList films={favoriteFilms} />
       </section>
 
       <footer className="page-footer">

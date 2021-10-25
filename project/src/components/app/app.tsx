@@ -8,9 +8,16 @@ import LoginScreen from '../login-screen/login-screen';
 import MyListScreen from '../my-list-screen/my-list-screen';
 import ReviewScreen from '../review-screen/review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import type { AppProps } from '../../types/types';
+import type { Film, CommentGet } from '../../types/types';
+import GuestRoute from '../guest-route/guest-route';
 
-function App({films}: AppProps): JSX.Element {
+type AppProps = {
+  films: Film[],
+  comments: CommentGet[],
+}
+
+function App({films, comments}: AppProps): JSX.Element {
+  const authorizationStatus = AuthorizationStatus.Auth;
   const promoFilm = films[0];
   const getFilmById = (id: number) => {
     const foundFilm = films.find((film) => film.id === id);
@@ -22,7 +29,9 @@ function App({films}: AppProps): JSX.Element {
     return foundFilm;
   };
 
-  const getSimilarFilms = () => films.slice(2, 6);
+  const getComments = () => comments.slice();
+
+  const getSimilarFilms = () => films.slice().sort(() => Math.random() - 0.5).slice(0, 4);
   const getFavoriteFilms = () => films.filter((film) => film.isFavorite);
 
   return (
@@ -32,18 +41,18 @@ function App({films}: AppProps): JSX.Element {
           <MainScreen promoFilm={promoFilm} films={films} />
         </Route>
         <Route path={AppRoute.Film} exact>
-          <FilmScreen getFilmById={getFilmById} getSimilarFilms={getSimilarFilms} />
+          <FilmScreen getFilmById={getFilmById} getComments={getComments} getSimilarFilms={getSimilarFilms} />
         </Route>
         <Route path={AppRoute.Player} exact>
           <PlayerScreen getFilmById={getFilmById} />
         </Route>
-        <Route path={AppRoute.Login} exact>
+        <GuestRoute path={AppRoute.Login} exact authorizationStatus={authorizationStatus}>
           <LoginScreen />
-        </Route>
-        <PrivateRoute path={AppRoute.MyList} exact authorizationStatus={AuthorizationStatus.Auth}>
+        </GuestRoute>
+        <PrivateRoute path={AppRoute.MyList} exact authorizationStatus={authorizationStatus}>
           <MyListScreen getFavoriteFilms={getFavoriteFilms} />
         </PrivateRoute>
-        <PrivateRoute path={AppRoute.Review} exact authorizationStatus={AuthorizationStatus.Auth}>
+        <PrivateRoute path={AppRoute.Review} exact authorizationStatus={authorizationStatus}>
           <ReviewScreen getFilmById={getFilmById} />
         </PrivateRoute>
         <Route>

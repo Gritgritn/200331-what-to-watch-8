@@ -1,3 +1,6 @@
+import { RouteProps } from 'react-router';
+import { AuthorizationStatus, RatingDescription } from '../const';
+
 export type Film = {
     id: number,
     name: string,
@@ -11,29 +14,25 @@ export type Film = {
     rating: number,
     scoresCount: number,
     director: string,
-    starring: string[],
+    actors: string[],
     runTime: number,
     genre: string,
     released: number,
   isFavorite: boolean,
 }
 
-export type AppProps = {
-  films: Film[],
+export type CommentPost = {
+  rating: number,
+  comment: string,
 }
 
-export type MainScreenProps = {
-    promoFilm: Film,
-    films: Film[],
-}
-
-export type FilmCardProps = {
-  film: Film,
-}
-
-export type FilmsScreenProps = {
-  getFilmById: (id: number) => Film,
-  getSimilarFilms: () => Film[],
+export type CommentGet = CommentPost & {
+  id: number,
+  user: {
+    id: number,
+    name: string,
+  },
+  date: Date,
 }
 
 export type MyListScreenProps = {
@@ -51,3 +50,11 @@ export type ReviewScreenProps = {
 export type PlayerScreenProps = {
   getFilmById: (id: number) => Film,
 }
+
+export type CustomRouteProps = RouteProps & {
+  authorizationStatus: AuthorizationStatusType,
+}
+
+export type AuthorizationStatusType = typeof AuthorizationStatus[keyof typeof AuthorizationStatus];
+
+export type RatingDescriptionType = typeof RatingDescription[keyof typeof RatingDescription];
