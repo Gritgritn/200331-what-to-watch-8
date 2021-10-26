@@ -15,6 +15,7 @@ function FilmCardButtons({filmId, isFilmFavorite, withAddReview}: FilmCardButton
   };
 
   const handleFavoriteButtonClick = () => {
+    // Обработка добавления в избранное
   };
 
   const handleAddReviewButtonClick = () => {
