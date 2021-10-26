@@ -7,7 +7,7 @@ import MyListScreen from '../my-list-screen/my-list-screen';
 import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import type { Film, CommentGet } from '../../types/types';
-import { AppRoute, AuthorizationStatus, CustomRouteType } from '../../const';
+import { AppRoute, AuthorizationStatus, CustomRouteType } from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
 
 type AppProps = {
@@ -30,7 +30,10 @@ function App({films, comments}: AppProps): JSX.Element {
 
   const getComments = () => comments.slice();
 
-  const getSimilarFilms = () => films.slice().sort(() => Math.random() - 0.5).slice(0, 4);
+  const getSimilarFilms = (id: number) => {
+    const referenceFilm = getFilmById(id);
+    return films.filter((film) => film.id !== id && film.genre === referenceFilm.genre);
+  };
   const getFavoriteFilms = () => films.filter((film) => film.isFavorite);
 
   return (

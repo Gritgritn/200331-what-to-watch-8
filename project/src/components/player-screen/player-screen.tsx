@@ -1,5 +1,5 @@
 import { useHistory, useParams } from 'react-router-dom';
-import type { Params, Film } from '../../types/types';
+import type { ParamsWithId, Film } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
 
 type PlayerScreenProps = {
@@ -8,7 +8,7 @@ type PlayerScreenProps = {
 
 
 function PlayerScreen({getFilmById}: PlayerScreenProps): JSX.Element {
-  const { id } = useParams() as Params;
+  const { id } = useParams() as ParamsWithId;
   const film = getFilmById(Number(id));
   const history = useHistory();
 

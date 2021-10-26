@@ -32,7 +32,7 @@ export type CommentGet = CommentPost & {
   date: Date,
 }
 
-export type Params = {
+export type ParamsWithId = {
   id: string
 }
 

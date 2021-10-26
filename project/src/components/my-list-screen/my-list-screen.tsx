@@ -3,6 +3,7 @@ import type { Film } from '../../types/types';
 import UserBlock from '../user-block/user-block';
 import FilmCardsList from '../catalog-films-list/catalog-films-list';
 import PageFooter from '../page-footer/page-footer';
+import Catalog from '../catalog/catalog';
 
 type MyListScreenProps = {
   getFavoriteFilms: () => Film[],
@@ -17,11 +18,10 @@ function MyListScreen({getFavoriteFilms}: MyListScreenProps): JSX.Element {
         <UserBlock />
       </header>
 
-      <section className="catalog">
-        <h2 className="catalog__title visually-hidden">Catalog</h2>
+      <Catalog hiddenTitle="Catalog">
 
         <FilmCardsList films={favoriteFilms} />
-      </section>
+      </Catalog>
 
       <PageFooter />
     </div>
