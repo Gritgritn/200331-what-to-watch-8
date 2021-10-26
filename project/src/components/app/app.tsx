@@ -1,15 +1,14 @@
-import { AppRoute, AuthorizationStatus } from '../../const';
-import PrivateRoute from '../private-route/private-route';
 import MainScreen from '../main-screen/main-screen';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
 import LoginScreen from '../login-screen/login-screen';
 import MyListScreen from '../my-list-screen/my-list-screen';
-import ReviewScreen from '../review-screen/review-screen';
+import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import type { Film, CommentGet } from '../../types/types';
-import GuestRoute from '../guest-route/guest-route';
+import { AppRoute, AuthorizationStatus, CustomRouteType } from '../../const';
+import CustomRoute from '../custom-route/custom-route';
 
 type AppProps = {
   films: Film[],
@@ -37,24 +36,24 @@ function App({films, comments}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path={AppRoute.Root} exact>
+        <Route path={AppRoute.Root()} exact>
           <MainScreen promoFilm={promoFilm} films={films} />
         </Route>
-        <Route path={AppRoute.Film} exact>
+        <Route path={AppRoute.Film()} exact>
           <FilmScreen getFilmById={getFilmById} getComments={getComments} getSimilarFilms={getSimilarFilms} />
         </Route>
-        <Route path={AppRoute.Player} exact>
+        <Route path={AppRoute.Player()} exact>
           <PlayerScreen getFilmById={getFilmById} />
         </Route>
-        <GuestRoute path={AppRoute.Login} exact authorizationStatus={authorizationStatus}>
+        <CustomRoute path={AppRoute.Login()} exact type={CustomRouteType.Guest} authorizationStatus={authorizationStatus}>
           <LoginScreen />
-        </GuestRoute>
-        <PrivateRoute path={AppRoute.MyList} exact authorizationStatus={authorizationStatus}>
+        </CustomRoute>
+        <CustomRoute path={AppRoute.MyList()} exact type={CustomRouteType.Private} authorizationStatus={authorizationStatus}>
           <MyListScreen getFavoriteFilms={getFavoriteFilms} />
-        </PrivateRoute>
-        <PrivateRoute path={AppRoute.Review} exact authorizationStatus={authorizationStatus}>
-          <ReviewScreen getFilmById={getFilmById} />
-        </PrivateRoute>
+        </CustomRoute>
+        <CustomRoute path={AppRoute.AddReview()} exact type={CustomRouteType.Private} authorizationStatus={authorizationStatus}>
+          <AddReviewScreen getFilmById={getFilmById} />
+        </CustomRoute>
         <Route>
           <NotFoundScreen />
         </Route>

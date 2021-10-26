@@ -1,7 +1,7 @@
-import Logo from '../logo/logo';
+import PageFooter from '../page-footer/page-footer';
 import { useParams } from 'react-router-dom';
 import type { CommentGet, Film, Params } from '../../types/types';
-import FilmCardsList from '../films-list/films-list';
+import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 
 type FilmsScreenProps = {
@@ -20,15 +20,10 @@ function FilmScreen({getFilmById, getSimilarFilms, getComments}: FilmsScreenProp
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <FilmCardsList films={similarFilms}/>
+          <CatalogFilmsList films={similarFilms}/>
         </section>
 
-        <footer className="page-footer">
-          <Logo theme="light" />
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <PageFooter />
       </div>
     </>
   );

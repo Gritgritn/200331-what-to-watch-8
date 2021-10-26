@@ -1,10 +1,10 @@
 const AppRoute = {
-  Root: '/',
-  Login: '/login',
-  MyList: '/mylist',
-  Film: '/films/:id',
-  Review: '/films/:id/review',
-  Player: '/player/:id',
+  Root: () => '/',
+  Login: () => '/login',
+  MyList: () => '/mylist',
+  Film: (id:string | number = ':id') => `/films/${id}`,
+  AddReview: (id:string | number = ':id') => `/films/${id}/review`,
+  Player: (id:string | number = ':id') => `/player/${id}`,
 } as const;
 
 const AuthorizationStatus = {
@@ -26,14 +26,19 @@ export const RatingDescription = {
   Awesome: 'Awesome',
 } as const;
 
-export const ratingDescriptionToUpperLimit: {
-  [key: string]: number
+export const ratingDescriptionToLowerLimit: {
+  [key in keyof typeof RatingDescription]: number
 } = {
-  Bad: 3,
-  Normal: 5,
-  Good: 8,
-  VeryGood: 10,
-  Awesome: Infinity,
+  Bad: 0,
+  Normal: 3,
+  Good: 5,
+  VeryGood: 8,
+  Awesome: 10,
+};
+
+export const CustomRouteType = {
+  Guest: 'GUEST',
+  Private: 'PRIVATE',
 } as const;
 
 export {AppRoute, AuthorizationStatus};

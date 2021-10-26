@@ -1,6 +1,3 @@
-import { RouteProps } from 'react-router';
-import { AuthorizationStatus, RatingDescription } from '../const';
-
 export type Film = {
     id: number,
     name: string,
@@ -35,26 +32,8 @@ export type CommentGet = CommentPost & {
   date: Date,
 }
 
-export type MyListScreenProps = {
-  getFavoriteFilms: () => Film[],
-}
-
 export type Params = {
   id: string
 }
 
-export type ReviewScreenProps = {
-  getFilmById: (id: number) => Film,
-}
-
-export type PlayerScreenProps = {
-  getFilmById: (id: number) => Film,
-}
-
-export type CustomRouteProps = RouteProps & {
-  authorizationStatus: AuthorizationStatusType,
-}
-
-export type AuthorizationStatusType = typeof AuthorizationStatus[keyof typeof AuthorizationStatus];
-
-export type RatingDescriptionType = typeof RatingDescription[keyof typeof RatingDescription];
+export type ValuesOf<T> = T[keyof T]

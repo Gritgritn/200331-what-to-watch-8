@@ -1,8 +1,11 @@
-import FilmCardsList from '../films-list/films-list';
-import type { Film } from '../../types/types';
-import Logo from '../logo/logo';
+import PageFooter from '../page-footer/page-footer';
 import PromoFilmCard from '../promo-film-card/promo-film-card';
-import GenreFilter from '../genre-filter/genre-filter';
+import type { Film } from '../../types/types';
+import CatalogGenresList from '../catalog-genres-list/catalog-genres-list';
+import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
+import CatalogMoreButton from '../catalog-more-button/catalog-more-button';
+import { getGenresList, ALL_GENRES } from '../../utils/genres';
+import { useState } from 'react';
 
 type MainScreenProps = {
   promoFilm: Film,
@@ -10,6 +13,8 @@ type MainScreenProps = {
 }
 
 function MainScreen({promoFilm, films}: MainScreenProps): JSX.Element {
+  const [ activeGenre, setActiveGenre ] = useState(ALL_GENRES);
+  const genres = getGenresList(films);
   return (
     <>
       <PromoFilmCard film={promoFilm} />
@@ -17,21 +22,12 @@ function MainScreen({promoFilm, films}: MainScreenProps): JSX.Element {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenreFilter />
-          <FilmCardsList films={films} />
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          <CatalogGenresList genres={genres} activeGenre={activeGenre} setActiveGenre={setActiveGenre} />
+          <CatalogFilmsList films={films} />
+          <CatalogMoreButton />
         </section>
 
-        <footer className="page-footer">
-          <Logo theme="light"/>
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <PageFooter />
       </div>
     </>
   );

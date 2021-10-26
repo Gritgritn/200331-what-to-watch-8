@@ -1,7 +1,12 @@
 import Logo from '../logo/logo';
-import type { MyListScreenProps } from '../../types/types';
+import type { Film } from '../../types/types';
 import UserBlock from '../user-block/user-block';
-import FilmCardsList from '../films-list/films-list';
+import FilmCardsList from '../catalog-films-list/catalog-films-list';
+import PageFooter from '../page-footer/page-footer';
+
+type MyListScreenProps = {
+  getFavoriteFilms: () => Film[],
+}
 
 function MyListScreen({getFavoriteFilms}: MyListScreenProps): JSX.Element {
   const favoriteFilms = getFavoriteFilms();
@@ -18,15 +23,10 @@ function MyListScreen({getFavoriteFilms}: MyListScreenProps): JSX.Element {
         <FilmCardsList films={favoriteFilms} />
       </section>
 
-      <footer className="page-footer">
-        <Logo theme="light" />
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <PageFooter />
     </div>
   );
 }
 
 export default MyListScreen;
+export type {MyListScreenProps};

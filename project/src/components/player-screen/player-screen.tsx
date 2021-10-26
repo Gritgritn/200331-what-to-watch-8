@@ -1,5 +1,10 @@
 import { useHistory, useParams } from 'react-router-dom';
-import type { Params, PlayerScreenProps } from '../../types/types';
+import type { Params, Film } from '../../types/types';
+import { formatElapsedTime } from '../../utils/date';
+
+type PlayerScreenProps = {
+  getFilmById: (id: number) => Film,
+}
 
 
 function PlayerScreen({getFilmById}: PlayerScreenProps): JSX.Element {
@@ -7,23 +12,27 @@ function PlayerScreen({getFilmById}: PlayerScreenProps): JSX.Element {
   const film = getFilmById(Number(id));
   const history = useHistory();
 
-  const onExitButtonClick = () => {
+  const handleExitButtonClick = () => {
     history.goBack();
   };
+
+  const progress = Math.random();
+  const playerProgress = Number((progress * 100).toFixed(2));
+  const timeElapsed = film.runTime * (1 - progress);
 
   return (
     <div className="player">
       <video src={film.videoLink} className="player__video" poster={film.posterImage}></video>
 
-      <button type="button" className="player__exit" onClick={onExitButtonClick}>Exit</button>
+      <button type="button" className="player__exit" onClick={handleExitButtonClick}>Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
-            <progress className="player__progress" value="30" max="100"></progress>
-            <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
+            <progress className="player__progress" value={playerProgress} max="100"></progress>
+            <div className="player__toggler" style={{left: `${playerProgress}%`}}>Toggler</div>
           </div>
-          <div className="player__time-value">1:30:29</div>
+          <div className="player__time-value">{formatElapsedTime(timeElapsed)}</div>
         </div>
 
         <div className="player__controls-row">
@@ -48,3 +57,4 @@ function PlayerScreen({getFilmById}: PlayerScreenProps): JSX.Element {
 }
 
 export default PlayerScreen;
+export type {PlayerScreenProps};
