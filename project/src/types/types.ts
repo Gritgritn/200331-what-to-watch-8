@@ -1,4 +1,4 @@
-export type Film = {
+type Film = {
     id: number,
     name: string,
     posterImage: string,
@@ -18,12 +18,12 @@ export type Film = {
   isFavorite: boolean,
 }
 
-export type CommentPost = {
+type CommentPost = {
   rating: number,
   comment: string,
 }
 
-export type CommentGet = CommentPost & {
+type CommentGet = CommentPost & {
   id: number,
   user: {
     id: number,
@@ -32,8 +32,10 @@ export type CommentGet = CommentPost & {
   date: Date,
 }
 
-export type ParamsWithId = {
+type ParamsWithId = {
   id: string
 }
 
 export type ValuesOf<T> = T[keyof T]
+
+export type {ParamsWithId, CommentGet, Film};
