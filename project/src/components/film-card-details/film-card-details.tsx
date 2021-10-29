@@ -2,21 +2,20 @@ import { Fragment } from 'react';
 import type { Film } from '../../types/types';
 import { formatRuntime } from '../../utils/date';
 
-const formatOverviewActors = (actors: string[]) => actors.map((actor, index, array) => {
-  const key = `${actor}-${index}`;
-  const isNotLast = index < array.length - 1;
-  return (
-    <Fragment key={key}>
-      {actor}{isNotLast && <br/>}
-    </Fragment>
-  );
-});
-
 type FilmDetailsProps = {
   film: Film,
 }
 
 function FilmCardDetails({film}: FilmDetailsProps): JSX.Element {
+  const formatOverviewActors = (actors: string[]) => actors.map((actor, index, array) => {
+    const key = `${actor}-${index}`;
+    const isNotLast = index < array.length - 1;
+    return (
+      <Fragment key={key}>
+        {actor}{isNotLast && <br/>}
+      </Fragment>
+    );
+  });
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">

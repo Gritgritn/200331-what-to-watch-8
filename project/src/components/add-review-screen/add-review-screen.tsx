@@ -5,13 +5,23 @@ import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 import AddReviewForm from '../add-review-form/add-review-form';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import {FilmCardBackgroundSize} from '../../constants';
 import type { Film, ParamsWithId } from '../../types/types';
 
 type AddReviewScreenProps = {
-  getFilmById: (id: number) => Film,
+  films: Film[],
 }
 
-function AddReviewScreen({getFilmById}: AddReviewScreenProps): JSX.Element {
+function AddReviewScreen({films}: AddReviewScreenProps): JSX.Element {
+  const getFilmById = (id: number) => {
+    const foundFilm = films.find((film) => film.id === id);
+
+    if (!foundFilm) {
+      throw new Error(`Film with id=${id} does not exist`);
+    }
+
+    return foundFilm;
+  };
   const { id } = useParams() as ParamsWithId;
   const film = getFilmById(Number(id));
 
@@ -28,7 +38,7 @@ function AddReviewScreen({getFilmById}: AddReviewScreenProps): JSX.Element {
           <UserBlock />
         </header>
 
-        <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} small />
+        <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Small} />
       </div>
       <AddReviewForm />
 

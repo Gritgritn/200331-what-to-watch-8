@@ -1,7 +1,7 @@
 
 import { useLocation, Redirect } from 'react-router-dom';
 import type { Comment, Film, ValuesOf } from '../../types/types';
-import { NavigationItem } from '../../constants';
+import { NavigationItem, FilmCardBackgroundSize } from '../../constants';
 import FilmCardBackground from '../film-card-background/film-card-background';
 import FilmCardPoster from '../film-card-poster/film-card-poster';
 import Logo from '../logo/logo';
@@ -54,13 +54,13 @@ function FullFilmCard({film, comments}: FullFilmCardProps): JSX.Element {
               <span className="film-card__genre">{film.genre}</span>
               <span className="film-card__year">{film.released}</span>
             </p>
-            <FilmCardButtons filmId={film.id} isFilmFavorite={film.isFavorite} withAddReview />
+            <FilmCardButtons isFilmFavorite={film.isFavorite} withAddReview film={film}/>
           </div>
         </div>
       </div>
       <div className="film-card__wrap film-card__translate-top">
         <div className="film-card__info">
-          <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} big />
+          <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Big} />
 
           <div className="film-card__desc">
             <FilmCardNavigation />

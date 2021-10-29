@@ -1,17 +1,18 @@
 import { useHistory  } from 'react-router-dom';
 import { AppRoute } from '../../constants';
+import type { Film } from '../../types/types';
 
 type FilmCardButtonsProps = {
-  filmId: number,
   isFilmFavorite: boolean,
-  withAddReview?: boolean
+  withAddReview?: boolean,
+  film: Film
 }
 
-function FilmCardButtons({filmId, isFilmFavorite, withAddReview}: FilmCardButtonsProps): JSX.Element {
+function FilmCardButtons({isFilmFavorite, withAddReview, film}: FilmCardButtonsProps): JSX.Element {
   const history = useHistory();
 
   const handlePlayButtonClick = () => {
-    history.push(AppRoute.Player(filmId));
+    history.push(AppRoute.Player(film.id));
   };
 
   const handleFavoriteButtonClick = () => {
@@ -19,7 +20,7 @@ function FilmCardButtons({filmId, isFilmFavorite, withAddReview}: FilmCardButton
   };
 
   const handleAddReviewButtonClick = () => {
-    history.push(AppRoute.AddReview(filmId));
+    history.push(AppRoute.AddReview(film.id));
   };
 
   return (

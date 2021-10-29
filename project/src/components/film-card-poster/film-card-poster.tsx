@@ -1,20 +1,21 @@
+import {FilmCardBackgroundSize} from '../../constants';
+
 type FilmCardBackgroundProps = {
   src: string,
   alt: string,
-  small?: boolean,
-  big?: boolean
+  size?: string,
 }
 
 const BASE_CLASSNAME = 'film-card__poster';
 
-function FilmCardBackground({src, alt, small, big}: FilmCardBackgroundProps): JSX.Element {
+function FilmCardBackground({src, alt, size}: FilmCardBackgroundProps): JSX.Element {
   let sizedClassName = '';
 
-  if (small) {
+  if (size === FilmCardBackgroundSize.Small) {
     sizedClassName = `${BASE_CLASSNAME}--small`;
   }
 
-  if (big) {
+  if (size === FilmCardBackgroundSize.Big) {
     sizedClassName = `${BASE_CLASSNAME}--big`;
   }
 

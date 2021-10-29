@@ -9,13 +9,13 @@ import { useState } from 'react';
 import Catalog from '../catalog/catalog';
 
 type MainScreenProps = {
-  promoFilm: Film,
   films: Film[],
 }
 
-function MainScreen({promoFilm, films}: MainScreenProps): JSX.Element {
+function MainScreen({films}: MainScreenProps): JSX.Element {
   const [ activeGenre, setActiveGenre ] = useState(ALL_GENRES);
   const genres = getGenresList(films);
+  const promoFilm = films[0];
   return (
     <>
       <PromoFilmCard film={promoFilm} />

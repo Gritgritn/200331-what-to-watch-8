@@ -17,45 +17,28 @@ type AppProps = {
 
 function App({films, comments}: AppProps): JSX.Element {
   const authorizationStatus = AuthorizationStatus.Auth;
-  const promoFilm = films[0];
-  const getFilmById = (id: number) => {
-    const foundFilm = films.find((film) => film.id === id);
-
-    if (!foundFilm) {
-      throw new Error(`Film with id=${id} does not exist`);
-    }
-
-    return foundFilm;
-  };
-
   const getComments = () => comments;
-
-  const getSimilarFilms = (id: number) => {
-    const referenceFilm = getFilmById(id);
-    return films.filter((film) => film.id !== id && film.genre === referenceFilm.genre);
-  };
-  const getFavoriteFilms = () => films.filter((film) => film.isFavorite);
 
   return (
     <BrowserRouter>
       <Switch>
         <Route path={AppRoute.Root()} exact>
-          <MainScreen promoFilm={promoFilm} films={films} />
+          <MainScreen films={films} />
         </Route>
         <Route path={AppRoute.Film()} exact>
-          <FilmScreen getFilmById={getFilmById} getComments={getComments} getSimilarFilms={getSimilarFilms} />
+          <FilmScreen films={films} getComments={getComments} />
         </Route>
         <Route path={AppRoute.Player()} exact>
-          <PlayerScreen getFilmById={getFilmById} />
+          <PlayerScreen films={films}/>
         </Route>
         <CustomRoute path={AppRoute.Login()} exact type={CustomRouteType.Guest} authorizationStatus={authorizationStatus}>
           <LoginScreen />
         </CustomRoute>
         <CustomRoute path={AppRoute.MyList()} exact type={CustomRouteType.Private} authorizationStatus={authorizationStatus}>
-          <MyListScreen getFavoriteFilms={getFavoriteFilms} />
+          <MyListScreen films={films} />
         </CustomRoute>
         <CustomRoute path={AppRoute.AddReview()} exact type={CustomRouteType.Private} authorizationStatus={authorizationStatus}>
-          <AddReviewScreen getFilmById={getFilmById} />
+          <AddReviewScreen films={films}/>
         </CustomRoute>
         <Route>
           <NotFoundScreen />

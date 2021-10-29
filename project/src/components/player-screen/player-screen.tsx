@@ -3,11 +3,20 @@ import type { ParamsWithId, Film } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
 
 type PlayerScreenProps = {
-  getFilmById: (id: number) => Film,
+  films: Film[],
 }
 
 
-function PlayerScreen({getFilmById}: PlayerScreenProps): JSX.Element {
+function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
+  const getFilmById = (id: number) => {
+    const foundFilm = films.find((film) => film.id === id);
+
+    if (!foundFilm) {
+      throw new Error(`Film with id=${id} does not exist`);
+    }
+
+    return foundFilm;
+  };
   const { id } = useParams() as ParamsWithId;
   const film = getFilmById(Number(id));
   const history = useHistory();

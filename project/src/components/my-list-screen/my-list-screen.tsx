@@ -6,10 +6,11 @@ import PageFooter from '../page-footer/page-footer';
 import Catalog from '../catalog/catalog';
 
 type MyListScreenProps = {
-  getFavoriteFilms: () => Film[],
+  films: Film[],
 }
 
-function MyListScreen({getFavoriteFilms}: MyListScreenProps): JSX.Element {
+function MyListScreen({films}: MyListScreenProps): JSX.Element {
+  const getFavoriteFilms = () => films.filter((film) => film.isFavorite);
   const favoriteFilms = getFavoriteFilms();
   return (
     <div className="user-page">

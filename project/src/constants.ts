@@ -1,11 +1,18 @@
+import { generatePath } from 'react-router';
+
 const AppRoute = {
   Root: () => '/',
   Login: () => '/login',
   MyList: () => '/mylist',
-  Film: (id:string | number = ':id') => `/films/${id}`,
-  AddReview: (id:string | number = ':id') => `/films/${id}/review`,
-  Player: (id:string | number = ':id') => `/player/${id}`,
+  Film: (id:string | number = ':id') => generatePath('/films/:id', { id: id}),
+  AddReview: (id:string | number = ':id') => generatePath('/films/:id/review', { id: id}),
+  Player: (id:string | number = ':id') => generatePath('/player/:id', { id: id}),
 } as const;
+
+const FilmCardBackgroundSize = {
+  Big: 'BIG',
+  Small: 'SMALL',
+};
 
 const AuthorizationStatus = {
   Auth: 'AUTH',
@@ -41,4 +48,4 @@ const CustomRouteType = {
   Private: 'PRIVATE',
 } as const;
 
-export {AppRoute, AuthorizationStatus, NavigationItem, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+export {FilmCardBackgroundSize, AppRoute, AuthorizationStatus, NavigationItem, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};

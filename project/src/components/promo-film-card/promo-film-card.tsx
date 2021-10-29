@@ -31,7 +31,7 @@ function PromoFilmCard({film}: PromoFilmCardProps): JSX.Element {
               <span className="film-card__genre">{film.genre}</span>
               <span className="film-card__year">{film.released}</span>
             </p>
-            <FilmCardButtons filmId={film.id} isFilmFavorite={film.isFavorite} />
+            <FilmCardButtons isFilmFavorite={film.isFavorite} film={film} />
           </div>
         </div>
       </div>
