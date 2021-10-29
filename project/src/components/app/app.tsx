@@ -6,13 +6,13 @@ import LoginScreen from '../login-screen/login-screen';
 import MyListScreen from '../my-list-screen/my-list-screen';
 import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import type { Film, CommentGet } from '../../types/types';
+import type { Film, Comment } from '../../types/types';
 import { AppRoute, AuthorizationStatus, CustomRouteType } from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
 
 type AppProps = {
   films: Film[],
-  comments: CommentGet[],
+  comments: Comment[],
 }
 
 function App({films, comments}: AppProps): JSX.Element {
@@ -28,7 +28,7 @@ function App({films, comments}: AppProps): JSX.Element {
     return foundFilm;
   };
 
-  const getComments = () => comments.slice();
+  const getComments = () => comments;
 
   const getSimilarFilms = (id: number) => {
     const referenceFilm = getFilmById(id);

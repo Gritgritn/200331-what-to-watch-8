@@ -1,4 +1,4 @@
-import type { CommentGet } from '../types/types';
+import type { Comment } from '../types/types';
 import { getRandomInteger, getRandomItemFromArray } from '../utils/common';
 
 const now = Date.now();
@@ -10,7 +10,7 @@ const ratings = [5.0, 7.0, 8.0, 6.6, 7.7, 8.5, 5.6, 8.8];
 
 const names = ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan'];
 
-const comments: CommentGet[] = new Array(getRandomInteger(COMMENT_COUNT / 2, COMMENT_COUNT)).fill(null).map((item, index) => ({
+const comments: Comment[] = new Array(getRandomInteger(COMMENT_COUNT / 2, COMMENT_COUNT)).fill(null).map((item, index) => ({
   id: index,
   user: {
     id: index + 10,

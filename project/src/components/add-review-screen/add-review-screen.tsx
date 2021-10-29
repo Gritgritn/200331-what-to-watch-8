@@ -7,7 +7,7 @@ import AddReviewForm from '../add-review-form/add-review-form';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import type { Film, ParamsWithId } from '../../types/types';
 
-export type AddReviewScreenProps = {
+type AddReviewScreenProps = {
   getFilmById: (id: number) => Film,
 }
 
@@ -37,3 +37,4 @@ function AddReviewScreen({getFilmById}: AddReviewScreenProps): JSX.Element {
 }
 
 export default AddReviewScreen;
+export type {AddReviewScreenProps};

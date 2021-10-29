@@ -1,9 +1,9 @@
 import Review from '../review/review';
-import { CommentGet } from '../../types/types';
+import { Comment } from '../../types/types';
 import { splitArrayInTwo } from '../../utils/common';
 
 type FilmReviewsProps = {
-  comments: CommentGet[],
+  comments: Comment[],
 }
 
 function FilmCardReviews({comments}: FilmReviewsProps): JSX.Element {

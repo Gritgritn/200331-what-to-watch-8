@@ -12,13 +12,13 @@ const AuthorizationStatus = {
   NotAuth: 'NOT_AUTH',
 } as const;
 
-export const NavigationItem = {
+const NavigationItem = {
   Overview: 'overview',
   Details: 'details',
   Reviews: 'reviews',
 } as const;
 
-export const RatingDescription = {
+const RatingDescription = {
   Bad: 'Bad',
   Normal: 'Normal',
   Good: 'Good',
@@ -26,7 +26,7 @@ export const RatingDescription = {
   Awesome: 'Awesome',
 } as const;
 
-export const ratingDescriptionToLowerLimit: {
+const ratingDescriptionToLowerLimit: {
   [key in keyof typeof RatingDescription]: number
 } = {
   Bad: 0,
@@ -36,9 +36,9 @@ export const ratingDescriptionToLowerLimit: {
   Awesome: 10,
 };
 
-export const CustomRouteType = {
+const CustomRouteType = {
   Guest: 'GUEST',
   Private: 'PRIVATE',
 } as const;
 
-export {AppRoute, AuthorizationStatus};
+export {AppRoute, AuthorizationStatus, NavigationItem, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};

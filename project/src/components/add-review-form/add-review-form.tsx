@@ -1,12 +1,10 @@
 import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
 
 const MAX_RATING = 10;
-const INITIAL_RATING = 0;
-const INITIAL_COMMENT = '';
 
 function AddReviewForm(): JSX.Element {
-  const [rating, setRating] = useState(INITIAL_RATING);
-  const [comment, setComment] = useState(INITIAL_COMMENT);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(Number(evt.currentTarget.value));
@@ -18,8 +16,8 @@ function AddReviewForm(): JSX.Element {
 
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    setRating(INITIAL_RATING);
-    setComment(INITIAL_COMMENT);
+    setRating(0);
+    setComment('');
   };
 
   return (
@@ -32,11 +30,11 @@ function AddReviewForm(): JSX.Element {
               .reverse()
               .map((value) => {
                 const inputId = `star-${value}`;
-                const checked = value === rating;
+                const IsChecked = value === rating;
 
                 return (
-                  <Fragment key={inputId}>
-                    <input className="rating__input" id={inputId} type="radio" name="rating" value={value} checked={checked} onChange={handleRatingChange}/>
+                  <Fragment key={value}>
+                    <input className="rating__input" id={inputId} type="radio" name="rating" value={value} checked={IsChecked} onChange={handleRatingChange}/>
                     <label className="rating__label" htmlFor={inputId}>Rating {value}</label>
                   </Fragment>
                 );

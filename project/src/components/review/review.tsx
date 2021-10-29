@@ -1,9 +1,9 @@
-import { CommentGet } from '../../types/types';
+import { Comment } from '../../types/types';
 import { formatDatetime, formatHumanizedDate } from '../../utils/date';
 import { formatRating } from '../../utils/films';
 
 type ReviewProps = {
-  comment: CommentGet,
+  comment: Comment,
 }
 
 function Review({comment}: ReviewProps): JSX.Element {

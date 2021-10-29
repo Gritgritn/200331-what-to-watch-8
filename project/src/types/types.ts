@@ -18,12 +18,12 @@ type Film = {
   isFavorite: boolean,
 }
 
-type CommentPost = {
+type CommentCreatePayload = {
   rating: number,
   comment: string,
 }
 
-type CommentGet = CommentPost & {
+type Comment = CommentCreatePayload & {
   id: number,
   user: {
     id: number,
@@ -36,6 +36,6 @@ type ParamsWithId = {
   id: string
 }
 
-export type ValuesOf<T> = T[keyof T]
+type ValuesOf<T> = T[keyof T]
 
-export type {ParamsWithId, CommentGet, Film};
+export type {ParamsWithId, Comment, Film, ValuesOf};

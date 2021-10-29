@@ -10,18 +10,20 @@ type CustomRouteProps = RouteProps & {
 
 function CustomRoute({authorizationStatus, type, ...props}: CustomRouteProps): JSX.Element {
   switch (type) {
-    case CustomRouteType.Private:
+    case CustomRouteType.Private: {
       return (
         <Route { ...props }>
           { authorizationStatus === AuthorizationStatus.Auth ? props.children : <Redirect to={AppRoute.Login()} />}
         </Route>
       );
-    case CustomRouteType.Guest:
+    }
+    case CustomRouteType.Guest: {
       return (
         <Route { ...props }>
           { authorizationStatus === AuthorizationStatus.NotAuth ? props.children : <Redirect to={AppRoute.Root()} />}
         </Route>
       );
+    }
   }
 
   isAllCasesChecked(type);

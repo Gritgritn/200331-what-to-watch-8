@@ -17,7 +17,7 @@ function Catalog({title, hiddenTitle, likeThis, children}: CatalogProps): JSX.El
 
   return (
     <section className={fullClassName}>
-      <h2 className={fullTitleClassName}>{hiddenTitle || title}</h2>
+      <h2 className={fullTitleClassName}>{hiddenTitle ?? title}</h2>
       {children}
     </section>
   );
