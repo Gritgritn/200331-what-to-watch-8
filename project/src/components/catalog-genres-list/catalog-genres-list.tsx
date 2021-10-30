@@ -1,5 +1,3 @@
-import { SyntheticEvent } from 'react';
-
 type CatalogGenresListProps = {
   genres: string[],
   activeGenre: string,
@@ -10,7 +8,7 @@ const BASE_CLASSNAME = 'catalog__genres-item';
 
 
 function CatalogGenresList({genres, activeGenre, setActiveGenre}: CatalogGenresListProps): JSX.Element {
-  const handleCatalogItemClick = (evt: SyntheticEvent<HTMLElement>) => {
+  const handleCatalogItemClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     const newActiveGenre = evt.currentTarget.dataset.value as string;
     setActiveGenre(newActiveGenre);
