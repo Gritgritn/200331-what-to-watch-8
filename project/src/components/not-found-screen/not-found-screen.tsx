@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PageTitle from '../title/title';
 
 function NotFoundScreen(): JSX.Element {
   return (
@@ -7,7 +8,7 @@ function NotFoundScreen(): JSX.Element {
         <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
       </div>
 
-      <h1 className="visually-hidden">WTW</h1>
+      <PageTitle className="user-page__title">My list</PageTitle>
 
       <header className="page-header film-card__head">
         <div className="logo">

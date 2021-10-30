@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 type CatalogGenresListProps = {
   genres: string[],
   activeGenre: string,
@@ -17,8 +19,7 @@ function CatalogGenresList({genres, activeGenre, setActiveGenre}: CatalogGenresL
     <ul className="catalog__genres-list">
       {
         genres.map((genre) => {
-          const activeClassName = genre === activeGenre ? `${BASE_CLASSNAME}--active` : '';
-          const fullClassName = `${BASE_CLASSNAME} ${activeClassName}`;
+          const fullClassName = classNames(BASE_CLASSNAME, { [`${BASE_CLASSNAME}--active`]: genre === activeGenre });
 
           return (
             <li key={genre} className={fullClassName}>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 type LogoProps = {
   IsFooter?: boolean,
@@ -7,8 +8,7 @@ type LogoProps = {
 const BASE_CLASS = 'logo__link';
 
 function Logo({ IsFooter }: LogoProps): JSX.Element {
-  const themedClassName = IsFooter ? `${BASE_CLASS}--light` : '';
-  const fullClassName = `${BASE_CLASS} ${themedClassName}`;
+  const fullClassName = classNames(BASE_CLASS, { [`${BASE_CLASS}--light`]: IsFooter });
 
   return (
     <div className="logo">

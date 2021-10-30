@@ -1,16 +1,18 @@
 
 import { useLocation, Redirect } from 'react-router-dom';
 import type { Comment, Film, ValuesOf } from '../../types/types';
-import { NavigationItem, FilmCardBackgroundSize } from '../../constants';
+import { FilmCardTab, FilmCardBackgroundSize } from '../../constants';
 import FilmCardBackground from '../film-card-background/film-card-background';
 import FilmCardPoster from '../film-card-poster/film-card-poster';
 import Logo from '../logo/logo';
 import FilmCardButtons from '../film-card-buttons/film-card-buttons';
 import UserBlock from '../user-block/user-block';
-import FilmCardNavigation from '../film-card-navigation/film-card-navigation';
+import FilmCardTabs from '../film-card-tabs/film-card-tabs';
 import FilmCardOverview from '../film-card-overview/film-card-overview';
 import FilmCardDetails from '../film-card-details/film-card-details';
 import FilmCardReviews from '../film-card-reviews/film-card-reviews';
+import PageTitle from '../title/title';
+import PageHeader from '../header/header';
 
 type FullFilmCardProps = {
   film: Film,
@@ -20,33 +22,33 @@ type FullFilmCardProps = {
 function FullFilmCard({film, comments}: FullFilmCardProps): JSX.Element {
   const location = useLocation();
 
-  const parsedNavigationItem = location.hash.slice(1);
-  const isNavigationCorrect = Object.values(NavigationItem)
-    .some((navigationItem) => navigationItem === parsedNavigationItem);
+  const parsedTab = location.hash.slice(1);
+  const isTabCorrect = Object.values(FilmCardTab)
+    .some((tab) => tab === parsedTab);
 
-  if (!isNavigationCorrect) {
-    return <Redirect to={`${location.pathname}#${NavigationItem.Overview}`} />;
+  if (!isTabCorrect) {
+    return <Redirect to={`${location.pathname}#${FilmCardTab.Overview}`} />;
   }
 
-  const currentNavigationItem = parsedNavigationItem as ValuesOf<typeof NavigationItem>;
+  const currentTab = parsedTab as ValuesOf<typeof FilmCardTab>;
 
-  const navigationItemToContent: {
-    [key in ValuesOf<typeof NavigationItem>]: JSX.Element
-  } = {
-    [NavigationItem.Details]: <FilmCardDetails film={film} />,
-    [NavigationItem.Overview]: <FilmCardOverview film={film} />,
-    [NavigationItem.Reviews]: <FilmCardReviews comments={comments} />,
-  };
+  const filmCardTabToContent: {
+      [key in ValuesOf<typeof FilmCardTab>]: JSX.Element
+    } = {
+      [FilmCardTab.Details]: <FilmCardDetails film={film} />,
+      [FilmCardTab.Overview]: <FilmCardOverview film={film} />,
+      [FilmCardTab.Reviews]: <FilmCardReviews comments={comments} />,
+    };
 
   return (
     <section className="film-card film-card--full" style={{backgroundColor: film.backgroundColor}}>
       <div className="film-card__hero">
         <FilmCardBackground src={film.backgroundImage} alt={film.name} />
-        <h1 className="visually-hidden">WTW</h1>
-        <header className="page-header film-card__head">
+        <PageTitle hidden>WTW</PageTitle>
+        <PageHeader className="film-card__head">
           <Logo />
           <UserBlock />
-        </header>
+        </PageHeader>
         <div className="film-card__wrap">
           <div className="film-card__desc">
             <h2 className="film-card__title">{film.name}</h2>
@@ -63,8 +65,8 @@ function FullFilmCard({film, comments}: FullFilmCardProps): JSX.Element {
           <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Big} />
 
           <div className="film-card__desc">
-            <FilmCardNavigation />
-            { navigationItemToContent[currentNavigationItem] }
+            <FilmCardTabs className="film-card__nav" />
+            { filmCardTabToContent[currentTab] }
           </div>
         </div>
       </div>

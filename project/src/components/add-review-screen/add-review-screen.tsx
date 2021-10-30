@@ -7,6 +7,8 @@ import AddReviewForm from '../add-review-form/add-review-form';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import {FilmCardBackgroundSize} from '../../constants';
 import type { Film, ParamsWithId } from '../../types/types';
+import PageTitle from '../title/title';
+import PageHeader from '../header/header';
 
 type AddReviewScreenProps = {
   films: Film[],
@@ -30,13 +32,13 @@ function AddReviewScreen({films}: AddReviewScreenProps): JSX.Element {
       <div className="film-card__header">
         <FilmCardBackground src={film.backgroundImage} alt={film.name} />
 
-        <h1 className="visually-hidden">WTW</h1>
+        <PageTitle hidden>WTW</PageTitle>
 
-        <header className="page-header">
+        <PageHeader>
           <Logo />
           <Breadcrumbs film={film} />
           <UserBlock />
-        </header>
+        </PageHeader>
 
         <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Small} />
       </div>

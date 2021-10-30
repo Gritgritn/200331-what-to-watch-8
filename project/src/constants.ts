@@ -19,7 +19,7 @@ const AuthorizationStatus = {
   NotAuth: 'NOT_AUTH',
 } as const;
 
-const NavigationItem = {
+const FilmCardTab = {
   Overview: 'overview',
   Details: 'details',
   Reviews: 'reviews',
@@ -48,4 +48,4 @@ const CustomRouteType = {
   Private: 'PRIVATE',
 } as const;
 
-export {FilmCardBackgroundSize, AppRoute, AuthorizationStatus, NavigationItem, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+export {FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};

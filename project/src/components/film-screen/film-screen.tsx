@@ -4,6 +4,7 @@ import type { Comment, Film, ParamsWithId } from '../../types/types';
 import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
+import PageContent from '../page-content/page-content';
 
 type FilmsScreenProps = {
   films: Film[],
@@ -30,13 +31,13 @@ function FilmScreen({films, getComments}: FilmsScreenProps): JSX.Element {
     <>
       <FullFilmCard film={film} comments={getComments()} />
 
-      <div className="page-content">
+      <PageContent>
         <Catalog title="More like this" likeThis>
           <CatalogFilmsList films={similarFilms}/>
         </Catalog>
 
         <PageFooter />
-      </div>
+      </PageContent>
     </>
   );
 }

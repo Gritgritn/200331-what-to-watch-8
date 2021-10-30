@@ -7,6 +7,7 @@ import CatalogMoreButton from '../catalog-more-button/catalog-more-button';
 import { getGenresList, ALL_GENRES } from '../../utils/genres';
 import { useState } from 'react';
 import Catalog from '../catalog/catalog';
+import PageContent from '../page-content/page-content';
 
 type MainScreenProps = {
   films: Film[],
@@ -20,7 +21,7 @@ function MainScreen({films}: MainScreenProps): JSX.Element {
     <>
       <PromoFilmCard film={promoFilm} />
 
-      <div className="page-content">
+      <PageContent>
         <Catalog hiddenTitle="Catalog">
           <CatalogGenresList genres={genres} activeGenre={activeGenre} setActiveGenre={setActiveGenre} />
           <CatalogFilmsList films={films} />
@@ -28,7 +29,7 @@ function MainScreen({films}: MainScreenProps): JSX.Element {
         </Catalog>
 
         <PageFooter />
-      </div>
+      </PageContent>
     </>
   );
 }

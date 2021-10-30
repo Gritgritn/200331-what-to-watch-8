@@ -4,6 +4,8 @@ import UserBlock from '../user-block/user-block';
 import FilmCardsList from '../catalog-films-list/catalog-films-list';
 import PageFooter from '../page-footer/page-footer';
 import Catalog from '../catalog/catalog';
+import PageTitle from '../title/title';
+import PageHeader from '../header/header';
 
 type MyListScreenProps = {
   films: Film[],
@@ -14,10 +16,11 @@ function MyListScreen({films}: MyListScreenProps): JSX.Element {
   const favoriteFilms = getFavoriteFilms();
   return (
     <div className="user-page">
-      <header className="page-header user-page__head">
+      <PageHeader className="user-page__head">
         <Logo />
+        <PageTitle className="user-page__title">My list</PageTitle>
         <UserBlock />
-      </header>
+      </PageHeader>
 
       <Catalog hiddenTitle="Catalog">
 
