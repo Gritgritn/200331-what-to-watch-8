@@ -5,31 +5,20 @@ import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
 import PageContent from '../page-content/page-content';
+import { getFilmById, getSimilarFilms } from '../../utils/common';
 
 type FilmsScreenProps = {
   films: Film[],
-  getComments: () => Comment[],
+  comments: Comment[],
 }
-function FilmScreen({films, getComments}: FilmsScreenProps): JSX.Element {
-  const getFilmById = (id: number) => {
-    const foundFilm = films.find((film) => film.id === id);
+function FilmScreen({films, comments}: FilmsScreenProps): JSX.Element {
 
-    if (!foundFilm) {
-      throw new Error(`Film with id=${id} does not exist`);
-    }
-
-    return foundFilm;
-  };
-  const getSimilarFilms = (id: number) => {
-    const referenceFilm = getFilmById(id);
-    return films.filter((film) => film.id !== id && film.genre === referenceFilm.genre);
-  };
   const { id } = useParams() as ParamsWithId;
-  const film = getFilmById(Number(id));
-  const similarFilms = getSimilarFilms(Number(id));
+  const film = getFilmById(films, Number(id));
+  const similarFilms = getSimilarFilms(films, Number(id));
   return (
     <>
-      <FullFilmCard film={film} comments={getComments()} />
+      <FullFilmCard film={film} comments={comments} />
 
       <PageContent>
         <Catalog title="More like this" likeThis>

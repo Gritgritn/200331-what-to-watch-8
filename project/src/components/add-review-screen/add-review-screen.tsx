@@ -9,30 +9,22 @@ import {FilmCardBackgroundSize} from '../../constants';
 import type { Film, ParamsWithId } from '../../types/types';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
+import { getFilmById } from '../../utils/common';
 
 type AddReviewScreenProps = {
   films: Film[],
 }
 
 function AddReviewScreen({films}: AddReviewScreenProps): JSX.Element {
-  const getFilmById = (id: number) => {
-    const foundFilm = films.find((film) => film.id === id);
-
-    if (!foundFilm) {
-      throw new Error(`Film with id=${id} does not exist`);
-    }
-
-    return foundFilm;
-  };
   const { id } = useParams() as ParamsWithId;
-  const film = getFilmById(Number(id));
+  const film = getFilmById(films, Number(id));
 
   return (
     <section className="film-card film-card--full" style={{backgroundColor: film.backgroundColor}}>
       <div className="film-card__header">
         <FilmCardBackground src={film.backgroundImage} alt={film.name} />
 
-        <PageTitle hidden>WTW</PageTitle>
+        <PageTitle IsHidden>WTW</PageTitle>
 
         <PageHeader>
           <Logo />

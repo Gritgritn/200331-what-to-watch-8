@@ -17,7 +17,6 @@ type AppProps = {
 
 function App({films, comments}: AppProps): JSX.Element {
   const authorizationStatus = AuthorizationStatus.Auth;
-  const getComments = () => comments;
 
   return (
     <BrowserRouter>
@@ -26,7 +25,7 @@ function App({films, comments}: AppProps): JSX.Element {
           <MainScreen films={films} />
         </Route>
         <Route path={AppRoute.Film()} exact>
-          <FilmScreen films={films} getComments={getComments} />
+          <FilmScreen films={films} comments={comments} />
         </Route>
         <Route path={AppRoute.Player()} exact>
           <PlayerScreen films={films}/>

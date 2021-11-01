@@ -1,6 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom';
 import type { ParamsWithId, Film } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
+import { getFilmById } from '../../utils/common';
 
 type PlayerScreenProps = {
   films: Film[],
@@ -8,17 +9,8 @@ type PlayerScreenProps = {
 
 
 function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
-  const getFilmById = (id: number) => {
-    const foundFilm = films.find((film) => film.id === id);
-
-    if (!foundFilm) {
-      throw new Error(`Film with id=${id} does not exist`);
-    }
-
-    return foundFilm;
-  };
   const { id } = useParams() as ParamsWithId;
-  const film = getFilmById(Number(id));
+  const film = getFilmById(films, Number(id));
   const history = useHistory();
 
   const handleExitButtonClick = () => {

@@ -39,10 +39,8 @@ function SmallFilmCard({film, className}: SmallFilmCardProps): JSX.Element {
     }
 
     timer.current = setTimeout(() => {
-      if (!isHovered) {
-        if (isDelayedHovered) {
-          setDelayedHovered(false);
-        }
+      if (!isHovered && isDelayedHovered) {
+        setDelayedHovered(false);
 
         return;
       }

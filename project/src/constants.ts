@@ -12,7 +12,7 @@ const AppRoute = {
 const FilmCardBackgroundSize = {
   Big: 'BIG',
   Small: 'SMALL',
-};
+} as const;
 
 const AuthorizationStatus = {
   Auth: 'AUTH',

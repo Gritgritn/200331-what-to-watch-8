@@ -9,7 +9,7 @@ function LoginScreen(): JSX.Element {
       <PageHeader className="user-page__head">
         <Logo />
 
-        <PageTitle hidden>WTW</PageTitle>
+        <PageTitle IsHidden>WTW</PageTitle>
       </PageHeader>
 
       <div className="sign-in user-page__content">

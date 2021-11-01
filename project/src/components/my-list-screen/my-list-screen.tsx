@@ -6,14 +6,15 @@ import PageFooter from '../page-footer/page-footer';
 import Catalog from '../catalog/catalog';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
+import { getFavoriteFilms } from '../../utils/common';
 
 type MyListScreenProps = {
   films: Film[],
 }
 
 function MyListScreen({films}: MyListScreenProps): JSX.Element {
-  const getFavoriteFilms = () => films.filter((film) => film.isFavorite);
-  const favoriteFilms = getFavoriteFilms();
+
+  const favoriteFilms = getFavoriteFilms(films);
   return (
     <div className="user-page">
       <PageHeader className="user-page__head">

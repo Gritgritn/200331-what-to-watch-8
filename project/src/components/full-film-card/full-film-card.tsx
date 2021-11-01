@@ -44,7 +44,7 @@ function FullFilmCard({film, comments}: FullFilmCardProps): JSX.Element {
     <section className="film-card film-card--full" style={{backgroundColor: film.backgroundColor}}>
       <div className="film-card__hero">
         <FilmCardBackground src={film.backgroundImage} alt={film.name} />
-        <PageTitle hidden>WTW</PageTitle>
+        <PageTitle IsHidden>WTW</PageTitle>
         <PageHeader className="film-card__head">
           <Logo />
           <UserBlock />

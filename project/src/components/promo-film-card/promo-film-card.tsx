@@ -16,7 +16,7 @@ function PromoFilmCard({film}: PromoFilmCardProps): JSX.Element {
     <section className="film-card">
       <FilmCardBackground src={film.backgroundImage} alt={film.name} />
 
-      <PageTitle hidden>WTW</PageTitle>
+      <PageTitle IsHidden>WTW</PageTitle>
 
       <PageHeader className="film-card__head">
         <Logo />
