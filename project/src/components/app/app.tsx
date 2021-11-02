@@ -1,48 +1,44 @@
-import { AppRoute, AuthorizationStatus } from '../../const';
-import PrivateRoute from '../private-route/private-route';
 import MainScreen from '../main-screen/main-screen';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
 import LoginScreen from '../login-screen/login-screen';
-import MyListscreen from '../my-list-screen/my-list-screen';
-import ReviewScreen from '../review-screen/review-screen';
+import MyListScreen from '../my-list-screen/my-list-screen';
+import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import type { Film, Comment } from '../../types/types';
+import { AppRoute, AuthorizationStatus, CustomRouteType } from '../../constants';
+import CustomRoute from '../custom-route/custom-route';
 
-type MainFilmCard = {
-  title: string,
-  genre: string,
-  year: number,
+type AppProps = {
+  films: Film[],
+  comments: Comment[],
 }
 
-const mainFilmCard: MainFilmCard = {
-  title: 'The Grand Budapest Hotel',
-  genre:  'Drama',
-  year: 2014,
-};
+function App({films, comments}: AppProps): JSX.Element {
+  const authorizationStatus = AuthorizationStatus.Auth;
 
-function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path={AppRoute.Root} exact>
-          <MainScreen mainFilmCard={mainFilmCard}/>
+        <Route path={AppRoute.Root()} exact>
+          <MainScreen films={films} />
         </Route>
-        <Route path={AppRoute.Film} exact>
-          <FilmScreen />
+        <Route path={AppRoute.Film()} exact>
+          <FilmScreen films={films} comments={comments} />
         </Route>
-        <Route path={AppRoute.Player} exact>
-          <PlayerScreen />
+        <Route path={AppRoute.Player()} exact>
+          <PlayerScreen films={films}/>
         </Route>
-        <Route path={AppRoute.Login} exact>
+        <CustomRoute path={AppRoute.Login()} exact type={CustomRouteType.Guest} authorizationStatus={authorizationStatus}>
           <LoginScreen />
-        </Route>
-        <PrivateRoute path={AppRoute.MyList} exact authorizationStatus={AuthorizationStatus.NotAuth}>
-          <MyListscreen />
-        </PrivateRoute>
-        <PrivateRoute path={AppRoute.Review} exact authorizationStatus={AuthorizationStatus.NotAuth}>
-          <ReviewScreen />
-        </PrivateRoute>
+        </CustomRoute>
+        <CustomRoute path={AppRoute.MyList()} exact type={CustomRouteType.Private} authorizationStatus={authorizationStatus}>
+          <MyListScreen films={films} />
+        </CustomRoute>
+        <CustomRoute path={AppRoute.AddReview()} exact type={CustomRouteType.Private} authorizationStatus={authorizationStatus}>
+          <AddReviewScreen films={films}/>
+        </CustomRoute>
         <Route>
           <NotFoundScreen />
         </Route>
@@ -52,4 +48,3 @@ function App(): JSX.Element {
 }
 
 export default App;
-export type {MainFilmCard};
