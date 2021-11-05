@@ -56,4 +56,8 @@ const MAX_GENRES_COUNT = 9;
 
 const ALL_GENRES = 'All genres';
 
-export {MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+const CATALOG_INITIAL_PAGE = 1;
+
+const CATALOG_PAGE_SIZE = 8;
+
+export {CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
