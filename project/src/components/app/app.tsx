@@ -6,12 +6,20 @@ import LoginScreen from '../login-screen/login-screen';
 import MyListScreen from '../my-list-screen/my-list-screen';
 import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import type { Film, Comment } from '../../types/types';
+import type { State, Comment } from '../../types/types';
+import { connect, ConnectedProps } from 'react-redux';
 import { AppRoute, AuthorizationStatus, CustomRouteType } from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
 
-type AppProps = {
-  films: Film[],
+const mapStateToProps = ({films}: State) => ({
+  films,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type AppProps = PropsFromRedux & {
   comments: Comment[],
 }
 
@@ -22,7 +30,7 @@ function App({films, comments}: AppProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route path={AppRoute.Root()} exact>
-          <MainScreen films={films} />
+          <MainScreen />
         </Route>
         <Route path={AppRoute.Film()} exact>
           <FilmScreen films={films} comments={comments} />
@@ -47,4 +55,5 @@ function App({films, comments}: AppProps): JSX.Element {
   );
 }
 
-export default App;
+export { App };
+export default connector(App);

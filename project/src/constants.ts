@@ -48,4 +48,12 @@ const CustomRouteType = {
   Private: 'PRIVATE',
 } as const;
 
-export {FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+const ActionType = {
+  SetFilter: 'filter/setFilter',
+} as const;
+
+const MAX_GENRES_COUNT = 9;
+
+const ALL_GENRES = 'All genres';
+
+export {MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};

@@ -2,7 +2,7 @@ import type { Film } from '../../types/types';
 import SmallFilmCard from '../small-film-card/small-film-card';
 
 type CatalogFilmsListProps  = {
-  films: Film[];
+  films: Film[],
 }
 
 function CatalogFilmsList ({films}: CatalogFilmsListProps ): JSX.Element {

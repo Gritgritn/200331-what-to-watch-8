@@ -1,3 +1,12 @@
+import { setFilter } from '../store/action';
+
+type State = {
+  filter: string,
+  films: Film[],
+}
+
+type Action = ReturnType<typeof setFilter>;
+
 type Film = {
     id: number,
     name: string,
@@ -38,4 +47,4 @@ type ParamsWithId = {
 
 type ValuesOf<T> = T[keyof T]
 
-export type {ParamsWithId, Comment, Film, ValuesOf};
+export type {State, Action, ParamsWithId, Comment, Film, ValuesOf};

@@ -1,30 +1,43 @@
 import PageFooter from '../page-footer/page-footer';
 import PromoFilmCard from '../promo-film-card/promo-film-card';
-import type { Film } from '../../types/types';
+import type { State, Action } from '../../types/types';
 import CatalogGenresList from '../catalog-genres-list/catalog-genres-list';
 import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import CatalogMoreButton from '../catalog-more-button/catalog-more-button';
-import { getGenresList, ALL_GENRES } from '../../utils/genres';
-import { useState } from 'react';
 import Catalog from '../catalog/catalog';
 import PageContent from '../page-content/page-content';
+import { Dispatch } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { setFilter } from '../../store/action';
+import { getFilteredFilms, getGenres } from '../../store/selector';
 
-type MainScreenProps = {
-  films: Film[],
-}
+const mapStateToProps = (state: State) => ({
+  promoFilm: state.films[0],
+  genres: getGenres(state),
+  filteredFilms: getFilteredFilms(state),
+  filter: state.filter,
+});
 
-function MainScreen({films}: MainScreenProps): JSX.Element {
-  const [ activeGenre, setActiveGenre ] = useState(ALL_GENRES);
-  const genres = getGenresList(films);
-  const promoFilm = films[0];
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onFilterChange(filter: string) {
+    dispatch(setFilter(filter));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type MainScreenProps = ConnectedProps<typeof connector>;
+
+function MainScreen({promoFilm, genres, filteredFilms, filter, onFilterChange}: MainScreenProps): JSX.Element {
+
   return (
     <>
       <PromoFilmCard film={promoFilm} />
 
       <PageContent>
         <Catalog hiddenTitle="Catalog">
-          <CatalogGenresList genres={genres} activeGenre={activeGenre} setActiveGenre={setActiveGenre} />
-          <CatalogFilmsList films={films} />
+          <CatalogGenresList genres={genres} activeGenre={filter} setActiveGenre={onFilterChange} />
+          <CatalogFilmsList films={filteredFilms} />
           <CatalogMoreButton />
         </Catalog>
 
@@ -34,4 +47,5 @@ function MainScreen({films}: MainScreenProps): JSX.Element {
   );
 }
 
-export default MainScreen;
+export { MainScreen };
+export default connector(MainScreen);
