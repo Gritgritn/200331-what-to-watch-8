@@ -1,29 +1,47 @@
 import { useHistory, useParams } from 'react-router-dom';
-import type { ParamsWithId, Film } from '../../types/types';
+import type { ParamsWithId, Film, State } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
 import { getFilmById } from '../../utils/common';
+import { connect, ConnectedProps } from 'react-redux';
+import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import LoadingScreen from '../loading/loading';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-type PlayerScreenProps = {
-  films: Film[],
-}
+const mapStateToProps = ({films, currentComments}: State) => ({
+  fetchedFilms: films,
+  fetchedComments: currentComments,
+});
 
+const connector = connect(mapStateToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
+function PlayerScreen({fetchedFilms}: PropsFromRedux): JSX.Element {
   const { id } = useParams() as ParamsWithId;
-  const film = getFilmById(films, Number(id));
+
   const history = useHistory();
+
+  if (isFetchNotReady(fetchedFilms)) {
+    return <LoadingScreen />;
+  }
+
+  if (isFetchError(fetchedFilms)) {
+    return <NotFoundScreen />;
+  }
 
   const handleExitButtonClick = () => {
     history.goBack();
   };
 
+  const films = fetchedFilms.data as Film[];
+  const currentFilm = getFilmById(films, Number(id));
+
   const progress = Math.random();
   const playerProgress = Number((progress * 100).toFixed(2));
-  const timeElapsed = film.runTime * (1 - progress);
+  const timeElapsed = currentFilm.runTime * (1 - progress);
 
   return (
     <div className="player">
-      <video src={film.videoLink} className="player__video" poster={film.posterImage}></video>
+      <video src={currentFilm.videoLink} className="player__video" poster={currentFilm.previewImage}></video>
 
       <button type="button" className="player__exit" onClick={handleExitButtonClick}>Exit</button>
 
@@ -35,7 +53,6 @@ function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
           </div>
           <div className="player__time-value">{formatElapsedTime(timeElapsed)}</div>
         </div>
-
         <div className="player__controls-row">
           <button type="button" className="player__play">
             <svg viewBox="0 0 19 19" width="19" height="19">
@@ -43,7 +60,7 @@ function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">{film.name}</div>
+          <div className="player__name">{currentFilm.name}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">
@@ -57,5 +74,5 @@ function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
   );
 }
 
-export default PlayerScreen;
-export type {PlayerScreenProps};
+export { PlayerScreen };
+export default connector(PlayerScreen);

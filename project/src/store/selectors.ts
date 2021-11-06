@@ -2,13 +2,16 @@ import { createSelector } from 'reselect';
 import { MAX_GENRES_COUNT, ALL_GENRES } from '../constants';
 import { State } from '../types/types';
 
-const getFilms = ({ films }: State) => films;
+const getFilms = ({ films }: State) => films.data;
 
 const getFiter = ({ filter }: State) => filter;
 
 export const getGenres = createSelector(
   [ getFilms ],
   (films) => {
+    if (!films) {
+      return [];
+    }
     const genres = new Set<string>();
     films.forEach((film) => genres.add(film.genre));
 
@@ -19,6 +22,9 @@ export const getGenres = createSelector(
 export const getFilteredFilms = createSelector(
   [ getFilms, getFiter ],
   (films, filter) => {
+    if (!films) {
+      return [];
+    }
     if (!filter || filter === ALL_GENRES) {
       return [ ...films];
     }

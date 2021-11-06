@@ -17,6 +17,7 @@ const FilmCardBackgroundSize = {
 const AuthorizationStatus = {
   Auth: 'AUTH',
   NotAuth: 'NOT_AUTH',
+  Unknown: 'UNKNOWN',
 } as const;
 
 const FilmCardTab = {
@@ -49,7 +50,14 @@ const CustomRouteType = {
 } as const;
 
 const ActionType = {
-  SetFilter: 'filter/setFilter',
+  SetFilter: 'filter/setValue',
+  SetAuthorizationStatus: 'authorizationStatus/setValue',
+  SetLoginStatus: 'authorizationStatus/setAuthStatus',
+  SetLogoutStatus: 'authorizationStatus/setNotAuthStatus',
+  SetFilms: 'films/setData',
+  SetFilmsFetchStatus: 'films/setFetchStatus',
+  SetPromoFilm: 'promoFilm/setData',
+  SetPromoFilmFetchStatus: 'promoFilm/setFetchStatus',
 } as const;
 
 const MAX_GENRES_COUNT = 9;
@@ -60,4 +68,24 @@ const CATALOG_INITIAL_PAGE = 1;
 
 const CATALOG_PAGE_SIZE = 8;
 
-export {CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+const MAX_SIMILAR_FILMS_COUNT = 4;
+
+const APIRoute = {
+  Films: () => '/films',
+  PromoFilm: () => '/promo',
+  Film: (id:string | number) => `/films/${id}`,
+  SimilarFilms: (id:string | number) => `/films/${id}/similar`,
+  FavoriteFilms: () => '/favorite',
+  Comments: (id:string | number) => `/comments/${id}`,
+  Login: () => '/login',
+  Logout: () => '/logout',
+} as const;
+
+const FetchStatus = {
+  Idle: 'IDLE',
+  Loading: 'LOADING',
+  Succeeded: 'SUCCEEDED',
+  Failed: 'FAILED',
+} as const;
+
+export {APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};

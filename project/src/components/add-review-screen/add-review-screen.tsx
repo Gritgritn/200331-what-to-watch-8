@@ -6,33 +6,50 @@ import UserBlock from '../user-block/user-block';
 import AddReviewForm from '../add-review-form/add-review-form';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import {FilmCardBackgroundSize} from '../../constants';
-import type { Film, ParamsWithId } from '../../types/types';
+import type { Film, ParamsWithId, State } from '../../types/types';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
 import { getFilmById } from '../../utils/common';
+import { connect, ConnectedProps } from 'react-redux';
+import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import LoadingScreen from '../loading/loading';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-type AddReviewScreenProps = {
-  films: Film[],
-}
+const mapStateToProps = ({films}: State) => ({
+  fetchedFilms: films,
+});
 
-function AddReviewScreen({films}: AddReviewScreenProps): JSX.Element {
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function AddReviewScreen({fetchedFilms}: PropsFromRedux): JSX.Element {
   const { id } = useParams() as ParamsWithId;
-  const film = getFilmById(films, Number(id));
 
+  if (isFetchNotReady(fetchedFilms)) {
+    return <LoadingScreen />;
+  }
+
+  if (isFetchError(fetchedFilms)) {
+    return <NotFoundScreen />;
+  }
+
+  const films = fetchedFilms.data as Film[];
+  const currentFilm = getFilmById(films, Number(id));
   return (
-    <section className="film-card film-card--full" style={{backgroundColor: film.backgroundColor}}>
+    <section className="film-card film-card--full" style={{backgroundColor: currentFilm.backgroundColor}}>
       <div className="film-card__header">
-        <FilmCardBackground src={film.backgroundImage} alt={film.name} />
+        <FilmCardBackground src={currentFilm.backgroundImage} alt={currentFilm.name} />
 
         <PageTitle IsHidden>WTW</PageTitle>
 
         <PageHeader>
           <Logo />
-          <Breadcrumbs film={film} />
+          <Breadcrumbs film={currentFilm} />
           <UserBlock />
         </PageHeader>
 
-        <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Small} />
+        <FilmCardPoster src={currentFilm.posterImage} alt={`${currentFilm.name} poster`} size={FilmCardBackgroundSize.Small} />
       </div>
       <AddReviewForm />
 
@@ -40,5 +57,5 @@ function AddReviewScreen({films}: AddReviewScreenProps): JSX.Element {
   );
 }
 
-export default AddReviewScreen;
-export type {AddReviewScreenProps};
+export { AddReviewScreen };
+export default connector(AddReviewScreen);
