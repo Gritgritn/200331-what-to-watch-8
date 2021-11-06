@@ -1,7 +1,7 @@
 import type { Film, User } from '../types/types';
 import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH } from '../constants';
 
-const validateFormData = ({email, password}: User): string => {
+const validateLoginFormData = ({email, password}: User): string => {
   if (!email) {
     return 'E-mail is requred';
   }
@@ -63,4 +63,4 @@ const getSimilarFilms = (films: Film[], id: number) => {
   return films.filter((film) => film.id !== id && film.genre === referenceFilm.genre);
 };
 
-export {validateFormData, getSimilarFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+export {validateLoginFormData, getSimilarFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};

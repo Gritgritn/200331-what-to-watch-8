@@ -69,4 +69,11 @@ const resetFavoriteFilms = () => ({
   type: ActionType.ResetFavoriteFilms,
 } as const);
 
-export { setFavoriteFilmsFetchStatus, setFavoriteFilms, resetFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };
+const redirectToRoute = (route: string) => ({
+  type: ActionType.Redirect,
+  payload: {
+    route,
+  },
+} as const);
+
+export { redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, resetFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

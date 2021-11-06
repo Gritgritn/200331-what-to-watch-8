@@ -1,5 +1,5 @@
 import MainScreen from '../main-screen/main-screen';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router as BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
 import LoginScreen from '../login-screen/login-screen';
@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
 import InfoScreen from '../info-screen/info-screen';
 import PageTitle from '../title/title';
+import browserHistory from '../../browser-history';
 
 const mapStateToProps = ({films, authorization}: State) => ({
   authorizationStatus: authorization.status,
@@ -62,7 +63,7 @@ function App({ fetchedFilms, authorizationStatus, checkAuthorization, fetchFilms
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route path={AppRoute.Root()} exact>
           <MainScreen />
