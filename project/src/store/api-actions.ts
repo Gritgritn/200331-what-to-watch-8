@@ -1,7 +1,7 @@
 import { APIRoute, AuthorizationStatus, FetchStatus } from '../constants';
 import { adaptAuthorizationInfoToClient, adaptFilmToClient } from '../services/adapters';
 import { ServerAuthInfo, ServerFilm, ThunkActionResult, User } from '../types/types';
-import { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationInfo, setAuthorizationStatus } from './actions';
+import { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationInfo, setAuthorizationStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus } from './actions';
 import toast from 'react-hot-toast';
 import { dropToken, saveToken } from '../services/token';
 
@@ -86,4 +86,20 @@ const deleteLogout = (): ThunkActionResult =>
     }
   };
 
-export {deleteLogout, postLogin, getLogin, getPromoFilm, getFilms};
+const getFavoriteFilms = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    dispatch(setFavoriteFilmsFetchStatus(FetchStatus.Loading));
+
+    try {
+      const { data: serverFilms } = await api.get<ServerFilm[]>(APIRoute.FavoriteFilms());
+      const films = serverFilms.map((serverFilm) => adaptFilmToClient(serverFilm));
+
+      dispatch(setFavoriteFilms(films));
+      dispatch(setFavoriteFilmsFetchStatus(FetchStatus.Succeeded));
+
+    } catch (error) {
+      dispatch(setFavoriteFilmsFetchStatus(FetchStatus.Failed));
+    }
+  };
+
+export { getFavoriteFilms, deleteLogout, postLogin, getLogin, getPromoFilm, getFilms };

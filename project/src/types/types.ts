@@ -9,6 +9,9 @@ import {
   setPromoFilm,
   setPromoFetchStatus,
   setAuthorizationInfo,
+  setFavoriteFilms,
+  setFavoriteFilmsFetchStatus,
+  resetFavoriteFilms
 } from '../store/actions';
 
 type User = {
@@ -79,6 +82,9 @@ type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setAuthorizationInfo>
   | ReturnType<typeof setFilms>
   | ReturnType<typeof setFilmsFetchStatus>
+  | ReturnType<typeof setFavoriteFilms>
+  | ReturnType<typeof setFavoriteFilmsFetchStatus>
+  | ReturnType<typeof resetFavoriteFilms>
   | ReturnType<typeof setPromoFilm>
   | ReturnType<typeof setPromoFetchStatus>
   | ReturnType<typeof setFilter>;

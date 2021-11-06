@@ -51,4 +51,22 @@ const setFilter = (filter: string) => ({
   },
 } as const);
 
-export { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };
+const setFavoriteFilmsFetchStatus = (status: FetchStatusType) => ({
+  type: ActionType.SetFavoriteFilmsFetchStatus,
+  payload: {
+    status,
+  },
+} as const);
+
+const setFavoriteFilms = (favoriteFilms: Film[] | null) => ({
+  type: ActionType.SetFavoriteFilms,
+  payload: {
+    favoriteFilms,
+  },
+} as const);
+
+const resetFavoriteFilms = () => ({
+  type: ActionType.ResetFavoriteFilms,
+} as const);
+
+export { setFavoriteFilmsFetchStatus, setFavoriteFilms, resetFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

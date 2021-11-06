@@ -1,38 +1,55 @@
 import Logo from '../logo/logo';
-import type { Film, State } from '../../types/types';
+import { useEffect } from 'react';
+import type { Film, State, ThunkAppDispatch } from '../../types/types';
 import UserBlock from '../user-block/user-block';
 import FilmCardsList from '../catalog-films-list/catalog-films-list';
 import PageFooter from '../page-footer/page-footer';
 import Catalog from '../catalog/catalog';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
-import { getFavoriteFilms } from '../../utils/common';
+import { getFavoriteFilms } from '../../store/api-actions';
+import { resetFavoriteFilms } from '../../store/actions';
 import { connect, ConnectedProps } from 'react-redux';
-import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading/loading';
 
-const mapStateToProps = ({films}: State) => ({
-  fetchedFilms: films,
+const mapStateToProps = ({favoriteFilms}: State) => ({
+  fetchedFavoriteFilms: favoriteFilms,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchFavoriteFilms() {
+    dispatch(getFavoriteFilms());
+  },
+  clearFavoriteFilms() {
+    dispatch(resetFavoriteFilms());
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function MyListScreen({fetchedFilms}: PropsFromRedux): JSX.Element {
+function MyListScreen({fetchedFavoriteFilms, fetchFavoriteFilms, clearFavoriteFilms}: PropsFromRedux): JSX.Element {
 
-  // Здесь юудет загрузка избранных фильмов
+  useEffect(() => {
+    if (isFetchIdle(fetchedFavoriteFilms)) {
+      fetchFavoriteFilms();
+    }
+    return () => {
+      clearFavoriteFilms();
+    };
+  }, []);
 
-  if (isFetchNotReady(fetchedFilms)) {
+  if (isFetchNotReady(fetchedFavoriteFilms)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(fetchedFilms)) {
+  if (isFetchError(fetchedFavoriteFilms)) {
     return <NotFoundScreen />;
   }
-  const films = fetchedFilms.data as Film[];
-  const favoriteFilms = getFavoriteFilms(films);
+  const favoriteFilms = fetchedFavoriteFilms.data as Film[];
 
   return (
     <div className="user-page">

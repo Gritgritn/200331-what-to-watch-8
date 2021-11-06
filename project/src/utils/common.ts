@@ -63,6 +63,4 @@ const getSimilarFilms = (films: Film[], id: number) => {
   return films.filter((film) => film.id !== id && film.genre === referenceFilm.genre);
 };
 
-const getFavoriteFilms = (films: Film[]) => films.filter((film) => film.isFavorite);
-
-export {validateFormData, getSimilarFilms, getFavoriteFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+export {validateFormData, getSimilarFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
