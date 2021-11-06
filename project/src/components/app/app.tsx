@@ -8,16 +8,17 @@ import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import type { State, ThunkAppDispatch } from '../../types/types';
 import { connect, ConnectedProps } from 'react-redux';
-import { AppRoute, CustomRouteType } from '../../constants';
+import { AppRoute, CustomRouteType, AuthorizationStatus} from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
-import { getFilms } from '../../store/api-actions';
+import { getFilms, getLogin } from '../../store/api-actions';
 import LoadingScreen from '../loading/loading';
 import { useEffect } from 'react';
 import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
 import InfoScreen from '../info-screen/info-screen';
 import PageTitle from '../title/title';
 
-const mapStateToProps = ({films}: State) => ({
+const mapStateToProps = ({films, authorization}: State) => ({
+  authorizationStatus: authorization.status,
   fetchedFilms: films,
 });
 
@@ -25,14 +26,20 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   fetchFilms() {
     dispatch(getFilms());
   },
+  checkAuthorization() {
+    dispatch(getLogin());
+  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function App({ fetchedFilms, fetchFilms }: PropsFromRedux): JSX.Element {
+function App({ fetchedFilms, authorizationStatus, checkAuthorization, fetchFilms }: PropsFromRedux): JSX.Element {
   useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Unknown) {
+      checkAuthorization();
+    }
     if (isFetchIdle(fetchedFilms)) {
       // Когда все данные будут загружаться с сервера
       // данная загрузка возможна будет перенесена в MainScreen
@@ -40,7 +47,7 @@ function App({ fetchedFilms, fetchFilms }: PropsFromRedux): JSX.Element {
       fetchFilms();
     }
   }, []);
-  if (isFetchNotReady(fetchedFilms)) {
+  if (isFetchNotReady(fetchedFilms) || authorizationStatus === AuthorizationStatus.Unknown) {
     return <LoadingScreen />;
   }
   if (isFetchError(fetchedFilms)) {

@@ -7,8 +7,24 @@ import {
   setFilmsFetchStatus,
   setFilter,
   setPromoFilm,
-  setPromoFetchStatus
+  setPromoFetchStatus,
+  setAuthorizationInfo,
 } from '../store/actions';
+
+type User = {
+  email: string,
+  password: string,
+}
+
+type ServerAuthInfo = {
+  id: 1,
+  email: string,
+  name: string,
+  'avatar_url': string,
+  token: Token,
+}
+
+type Token = string;
 
 type ServerFilm = {
   id: number,
@@ -37,12 +53,12 @@ type FetchedData<T = any> = {
   status: FetchStatusType,
 }
 
-type AuthInfo = {
+type AuthoarizationInfo  = {
   id: 1,
   email: string,
   name: string,
   avatarUrl: string,
-  token: string,
+  token: Token,
 }
 
 type State = {
@@ -55,11 +71,12 @@ type State = {
   filter: string,
   authorization: {
     status:  ValuesOf<typeof AuthorizationStatus>,
-    info: AuthInfo | null
+    info: AuthoarizationInfo | null
   }
 }
 
 type Action = ReturnType<typeof setAuthorizationStatus>
+  | ReturnType<typeof setAuthorizationInfo>
   | ReturnType<typeof setFilms>
   | ReturnType<typeof setFilmsFetchStatus>
   | ReturnType<typeof setPromoFilm>
@@ -110,4 +127,4 @@ type ParamsWithId = {
 
 type ValuesOf<T> = T[keyof T]
 
-export type {FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
+export type {User, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};

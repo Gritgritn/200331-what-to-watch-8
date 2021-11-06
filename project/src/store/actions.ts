@@ -1,14 +1,14 @@
 import { ActionType, AuthorizationStatus } from '../constants';
-import { FetchStatusType, Film, ValuesOf } from '../types/types';
+import { AuthoarizationInfo, FetchStatusType, Film, ValuesOf } from '../types/types';
 
-export const setFilms = (films: Film[] | null) => ({
+const setFilms = (films: Film[] | null) => ({
   type: ActionType.SetFilms,
   payload: {
     films,
   },
 } as const);
 
-export const setFilmsFetchStatus = (status: FetchStatusType) => ({
+const setFilmsFetchStatus = (status: FetchStatusType) => ({
   type: ActionType.SetFilmsFetchStatus,
   payload: {
     status,
@@ -16,30 +16,39 @@ export const setFilmsFetchStatus = (status: FetchStatusType) => ({
 } as const);
 
 
-export const setPromoFilm = (promoFilm: Film | null) => ({
+const setPromoFilm = (promoFilm: Film | null) => ({
   type: ActionType.SetPromoFilm,
   payload: {
     promoFilm,
   },
 } as const);
 
-export const setPromoFetchStatus = (status: FetchStatusType) => ({
+const setPromoFetchStatus = (status: FetchStatusType) => ({
   type: ActionType.SetPromoFilmFetchStatus,
   payload: {
     status,
   },
 } as const);
 
-export const setAuthorizationStatus = (authorizationStatus: ValuesOf<typeof AuthorizationStatus>) => ({
+const setAuthorizationStatus = (status: ValuesOf<typeof AuthorizationStatus>) => ({
   type: ActionType.SetAuthorizationStatus,
   payload: {
-    authorizationStatus,
+    status,
   },
 } as const);
 
-export const setFilter = (filter: string) => ({
+const setAuthorizationInfo = (info: AuthoarizationInfo | null) => ({
+  type: ActionType.SetAuthorizationInfo,
+  payload: {
+    info,
+  },
+} as const);
+
+const setFilter = (filter: string) => ({
   type: ActionType.SetFilter,
   payload: {
     filter,
   },
 } as const);
+
+export { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

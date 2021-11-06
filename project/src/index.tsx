@@ -9,6 +9,7 @@ import { reducer } from './store/reducer';
 import { AuthorizationStatus } from './constants';
 import { createAPI } from './services/api';
 import { setAuthorizationStatus } from './store/actions';
+import { Toaster } from 'react-hot-toast';
 
 const api = createAPI(() => {
   store.dispatch(setAuthorizationStatus(AuthorizationStatus.NotAuth));
@@ -25,6 +26,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
+      <Toaster position="top-right" />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

@@ -1,4 +1,29 @@
-import type { Film } from '../types/types';
+import type { Film, User } from '../types/types';
+import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH } from '../constants';
+
+const validateFormData = ({email, password}: User): string => {
+  if (!email) {
+    return 'E-mail is requred';
+  }
+
+  if (!EMAIL_REGEX.test(email.toLowerCase())) {
+    return 'E-mail is invalid';
+  }
+
+  if (!password) {
+    return 'Password is required';
+  }
+
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return `Password must have at least ${MIN_PASSWORD_LENGTH} symbols`;
+  }
+
+  if (password.includes(EMPTY_SPACE)) {
+    return 'Password can not containt empty spaces';
+  }
+
+  return '';
+};
 
 const getRandomInteger = (a = 0, b = 1): number => {
   const lower = Math.ceil(Math.min(a, b));
@@ -40,4 +65,4 @@ const getSimilarFilms = (films: Film[], id: number) => {
 
 const getFavoriteFilms = (films: Film[]) => films.filter((film) => film.isFavorite);
 
-export {getSimilarFilms, getFavoriteFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+export {validateFormData, getSimilarFilms, getFavoriteFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};

@@ -50,10 +50,9 @@ const CustomRouteType = {
 } as const;
 
 const ActionType = {
-  SetFilter: 'filter/setValue',
-  SetAuthorizationStatus: 'authorizationStatus/setValue',
-  SetLoginStatus: 'authorizationStatus/setAuthStatus',
-  SetLogoutStatus: 'authorizationStatus/setNotAuthStatus',
+  SetFilter: 'filter/setFilter',
+  SetAuthorizationStatus: 'authorization/setStatus',
+  SetAuthorizationInfo: 'authorization/setInfo',
   SetFilms: 'films/setData',
   SetFilmsFetchStatus: 'films/setFetchStatus',
   SetPromoFilm: 'promoFilm/setData',
@@ -88,4 +87,12 @@ const FetchStatus = {
   Failed: 'FAILED',
 } as const;
 
-export {APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+const AUTH_TOKEN_KEY_NAME = 'wtw-token';
+
+const MIN_PASSWORD_LENGTH = 2;
+
+const EMPTY_SPACE = ' ';
+
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export {AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
