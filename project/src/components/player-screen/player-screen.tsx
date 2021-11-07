@@ -1,5 +1,6 @@
-import { useHistory, useParams } from 'react-router-dom';
-import type { ParamsWithId, Film, State, ThunkAppDispatch } from '../../types/types';
+import { useHistory } from 'react-router-dom';
+import { useIdParam } from '../../hooks/useIdParams';
+import type { Film, State, ThunkAppDispatch } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
 import { connect, ConnectedProps } from 'react-redux';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
@@ -23,12 +24,16 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
-  const { id } = useParams() as ParamsWithId;
+  const id = useIdParam();
 
   const history = useHistory();
 
   useEffect(() => {
-    fetchCurrentFilm(Number(id));
+    if (fetchedFilm.data?.id === id) {
+      return;
+    }
+
+    fetchCurrentFilm(id);
   }, [id]);
 
   if (isFetchNotReady(fetchedFilm)) {

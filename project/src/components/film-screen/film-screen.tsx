@@ -1,7 +1,7 @@
 import { connect, ConnectedProps } from 'react-redux';
 import PageFooter from '../page-footer/page-footer';
-import { useParams } from 'react-router-dom';
-import type { Comment, Film, ParamsWithId, State, ThunkAppDispatch } from '../../types/types';
+import { useIdParam } from '../../hooks/useIdParams';
+import type { Comment, Film, State, ThunkAppDispatch } from '../../types/types';
 import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
@@ -36,13 +36,16 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function FilmScreen({fetchedFilm, fetchedComments, fetchedSimilarFilms, fetchCurrentFilm, fetchCurrentComments, fetchSimilarFilms}: PropsFromRedux): JSX.Element {
-
-  const { id } = useParams() as ParamsWithId;
+  const id = useIdParam();
 
   useEffect(() => {
-    fetchCurrentFilm(Number(id));
-    fetchCurrentComments(Number(id));
-    fetchSimilarFilms(Number(id));
+    if (fetchedFilm.data?.id === id) {
+      return;
+    }
+
+    fetchCurrentFilm(id);
+    fetchCurrentComments(id);
+    fetchSimilarFilms(id);
   }, [id]);
 
   if (isFetchNotReady(fetchedFilm) || isFetchNotReady(fetchedComments) || isFetchNotReady(fetchedSimilarFilms)) {
