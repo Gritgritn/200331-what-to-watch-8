@@ -6,7 +6,7 @@ import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
 import PageContent from '../page-content/page-content';
-import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useEffect } from 'react';
@@ -39,13 +39,23 @@ function FilmScreen({fetchedFilm, fetchedComments, fetchedSimilarFilms, fetchCur
   const id = useIdParam();
 
   useEffect(() => {
-    if (fetchedFilm.data?.id === id) {
+    if (fetchedFilm.data?.id !== id) {
+      fetchCurrentFilm(id);
+      fetchCurrentComments(id);
+      fetchSimilarFilms(id);
       return;
     }
+    if (isFetchIdle(fetchedFilm)) {
+      fetchCurrentFilm(id);
+    }
 
-    fetchCurrentFilm(id);
-    fetchCurrentComments(id);
-    fetchSimilarFilms(id);
+    if (isFetchIdle(fetchedComments)) {
+      fetchCurrentComments(id);
+    }
+
+    if (isFetchIdle(fetchedSimilarFilms)) {
+      fetchSimilarFilms(id);
+    }
   }, [id]);
 
   if (isFetchNotReady(fetchedFilm) || isFetchNotReady(fetchedComments) || isFetchNotReady(fetchedSimilarFilms)) {

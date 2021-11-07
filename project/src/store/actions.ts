@@ -114,4 +114,11 @@ const setSimilarFilmsFetchStatus = (status: FetchStatusType) => ({
   },
 } as const);
 
-export { setSimilarFilmsFetchStatus, setSimilarFilms, setCurrentFilm, setCurrentFilmFetchStatus, setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };
+const setNewCommentFetchStatus = (status: FetchStatusType) => ({
+  type: ActionType.SetNewCommentFetchStatus,
+  payload: {
+    status,
+  },
+} as const);
+
+export { setNewCommentFetchStatus, setSimilarFilmsFetchStatus, setSimilarFilms, setCurrentFilm, setCurrentFilmFetchStatus, setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

@@ -17,7 +17,8 @@ import {
   setCurrentFilm,
   setCurrentFilmFetchStatus,
   setSimilarFilms,
-  setSimilarFilmsFetchStatus
+  setSimilarFilmsFetchStatus,
+  setNewCommentFetchStatus
 } from '../store/actions';
 
 type User = {
@@ -75,6 +76,9 @@ type State = {
   promoFilm: FetchedData<Film>,
   currentFilm: FetchedData<Film>,
   currentComments: FetchedData<Comment[]>,
+  newComment: {
+    status: FetchStatusType,
+  },
   similarFilms: FetchedData<Film[]>,
   favoriteFilms: FetchedData<Film[]>,
   filter: string,
@@ -99,6 +103,7 @@ type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setPromoFilm>
   | ReturnType<typeof setPromoFetchStatus>
   | ReturnType<typeof setFilter>
+  | ReturnType<typeof setNewCommentFetchStatus>
   | ReturnType<typeof redirectToRoute>;
 
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
@@ -125,12 +130,12 @@ type Film = {
   isFavorite: boolean,
 }
 
-type CommentCreatePayload = {
+type CommentPost  = {
   rating: number,
   comment: string,
 }
 
-type Comment = CommentCreatePayload & {
+type Comment = CommentPost  & {
   id: number,
   user: {
     id: number,
@@ -145,4 +150,4 @@ type ParamsWithId = {
 
 type ValuesOf<T> = T[keyof T]
 
-export type { CommentCreatePayload, User, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
+export type { CommentPost , User, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};

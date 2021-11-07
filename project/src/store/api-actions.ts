@@ -1,9 +1,27 @@
 import { APIRoute, AppRoute, AuthorizationStatus, FetchStatus } from '../constants';
 import { adaptAuthorizationInfoToClient, adaptFilmToClient } from '../services/adapters';
-import { Comment, ServerAuthInfo, ServerFilm, ThunkActionResult, User } from '../types/types';
-import { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationInfo, setAuthorizationStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, redirectToRoute, setCurrentCommentsFetchStatus, setCurrentComments, setCurrentFilmFetchStatus, setCurrentFilm, setSimilarFilmsFetchStatus, setSimilarFilms } from './actions';
+import { CommentPost, Comment, ServerAuthInfo, ServerFilm, ThunkActionResult, User } from '../types/types';
+import { setNewCommentFetchStatus, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationInfo, setAuthorizationStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, redirectToRoute, setCurrentCommentsFetchStatus, setCurrentComments, setCurrentFilmFetchStatus, setCurrentFilm, setSimilarFilmsFetchStatus, setSimilarFilms } from './actions';
 import toast from 'react-hot-toast';
 import { dropToken, saveToken } from '../services/token';
+
+const postComment = (filmId: number, formData: CommentPost): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    dispatch(setNewCommentFetchStatus(FetchStatus.Loading));
+
+    try {
+      const { data: comments } = await api.post<Comment[]>(APIRoute.Comments(filmId), formData);
+
+      dispatch(setCurrentComments(comments));
+      dispatch(setNewCommentFetchStatus(FetchStatus.Succeeded));
+      dispatch(setCurrentCommentsFetchStatus(FetchStatus.Succeeded));
+      dispatch(redirectToRoute(AppRoute.Film(filmId)));
+
+    } catch (error) {
+      toast.error('Failed to add review');
+      dispatch(setNewCommentFetchStatus(FetchStatus.Failed));
+    }
+  };
 
 const getSimilarFilms = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -147,4 +165,4 @@ const getСurrentComments = (filmId: number): ThunkActionResult =>
     }
   };
 
-export { getSimilarFilms, getСurrentFilm, getСurrentComments, getFavoriteFilms, deleteLogout, postLogin, getLogin, getPromoFilm, getFilms };
+export { postComment, getSimilarFilms, getСurrentFilm, getСurrentComments, getFavoriteFilms, deleteLogout, postLogin, getLogin, getPromoFilm, getFilms };

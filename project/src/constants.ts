@@ -65,6 +65,7 @@ const ActionType = {
   SetCurrentFilmFetchStatus: 'currentFilm/setFetchStatus',
   SetCurrentComments: 'currentComments/setData',
   SetCurrentCommentsFetchStatus: 'currentComments/setFetchStatus',
+  SetNewCommentFetchStatus: 'newComment/setFetchStatus',
   Redirect: 'app/redirect',
 } as const;
 
@@ -104,4 +105,14 @@ const EMPTY_SPACE = ' ';
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export {AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+const Rating = {
+  MinValue: 1,
+  MaxValue: 10,
+} as const;
+
+const ReviewContent = {
+  MinLength: 50,
+  MaxLength: 400,
+} as const;
+
+export { Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
