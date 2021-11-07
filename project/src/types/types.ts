@@ -12,7 +12,9 @@ import {
   setFavoriteFilms,
   setFavoriteFilmsFetchStatus,
   resetFavoriteFilms,
-  redirectToRoute
+  redirectToRoute,
+  setCurrentComments,
+  setCurrentCommentsFetchStatus
 } from '../store/actions';
 
 type User = {
@@ -84,6 +86,8 @@ type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setFilms>
   | ReturnType<typeof setFilmsFetchStatus>
   | ReturnType<typeof setFavoriteFilms>
+  | ReturnType<typeof setCurrentComments>
+  | ReturnType<typeof setCurrentCommentsFetchStatus>
   | ReturnType<typeof setFavoriteFilmsFetchStatus>
   | ReturnType<typeof resetFavoriteFilms>
   | ReturnType<typeof setPromoFilm>
@@ -135,4 +139,4 @@ type ParamsWithId = {
 
 type ValuesOf<T> = T[keyof T]
 
-export type {User, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
+export type { CommentCreatePayload, User, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};

@@ -1,5 +1,5 @@
 import { ActionType, AuthorizationStatus } from '../constants';
-import { AuthoarizationInfo, FetchStatusType, Film, ValuesOf } from '../types/types';
+import { Comment, AuthoarizationInfo, FetchStatusType, Film, ValuesOf } from '../types/types';
 
 const setFilms = (films: Film[] | null) => ({
   type: ActionType.SetFilms,
@@ -76,4 +76,18 @@ const redirectToRoute = (route: string) => ({
   },
 } as const);
 
-export { redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, resetFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };
+const setCurrentComments = (currentComments: Comment[] | null) => ({
+  type: ActionType.SetCurrentComments,
+  payload: {
+    currentComments,
+  },
+} as const);
+
+const setCurrentCommentsFetchStatus = (status: FetchStatusType) => ({
+  type: ActionType.SetCurrentCommentsFetchStatus,
+  payload: {
+    status,
+  },
+} as const);
+
+export { setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, resetFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

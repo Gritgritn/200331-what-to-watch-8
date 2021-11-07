@@ -60,6 +60,8 @@ const ActionType = {
   SetFavoriteFilms: 'favoriteFilms/setData',
   SetFavoriteFilmsFetchStatus: 'favoriteFilms/setFetchStatus',
   ResetFavoriteFilms: 'favoriteFilms/reset',
+  SetCurrentComments: 'currentComments/setData',
+  SetCurrentCommentsFetchStatus: 'currentComments/setFetchStatus',
   Redirect: 'app/redirect',
 } as const;
 
