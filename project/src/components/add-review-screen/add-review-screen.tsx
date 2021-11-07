@@ -6,36 +6,46 @@ import UserBlock from '../user-block/user-block';
 import AddReviewForm from '../add-review-form/add-review-form';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import {FilmCardBackgroundSize} from '../../constants';
-import type { Film, ParamsWithId, State } from '../../types/types';
+import type { Film, ParamsWithId, State, ThunkAppDispatch } from '../../types/types';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
-import { getFilmById } from '../../utils/common';
+import { useEffect } from 'react';
+import { getСurrentFilm } from '../../store/api-actions';
 import { connect, ConnectedProps } from 'react-redux';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-const mapStateToProps = ({films}: State) => ({
-  fetchedFilms: films,
+const mapStateToProps = ({currentFilm}: State) => ({
+  fetchedFilm: currentFilm,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchCurrentFilm(id: number) {
+    dispatch(getСurrentFilm(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function AddReviewScreen({fetchedFilms}: PropsFromRedux): JSX.Element {
+function AddReviewScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
   const { id } = useParams() as ParamsWithId;
 
-  if (isFetchNotReady(fetchedFilms)) {
+  useEffect(() => {
+    fetchCurrentFilm(Number(id));
+  }, [id]);
+
+  if (isFetchNotReady(fetchedFilm)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(fetchedFilms)) {
+  if (isFetchError(fetchedFilm)) {
     return <NotFoundScreen />;
   }
 
-  const films = fetchedFilms.data as Film[];
-  const currentFilm = getFilmById(films, Number(id));
+  const currentFilm = fetchedFilm.data as Film;
   return (
     <section className="film-card film-card--full" style={{backgroundColor: currentFilm.backgroundColor}}>
       <div className="film-card__header">

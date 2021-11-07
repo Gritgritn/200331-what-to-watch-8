@@ -65,10 +65,6 @@ const setFavoriteFilms = (favoriteFilms: Film[] | null) => ({
   },
 } as const);
 
-const resetFavoriteFilms = () => ({
-  type: ActionType.ResetFavoriteFilms,
-} as const);
-
 const redirectToRoute = (route: string) => ({
   type: ActionType.Redirect,
   payload: {
@@ -90,4 +86,18 @@ const setCurrentCommentsFetchStatus = (status: FetchStatusType) => ({
   },
 } as const);
 
-export { setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, resetFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };
+const setCurrentFilm = (currentFilm: Film | null) => ({
+  type: ActionType.SetCurrentFilm,
+  payload: {
+    currentFilm,
+  },
+} as const);
+
+const setCurrentFilmFetchStatus = (status: FetchStatusType) => ({
+  type: ActionType.SetCurrentFilmFetchStatus,
+  payload: {
+    status,
+  },
+} as const);
+
+export { setCurrentFilm, setCurrentFilmFetchStatus, setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

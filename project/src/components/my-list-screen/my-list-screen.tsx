@@ -8,9 +8,8 @@ import Catalog from '../catalog/catalog';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
 import { getFavoriteFilms } from '../../store/api-actions';
-import { resetFavoriteFilms } from '../../store/actions';
 import { connect, ConnectedProps } from 'react-redux';
-import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
+import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading/loading';
 
@@ -22,24 +21,16 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   fetchFavoriteFilms() {
     dispatch(getFavoriteFilms());
   },
-  clearFavoriteFilms() {
-    dispatch(resetFavoriteFilms());
-  },
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function MyListScreen({fetchedFavoriteFilms, fetchFavoriteFilms, clearFavoriteFilms}: PropsFromRedux): JSX.Element {
+function MyListScreen({fetchedFavoriteFilms, fetchFavoriteFilms}: PropsFromRedux): JSX.Element {
 
   useEffect(() => {
-    if (isFetchIdle(fetchedFavoriteFilms)) {
-      fetchFavoriteFilms();
-    }
-    return () => {
-      clearFavoriteFilms();
-    };
+    fetchFavoriteFilms();
   }, []);
 
   if (isFetchNotReady(fetchedFavoriteFilms)) {

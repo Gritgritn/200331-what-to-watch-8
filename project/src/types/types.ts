@@ -11,10 +11,11 @@ import {
   setAuthorizationInfo,
   setFavoriteFilms,
   setFavoriteFilmsFetchStatus,
-  resetFavoriteFilms,
   redirectToRoute,
   setCurrentComments,
-  setCurrentCommentsFetchStatus
+  setCurrentCommentsFetchStatus,
+  setCurrentFilm,
+  setCurrentFilmFetchStatus
 } from '../store/actions';
 
 type User = {
@@ -89,7 +90,8 @@ type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setCurrentComments>
   | ReturnType<typeof setCurrentCommentsFetchStatus>
   | ReturnType<typeof setFavoriteFilmsFetchStatus>
-  | ReturnType<typeof resetFavoriteFilms>
+  | ReturnType<typeof setCurrentFilm>
+  | ReturnType<typeof setCurrentFilmFetchStatus>
   | ReturnType<typeof setPromoFilm>
   | ReturnType<typeof setPromoFetchStatus>
   | ReturnType<typeof setFilter>

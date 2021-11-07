@@ -1,30 +1,41 @@
 import { useHistory, useParams } from 'react-router-dom';
-import type { ParamsWithId, Film, State } from '../../types/types';
+import type { ParamsWithId, Film, State, ThunkAppDispatch } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
-import { getFilmById } from '../../utils/common';
 import { connect, ConnectedProps } from 'react-redux';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import { useEffect } from 'react';
+import { getСurrentFilm } from '../../store/api-actions';
 
-const mapStateToProps = ({films, currentComments}: State) => ({
-  fetchedFilms: films,
-  fetchedComments: currentComments,
+const mapStateToProps = ({currentFilm}: State) => ({
+  fetchedFilm: currentFilm,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchCurrentFilm(id: number) {
+    dispatch(getСurrentFilm(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function PlayerScreen({fetchedFilms}: PropsFromRedux): JSX.Element {
+function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
   const { id } = useParams() as ParamsWithId;
 
   const history = useHistory();
 
-  if (isFetchNotReady(fetchedFilms)) {
+  useEffect(() => {
+    fetchCurrentFilm(Number(id));
+  }, [id]);
+
+  if (isFetchNotReady(fetchedFilm)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(fetchedFilms)) {
+  if (isFetchError(fetchedFilm)) {
     return <NotFoundScreen />;
   }
 
@@ -32,8 +43,7 @@ function PlayerScreen({fetchedFilms}: PropsFromRedux): JSX.Element {
     history.goBack();
   };
 
-  const films = fetchedFilms.data as Film[];
-  const currentFilm = getFilmById(films, Number(id));
+  const currentFilm = fetchedFilm.data as Film;
 
   const progress = Math.random();
   const playerProgress = Number((progress * 100).toFixed(2));
