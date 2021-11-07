@@ -1,31 +1,59 @@
-import { useHistory, useParams } from 'react-router-dom';
-import type { ParamsWithId, Film } from '../../types/types';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../constants';
+import { useIdParam } from '../../hooks/useIdParams';
+import type { Film, State, ThunkAppDispatch } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
-import { getFilmById } from '../../utils/common';
+import { connect, ConnectedProps } from 'react-redux';
+import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import LoadingScreen from '../loading/loading';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
+import { useEffect } from 'react';
+import { getСurrentFilm } from '../../store/api-actions';
 
-type PlayerScreenProps = {
-  films: Film[],
-}
+const mapStateToProps = ({currentFilm}: State) => ({
+  fetchedFilm: currentFilm,
+});
 
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  fetchCurrentFilm(id: number) {
+    dispatch(getСurrentFilm(id));
+  },
+});
 
-function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
-  const { id } = useParams() as ParamsWithId;
-  const film = getFilmById(films, Number(id));
-  const history = useHistory();
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-  const handleExitButtonClick = () => {
-    history.goBack();
-  };
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
+  const id = useIdParam();
+
+  useEffect(() => {
+    if (fetchedFilm.data?.id === id) {
+      return;
+    }
+
+    fetchCurrentFilm(id);
+  }, [id]);
+
+  if (isFetchNotReady(fetchedFilm)) {
+    return <LoadingScreen />;
+  }
+
+  if (isFetchError(fetchedFilm)) {
+    return <NotFoundScreen />;
+  }
+
+  const currentFilm = fetchedFilm.data as Film;
 
   const progress = Math.random();
   const playerProgress = Number((progress * 100).toFixed(2));
-  const timeElapsed = film.runTime * (1 - progress);
+  const timeElapsed = currentFilm.runTime * (1 - progress);
 
   return (
     <div className="player">
-      <video src={film.videoLink} className="player__video" poster={film.posterImage}></video>
+      <video src={currentFilm.videoLink} className="player__video" poster={currentFilm.previewImage}></video>
 
-      <button type="button" className="player__exit" onClick={handleExitButtonClick}>Exit</button>
+      <Link to={AppRoute.Film(id)} className="player__exit" style={{textDecoration: 'none'}}>Exit</Link>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -35,7 +63,6 @@ function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
           </div>
           <div className="player__time-value">{formatElapsedTime(timeElapsed)}</div>
         </div>
-
         <div className="player__controls-row">
           <button type="button" className="player__play">
             <svg viewBox="0 0 19 19" width="19" height="19">
@@ -43,7 +70,7 @@ function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">{film.name}</div>
+          <div className="player__name">{currentFilm.name}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">
@@ -57,5 +84,5 @@ function PlayerScreen({films}: PlayerScreenProps): JSX.Element {
   );
 }
 
-export default PlayerScreen;
-export type {PlayerScreenProps};
+export { PlayerScreen };
+export default connector(PlayerScreen);
