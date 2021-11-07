@@ -118,6 +118,24 @@ const reducer = (state: State = initialState, action: Action): State => {
         },
       };
     }
+    case ActionType.SetSimilarFilms: {
+      return {
+        ...state,
+        similarFilms: {
+          ...state.similarFilms,
+          data: action.payload.similarFilms,
+        },
+      };
+    }
+    case ActionType.SetSimilarFilmsFetchStatus: {
+      return {
+        ...state,
+        similarFilms: {
+          ...state.similarFilms,
+          status: action.payload.status,
+        },
+      };
+    }
     default: {
       return state;
     }

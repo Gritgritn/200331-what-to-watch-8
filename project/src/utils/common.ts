@@ -1,4 +1,4 @@
-import type { Film, User } from '../types/types';
+import type { User } from '../types/types';
 import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH } from '../constants';
 
 const validateLoginFormData = ({email, password}: User): string => {
@@ -48,19 +48,5 @@ const isAllCasesChecked = (argument: never): never => {
   throw new Error('Not all cases was checked');
 };
 
-const getFilmById = (films: Film[], id: number) => {
-  const foundFilm = films.find((film) => film.id === id);
 
-  if (!foundFilm) {
-    throw new Error(`Film with id=${id} does not exist`);
-  }
-
-  return foundFilm;
-};
-
-const getSimilarFilms = (films: Film[], id: number) => {
-  const referenceFilm = getFilmById(films, id);
-  return films.filter((film) => film.id !== id && film.genre === referenceFilm.genre);
-};
-
-export {validateLoginFormData, getSimilarFilms, getFilmById, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+export {validateLoginFormData, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};

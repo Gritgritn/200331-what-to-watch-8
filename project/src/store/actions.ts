@@ -58,10 +58,10 @@ const setFavoriteFilmsFetchStatus = (status: FetchStatusType) => ({
   },
 } as const);
 
-const setFavoriteFilms = (favoriteFilms: Film[] | null) => ({
-  type: ActionType.SetFavoriteFilms,
+const setSimilarFilms = (similarFilms: Film[] | null) => ({
+  type: ActionType.SetSimilarFilms,
   payload: {
-    favoriteFilms,
+    similarFilms,
   },
 } as const);
 
@@ -100,4 +100,18 @@ const setCurrentFilmFetchStatus = (status: FetchStatusType) => ({
   },
 } as const);
 
-export { setCurrentFilm, setCurrentFilmFetchStatus, setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };
+const setFavoriteFilms = (favoriteFilms: Film[] | null) => ({
+  type: ActionType.SetFavoriteFilms,
+  payload: {
+    favoriteFilms,
+  },
+} as const);
+
+const setSimilarFilmsFetchStatus = (status: FetchStatusType) => ({
+  type: ActionType.SetSimilarFilmsFetchStatus,
+  payload: {
+    status,
+  },
+} as const);
+
+export { setSimilarFilmsFetchStatus, setSimilarFilms, setCurrentFilm, setCurrentFilmFetchStatus, setCurrentComments, setCurrentCommentsFetchStatus, redirectToRoute, setFavoriteFilmsFetchStatus, setFavoriteFilms, setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationStatus, setAuthorizationInfo, setFilter };

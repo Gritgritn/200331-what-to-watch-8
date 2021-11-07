@@ -1,9 +1,25 @@
 import { APIRoute, AppRoute, AuthorizationStatus, FetchStatus } from '../constants';
 import { adaptAuthorizationInfoToClient, adaptFilmToClient } from '../services/adapters';
 import { Comment, ServerAuthInfo, ServerFilm, ThunkActionResult, User } from '../types/types';
-import { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationInfo, setAuthorizationStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, redirectToRoute, setCurrentCommentsFetchStatus, setCurrentComments, setCurrentFilmFetchStatus, setCurrentFilm } from './actions';
+import { setFilms, setFilmsFetchStatus, setPromoFilm, setPromoFetchStatus, setAuthorizationInfo, setAuthorizationStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, redirectToRoute, setCurrentCommentsFetchStatus, setCurrentComments, setCurrentFilmFetchStatus, setCurrentFilm, setSimilarFilmsFetchStatus, setSimilarFilms } from './actions';
 import toast from 'react-hot-toast';
 import { dropToken, saveToken } from '../services/token';
+
+const getSimilarFilms = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    dispatch(setSimilarFilmsFetchStatus(FetchStatus.Loading));
+
+    try {
+      const { data: serverFilms } = await api.get<ServerFilm[]>(APIRoute.SimilarFilms(id));
+      const similarFilms = serverFilms.map((serverFilm) => adaptFilmToClient(serverFilm));
+
+      dispatch(setSimilarFilms(similarFilms));
+      dispatch(setSimilarFilmsFetchStatus(FetchStatus.Succeeded));
+
+    } catch (error) {
+      dispatch(setSimilarFilmsFetchStatus(FetchStatus.Failed));
+    }
+  };
 
 const getСurrentFilm = (filmId: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -131,4 +147,4 @@ const getСurrentComments = (filmId: number): ThunkActionResult =>
     }
   };
 
-export { getСurrentFilm, getСurrentComments, getFavoriteFilms, deleteLogout, postLogin, getLogin, getPromoFilm, getFilms };
+export { getSimilarFilms, getСurrentFilm, getСurrentComments, getFavoriteFilms, deleteLogout, postLogin, getLogin, getPromoFilm, getFilms };
