@@ -1,5 +1,15 @@
 import { generatePath } from 'react-router';
 
+const MAX_GENRES_COUNT = 9;
+
+const ALL_GENRES = 'All genres';
+
+const CATALOG_INITIAL_PAGE = 1;
+
+const CATALOG_PAGE_SIZE = 8;
+
+const MAX_SIMILAR_FILMS_COUNT = 4;
+
 const AppRoute = {
   Root: () => '/',
   Login: () => '/login',
@@ -68,16 +78,6 @@ const ActionType = {
   SetNewCommentFetchStatus: 'newComment/setFetchStatus',
   Redirect: 'app/redirect',
 } as const;
-
-const MAX_GENRES_COUNT = 9;
-
-const ALL_GENRES = 'All genres';
-
-const CATALOG_INITIAL_PAGE = 1;
-
-const CATALOG_PAGE_SIZE = 8;
-
-const MAX_SIMILAR_FILMS_COUNT = 4;
 
 const APIRoute = {
   Films: () => '/films',

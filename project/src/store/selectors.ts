@@ -6,7 +6,7 @@ const getFilms = ({ films }: State) => films.data;
 
 const getFiter = ({ filter }: State) => filter;
 
-export const getGenres = createSelector(
+const getGenres = createSelector(
   [ getFilms ],
   (films) => {
     if (!films) {
@@ -19,7 +19,7 @@ export const getGenres = createSelector(
   },
 );
 
-export const getFilteredFilms = createSelector(
+const getFilteredFilms = createSelector(
   [ getFilms, getFiter ],
   (films, filter) => {
     if (!films) {
@@ -32,3 +32,5 @@ export const getFilteredFilms = createSelector(
     return films.filter((film) => film.genre === filter);
   },
 );
+
+export { getGenres, getFilteredFilms };
