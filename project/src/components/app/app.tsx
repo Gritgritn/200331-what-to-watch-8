@@ -10,12 +10,9 @@ import type { State, ThunkAppDispatch } from '../../types/types';
 import { connect, ConnectedProps } from 'react-redux';
 import { AppRoute, CustomRouteType, AuthorizationStatus} from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
-import { getFilms, getLogin } from '../../store/api-actions';
+import { getLogin } from '../../store/authorization/authorization-api-actions';
 import LoadingScreen from '../loading/loading';
 import { useEffect } from 'react';
-import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
-import InfoScreen from '../info-screen/info-screen';
-import PageTitle from '../title/title';
 import browserHistory from '../../browser-history';
 
 const mapStateToProps = ({films, authorization}: State) => ({
@@ -24,9 +21,6 @@ const mapStateToProps = ({films, authorization}: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchFilms() {
-    dispatch(getFilms());
-  },
   checkAuthorization() {
     dispatch(getLogin());
   },
@@ -36,30 +30,14 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-function App({ fetchedFilms, authorizationStatus, checkAuthorization, fetchFilms }: PropsFromRedux): JSX.Element {
+function App({ authorizationStatus, checkAuthorization }: PropsFromRedux): JSX.Element {
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Unknown) {
       checkAuthorization();
     }
-    if (isFetchIdle(fetchedFilms)) {
-      // Когда все данные будут загружаться с сервера
-      // данная загрузка возможна будет перенесена в MainScreen
-      // т.к. список всех фильмов нужен только там
-      fetchFilms();
-    }
   }, []);
-  if (isFetchNotReady(fetchedFilms) || authorizationStatus === AuthorizationStatus.Unknown) {
+  if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <LoadingScreen />;
-  }
-  if (isFetchError(fetchedFilms)) {
-    return (
-      <InfoScreen>
-        <PageTitle >Error screen</PageTitle>
-        <p>An error has occured</p>
-        <p>The apllication is unavailable now</p>
-        <p>Please try later</p>
-      </InfoScreen>
-    );
   }
 
   return (

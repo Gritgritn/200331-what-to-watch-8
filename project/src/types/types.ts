@@ -1,25 +1,14 @@
 import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { AuthorizationStatus, FetchStatus } from '../constants';
-import {
-  setAuthorizationStatus,
-  setFilms,
-  setFilmsFetchStatus,
-  setFilter,
-  setPromoFilm,
-  setPromoFetchStatus,
-  setAuthorizationInfo,
-  setFavoriteFilms,
-  setFavoriteFilmsFetchStatus,
-  redirectToRoute,
-  setCurrentComments,
-  setCurrentCommentsFetchStatus,
-  setCurrentFilm,
-  setCurrentFilmFetchStatus,
-  setSimilarFilms,
-  setSimilarFilmsFetchStatus,
-  setNewCommentFetchStatus
-} from '../store/actions';
+import { FetchStatus } from '../constants';
+import { redirectToRoute } from '../store/actions';
+import { setAuthorizationStatus, setAuthorizationInfo } from '../store/authorization/authorization-actions';
+import { setCurrentComments, setCurrentCommentsFetchStatus, setNewCommentFetchStatus } from '../store/comments/comments-actions';
+import { setSimilarFilms, setSimilarFilmsFetchStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, setCurrentFilm, setCurrentFilmFetchStatus, setPromoFilm, setPromoFetchStatus, setAllFilms, setAllFilmsFetchStatus } from '../store/films/films-actions';
+import { setFilter } from '../store/filter/filter-actions';
+import { rootReducer } from '../store/root-reducer';
+
+
 
 type User = {
   email: string,
@@ -71,27 +60,12 @@ type AuthoarizationInfo  = {
   token: Token,
 }
 
-type State = {
-  films: FetchedData<Film[]>,
-  promoFilm: FetchedData<Film>,
-  currentFilm: FetchedData<Film>,
-  currentComments: FetchedData<Comment[]>,
-  newComment: {
-    status: FetchStatusType,
-  },
-  similarFilms: FetchedData<Film[]>,
-  favoriteFilms: FetchedData<Film[]>,
-  filter: string,
-  authorization: {
-    status:  ValuesOf<typeof AuthorizationStatus>,
-    info: AuthoarizationInfo | null
-  }
-}
+type State = ReturnType<typeof rootReducer>
 
 type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setAuthorizationInfo>
-  | ReturnType<typeof setFilms>
-  | ReturnType<typeof setFilmsFetchStatus>
+  | ReturnType<typeof setAllFilms>
+  | ReturnType<typeof setAllFilmsFetchStatus>
   | ReturnType<typeof setFavoriteFilms>
   | ReturnType<typeof setCurrentComments>
   | ReturnType<typeof setCurrentCommentsFetchStatus>

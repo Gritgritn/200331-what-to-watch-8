@@ -9,15 +9,15 @@ import type { Film, State, ThunkAppDispatch } from '../../types/types';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
 import { useEffect } from 'react';
-import { getСurrentFilm } from '../../store/api-actions';
+import { getСurrentFilm } from '../../store/films/films-api-actions';
 import { connect, ConnectedProps } from 'react-redux';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useIdParam } from '../../hooks/useIdParams';
 
-const mapStateToProps = ({currentFilm}: State) => ({
-  fetchedFilm: currentFilm,
+const mapStateToProps = ({ films }: State) => ({
+  fetchedFilm: films.currentFilm,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({

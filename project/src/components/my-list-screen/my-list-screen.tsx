@@ -7,14 +7,14 @@ import PageFooter from '../page-footer/page-footer';
 import Catalog from '../catalog/catalog';
 import PageTitle from '../title/title';
 import PageHeader from '../header/header';
-import { getFavoriteFilms } from '../../store/api-actions';
+import { getFavoriteFilms } from '../../store/films/films-api-actions';
 import { connect, ConnectedProps } from 'react-redux';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading/loading';
 
-const mapStateToProps = ({favoriteFilms}: State) => ({
-  fetchedFavoriteFilms: favoriteFilms,
+const mapStateToProps = ({films}: State) => ({
+  fetchedFavoriteFilms: films.favoriteFilms,
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
