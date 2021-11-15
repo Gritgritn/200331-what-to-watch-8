@@ -5,4 +5,6 @@ const getAuhorizationInfo = ({ authorization }: State): AuthoarizationInfo | nul
 
 const getAuhorizationStatus = ({ authorization }: State): ValuesOf<typeof AuthorizationStatus> => authorization.status;
 
-export { getAuhorizationInfo, getAuhorizationStatus };
+const getUserAvatar = ({ authorization }: State): string | undefined => authorization.info?.avatarUrl;
+
+export { getAuhorizationInfo, getAuhorizationStatus, getUserAvatar };

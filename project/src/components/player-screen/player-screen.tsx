@@ -1,59 +1,49 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../constants';
-import { useIdParam } from '../../hooks/useIdParams';
-import type { Film, State, ThunkAppDispatch } from '../../types/types';
 import { formatElapsedTime } from '../../utils/date';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useEffect } from 'react';
+import { useIdParam } from '../../hooks/useIdParams';
 import { getСurrentFilm } from '../../store/films/films-api-actions';
+import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
 
-const mapStateToProps = ({films}: State) => ({
-  fetchedFilm: films.currentFilm,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchCurrentFilm(id: number) {
+function PlayerScreen(): JSX.Element {
+  const filmId = useIdParam();
+  const film = useSelector(getCurrentFilmData);
+  const filmStatus = useSelector(getCurrentFilmStatus);
+  const dispatch = useDispatch();
+  const fetchCurrentFilm = (id: number) => {
     dispatch(getСurrentFilm(id));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
-  const id = useIdParam();
+  };
 
   useEffect(() => {
-    if (fetchedFilm.data?.id === id) {
+    if (film?.id === filmId) {
       return;
     }
 
-    fetchCurrentFilm(id);
-  }, [id]);
+    fetchCurrentFilm(filmId);
+  }, [filmId]);
 
-  if (isFetchNotReady(fetchedFilm)) {
+  if (isFetchNotReady(filmStatus)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(fetchedFilm)) {
+  if (isFetchError(filmStatus) || !film) {
     return <NotFoundScreen />;
   }
 
-  const currentFilm = fetchedFilm.data as Film;
-
   const progress = Math.random();
   const playerProgress = Number((progress * 100).toFixed(2));
-  const timeElapsed = currentFilm.runTime * (1 - progress);
+  const timeElapsed = film.runTime * (1 - progress);
 
   return (
     <div className="player">
-      <video src={currentFilm.videoLink} className="player__video" poster={currentFilm.previewImage}></video>
+      <video src={film.videoLink} className="player__video" poster={film.previewImage}></video>
 
-      <Link to={AppRoute.Film(id)} className="player__exit" style={{textDecoration: 'none'}}>Exit</Link>
+      <Link to={AppRoute.Film(filmId)} className="player__exit" style={{textDecoration: 'none'}}>Exit</Link>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -70,7 +60,7 @@ function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Elem
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">{currentFilm.name}</div>
+          <div className="player__name">{film.name}</div>
 
           <button type="button" className="player__full-screen">
             <svg viewBox="0 0 27 27" width="27" height="27">
@@ -84,5 +74,4 @@ function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Elem
   );
 }
 
-export { PlayerScreen };
-export default connector(PlayerScreen);
+export default PlayerScreen;
