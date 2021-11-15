@@ -11,56 +11,56 @@ import { rootReducer } from '../store/root-reducer';
 
 
 type User = {
-  email: string,
-  password: string,
-}
+  email: string;
+  password: string;
+};
 
 type ServerAuthInfo = {
-  id: 1,
-  email: string,
-  name: string,
-  'avatar_url': string,
-  token: Token,
-}
+  id: 1;
+  email: string;
+  name: string;
+  'avatar_url': string;
+  token: Token;
+};
 
 type Token = string;
 
 type ServerFilm = {
-  id: number,
-  name: string,
-  'poster_image': string,
-  'preview_image': string,
-  'background_image': string,
-  'background_color': string,
-  'video_link': string,
-  'preview_video_link': string,
-  description: string,
-  rating: number,
-  'scores_count': number,
-  director: string,
-  starring: string[],
-  'run_time': number,
-  genre: string,
-  released: number,
-  'is_favorite': boolean
-}
+  id: number;
+  name: string;
+  'poster_image': string;
+  'preview_image': string;
+  'background_image': string;
+  'background_color': string;
+  'video_link': string;
+  'preview_video_link': string;
+  description: string;
+  rating: number;
+  'scores_count': number;
+  director: string;
+  starring: string[];
+  'run_time': number;
+  genre: string;
+  released: number;
+  'is_favorite': boolean;
+};
 
 type FetchStatusType = ValuesOf<typeof FetchStatus>
 
 type FetchedData<T = any> = {
-  data: T | null,
-  status: FetchStatusType,
-}
+  data: T | null;
+  status: FetchStatusType;
+};
 
 type AuthoarizationInfo  = {
-  id: 1,
-  email: string,
-  name: string,
-  avatarUrl: string,
-  token: Token,
-}
+  id: 1;
+  email: string;
+  name: string;
+  avatarUrl: string;
+  token: Token;
+};
 
-type State = ReturnType<typeof rootReducer>
+type State = ReturnType<typeof rootReducer>;
 
 type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setAuthorizationInfo>
@@ -86,43 +86,43 @@ type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance,
 type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Action>;
 
 type Film = {
-    id: number,
-    name: string,
-    posterImage: string,
-    previewImage: string,
-    backgroundImage: string,
-    backgroundColor: string,
-    videoLink: string,
-    previewVideoLink: string,
-    description: string,
-    rating: number,
-    scoresCount: number,
-    director: string,
-    actors: string[],
-    runTime: number,
-    genre: string,
-    released: number,
-  isFavorite: boolean,
-}
+    id: number;
+    name: string;
+    posterImage: string;
+    previewImage: string;
+    backgroundImage: string;
+    backgroundColor: string;
+    videoLink: string;
+    previewVideoLink: string;
+    description: string;
+    rating: number;
+    scoresCount: number;
+    director: string;
+    actors: string[];
+    runTime: number;
+    genre: string;
+    released: number;
+  isFavorite: boolean;
+};
 
 type CommentPost  = {
-  rating: number,
-  comment: string,
-}
+  rating: number;
+  comment: string;
+};
 
 type Comment = CommentPost  & {
-  id: number,
+  id: number;
   user: {
-    id: number,
-    name: string,
+    id: number;
+    name: string;
   },
-  date: Date,
-}
+  date: Date;
+};
 
 type ParamsWithId = {
-  id: string
-}
+  id: string;
+};
 
-type ValuesOf<T> = T[keyof T]
+type ValuesOf<T> = T[keyof T];
 
 export type { CommentPost, User, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};

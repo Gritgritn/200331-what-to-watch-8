@@ -4,9 +4,7 @@ import { getToken } from './token';
 const BACKEND_URL = 'https://8.react.pages.academy/wtw';
 const REQUEST_TIMEOUT = 5000;
 
-enum HttpCode {
-  Unauthorized = 401,
-}
+const UNAUTHORIZED_HTTP_STATUS = 401;
 
 type UnauthorizedCallback = () => void;
 
@@ -22,7 +20,7 @@ const createAPI = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
     (error: AxiosError) => {
       const {response} = error;
 
-      if (response?.status === HttpCode.Unauthorized) {
+      if (response?.status === UNAUTHORIZED_HTTP_STATUS) {
         onUnauthorized();
       }
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { ChangeEvent, FocusEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { User } from '../../types/types';
+import { Login } from '../../types/types';
 import { postLogin } from '../../store/authorization/authorization-api-actions';
 import {
   getEmailValidityMessage,
@@ -10,12 +10,12 @@ import {
 import { getAuhorizationErrorMessage } from '../../store/authorization/authorization-selectors';
 import { clearAuthorizationError } from '../../store/authorization/authorization-actions';
 
-const INITIAL_FORM_STATE: User = {
+const INITIAL_FORM_DATA: Login = {
   email: '',
   password: '',
 };
 
-const INITIAL_VALUES_DIRTY = {
+const INITIAL_FORM_DIRTINESS = {
   email: false,
   password: false,
 };
@@ -26,16 +26,16 @@ type LoginFormProps = {
 
 function LoginForm({ className }: LoginFormProps): JSX.Element {
   const serverErrorMessage = useSelector(getAuhorizationErrorMessage);
-  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
-  const [isValueDirty, setValueDirty] = useState(INITIAL_VALUES_DIRTY);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [formDirtiness, setFormDirtiness] = useState(INITIAL_FORM_DIRTINESS );
   const emailValidityMessage = useMemo(
-    () => isValueDirty.email ? getEmailValidityMessage(formData.email) : '',
-    [formData.email, isValueDirty.email],
+    () => formDirtiness.email ? getEmailValidityMessage(formData.email) : '',
+    [formData.email, formDirtiness.email],
   );
 
   const passwordValidityMessage = useMemo(
-    () => isValueDirty.password ? getPasswordValidityMessage(formData.password) : '',
-    [formData.password, isValueDirty.password],
+    () => formDirtiness.password ? getPasswordValidityMessage(formData.password) : '',
+    [formData.password, formDirtiness.password],
   );
 
   const validityMessage = useMemo(
@@ -44,15 +44,15 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
   );
   const handleInputBlur = (evt: FocusEvent<HTMLInputElement>) => {
     const { name } = evt.target;
-    setValueDirty({
-      ...isValueDirty,
+    setFormDirtiness({
+      ...formDirtiness,
       [name]: true,
     });
   };
 
   const dispatch = useDispatch();
 
-  const login = (user: User) => {
+  const login = (user: Login) => {
     dispatch(postLogin(user));
   };
 
@@ -76,7 +76,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
 
   useEffect(() => {
     if (serverErrorMessage) {
-      setValueDirty(INITIAL_VALUES_DIRTY);
+      setFormDirtiness(INITIAL_FORM_DIRTINESS);
     }
   }, [serverErrorMessage]);
 
@@ -113,6 +113,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               placeholder="Email address"
               name="email"
               id="user-email"
+              value={formData.email}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
             />
@@ -134,6 +135,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               placeholder="Password"
               name="password"
               id="user-password"
+              value={formData.password}
               onChange={handleInputChange}
               onBlur={handleInputBlur}
             />

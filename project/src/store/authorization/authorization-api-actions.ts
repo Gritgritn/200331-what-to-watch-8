@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../../constants';
 import { adaptAuthorizationInfoToClient } from '../../services/adapters';
 import { dropToken, saveToken } from '../../services/token';
-import { ServerAuthInfo, ThunkActionResult, User } from '../../types/types';
+import { ServerAuthInfo, ThunkActionResult, Login } from '../../types/types';
 import { redirectToRoute } from '../app/app-actions';
 import { clearAuthorizationError, setAuthorizationError, setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
 
@@ -24,7 +24,7 @@ export const getLogin = (): ThunkActionResult =>
     }
   };
 
-export const postLogin = (user: User): ThunkActionResult =>
+export const postLogin = (user: Login): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       const { data: serverAuthorizationInfo } =

@@ -1,19 +1,10 @@
 import { FetchStatus } from '../constants';
-import { FetchedData, FetchStatusType } from '../types/types';
+import { FetchStatusType } from '../types/types';
 
-const isFetchIdle = (item: FetchedData | FetchStatusType): boolean => {
-  const status = typeof item === 'string' ? item : item.status;
-  return status === FetchStatus.Idle;
-};
+const isFetchIdle = (status: FetchStatusType): boolean => status === FetchStatus.Idle;
 
-const isFetchNotReady = (item: FetchedData | FetchStatusType): boolean => {
-  const status = typeof item === 'string' ? item : item.status;
-  return status === FetchStatus.Idle || status === FetchStatus.Loading;
-};
+const isFetchNotReady = (status: FetchStatusType): boolean => status === FetchStatus.Idle || status === FetchStatus.Loading;
 
-const isFetchError = (item: FetchedData | FetchStatusType): boolean => {
-  const status = typeof item === 'string' ? item : item.status;
-  return status === FetchStatus.Failed;
-};
+const isFetchError = (status: FetchStatusType): boolean => status === FetchStatus.Failed;
 
 export {isFetchError, isFetchNotReady, isFetchIdle};
