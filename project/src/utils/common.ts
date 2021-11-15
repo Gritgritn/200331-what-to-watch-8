@@ -3,7 +3,7 @@ import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH, Rating, ReviewContent } 
 
 const validateLoginFormData = ({email, password}: User): string => {
   if (!email) {
-    return 'E-mail is requred';
+    return 'E-mail is required';
   }
 
   if (!EMAIL_REGEX.test(email.toLowerCase())) {
@@ -49,7 +49,7 @@ const isAllCasesChecked = (argument: never): never => {
 };
 
 const validateReviewRating = (rating: number): boolean => {
-  if (rating >= Rating.MinValue && rating >= Rating.MaxValue) {
+  if (rating >= Rating.MinValue && rating <= Rating.MaxValue) {
     return true;
   }
 

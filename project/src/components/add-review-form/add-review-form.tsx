@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent, Fragment, useEffect } from 'react';
+import { useState, ChangeEvent, FormEvent, Fragment, useEffect, useMemo } from 'react';
 import { postComment } from '../../store/comments/comments-api-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Rating } from '../../constants';
@@ -7,9 +7,8 @@ import { useIdParam } from '../../hooks/useIdParams';
 import { isNewCommentsLoading } from '../../store/comments/comments-selectors';
 import { validateReviewContent, validateReviewRating } from '../../utils/common';
 
-type AddReviewFormProps = {
-  filmId: number;
-};
+const INITIAL_RATING = 0;
+const INITIAL_COMMENT = '';
 
 function AddReviewForm(): JSX.Element {
   const filmId = useIdParam();
@@ -25,14 +24,12 @@ function AddReviewForm(): JSX.Element {
   const createReview = (formData: CommentPost) => {
     dispatch(postComment(filmId, formData));
   };
+  const isRatingValid = useMemo(() => validateReviewRating(rating), [rating]);
+  const isReviewContentValid = useMemo(() => validateReviewContent(comment), [comment]);
 
   useEffect(() => {
-    setFormValidity(validateReviewRating(rating));
-  }, [rating]);
-
-  useEffect(() => {
-    setFormValidity(validateReviewContent(comment));
-  }, [comment]);
+    setFormValidity(isRatingValid && isReviewContentValid);
+  }, [isRatingValid, isReviewContentValid]);
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(Number(evt.currentTarget.value));

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Film } from '../../types/types';
 import { AppRoute } from '../../constants';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo } from 'react';
 import SmallFilmCardVideo from '../small-film-card-video/small-film-card-video';
 import classNames from 'classnames';
 import SmallFilmCardPreview from '../small-film-card-preview/small-film-card-preview';
@@ -65,4 +65,4 @@ function SmallFilmCard({film, className}: SmallFilmCardProps): JSX.Element {
     </article>
   );
 }
-export default SmallFilmCard;
+export default memo(SmallFilmCard);
