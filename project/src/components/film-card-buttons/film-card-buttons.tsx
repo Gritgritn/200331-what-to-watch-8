@@ -1,25 +1,17 @@
 import type { Film } from '../../types/types';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
-import { State } from '../../types/types';
+import { getAuhorizationStatus } from '../../store/authorization/authorization-selectors';
 
-const mapStateToProps = ({authorization}: State) => ({
-  authorization,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-
-type FilmCardButtonsProps = PropsFromRedux & {
+type FilmCardButtonsProps = {
   isFilmFavorite: boolean,
   withAddReview?: boolean,
   film: Film
 }
 
-function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: FilmCardButtonsProps): JSX.Element {
+function FilmCardButtons({film, isFilmFavorite, withAddReview}: FilmCardButtonsProps): JSX.Element {
+  const authorizationStatus = useSelector(getAuhorizationStatus);
 
   const handleFavoriteButtonClick = () => {
     // Обработка добавления в избранное
@@ -34,7 +26,7 @@ function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: F
         <span>Play</span>
       </Link>
       {
-        authorization.status === AuthorizationStatus.Auth && (
+        authorizationStatus  === AuthorizationStatus.Auth && (
           <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteButtonClick}>
             <svg viewBox="0 0 19 20" width="19" height="20">
               <use xlinkHref={isFilmFavorite ? '#in-list' : '#add'}></use>
@@ -44,7 +36,7 @@ function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: F
         )
       }
       {
-        withAddReview && authorization.status === AuthorizationStatus.Auth &&
+        withAddReview && authorizationStatus  === AuthorizationStatus.Auth &&
         <Link to={AppRoute.AddReview(film.id)} className="btn film-card__button" type="button">
           <span>Add review</span>
         </Link>
@@ -53,5 +45,4 @@ function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: F
   );
 }
 
-export {FilmCardButtons};
-export default connector(FilmCardButtons);
+export default FilmCardButtons;
