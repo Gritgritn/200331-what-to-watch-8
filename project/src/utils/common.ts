@@ -1,25 +1,28 @@
 import type { User } from '../types/types';
 import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH, Rating, ReviewContent } from '../constants';
 
-const validateLoginFormData = ({email, password}: User): string => {
+const getEmailValidityMessage = ( email: string ): string => {
   if (!email) {
-    return 'E-mail is required';
+    return 'E-mail is required.';
   }
 
   if (!EMAIL_REGEX.test(email.toLowerCase())) {
-    return 'E-mail is invalid';
+    return 'E-mail is invalid.';
   }
+  return '';
+};
 
+const getPasswordValidityMessage = (password: string): string => {
   if (!password) {
-    return 'Password is required';
+    return 'Password is required.';
   }
 
   if (password.length < MIN_PASSWORD_LENGTH) {
-    return `Password must have at least ${MIN_PASSWORD_LENGTH} symbols`;
+    return `Password must have at least ${MIN_PASSWORD_LENGTH} symbols.`;
   }
 
   if (password.includes(EMPTY_SPACE)) {
-    return 'Password can not containt empty spaces';
+    return 'Password can not containt empty spaces.';
   }
 
   return '';
@@ -64,4 +67,4 @@ const validateReviewContent = (content: string): boolean => {
   return false;
 };
 
-export { validateReviewRating, validateReviewContent, validateLoginFormData, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+export { validateReviewRating, validateReviewContent, getPasswordValidityMessage, getEmailValidityMessage, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};

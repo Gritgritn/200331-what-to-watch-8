@@ -4,10 +4,11 @@ import { adaptAuthorizationInfoToClient } from '../../services/adapters';
 import { dropToken, saveToken } from '../../services/token';
 import { ServerAuthInfo, ThunkActionResult, User } from '../../types/types';
 import { redirectToRoute } from '../app/app-actions';
-import { setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
+import { clearAuthorizationError, setAuthorizationError, setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
 
 export const getLogin = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
+    dispatch(clearAuthorizationError());
     try {
       const { data: serverAuthorizationInfo } =
         await api.get<ServerAuthInfo>(APIRoute.Login());
@@ -37,7 +38,11 @@ export const postLogin = (user: User): ThunkActionResult =>
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
 
     } catch (error) {
-      toast.error('Login is failed');
+      if (error instanceof Error ) {
+        dispatch(setAuthorizationError(error.message));
+      } else {
+        toast.error('Unknown error');
+      }
     }
   };
 

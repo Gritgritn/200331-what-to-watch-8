@@ -7,4 +7,6 @@ const getAuhorizationStatus = ({ authorization }: State): ValuesOf<typeof Author
 
 const getUserAvatar = ({ authorization }: State): string | undefined => authorization.info?.avatarUrl;
 
-export { getAuhorizationInfo, getAuhorizationStatus, getUserAvatar };
+const getAuhorizationErrorMessage = ({ authorization }: State): string => authorization.errorMessage;
+
+export { getAuhorizationInfo, getAuhorizationStatus, getUserAvatar, getAuhorizationErrorMessage };

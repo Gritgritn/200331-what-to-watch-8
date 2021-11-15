@@ -73,6 +73,7 @@ const ActionType = {
   SetSimilarFilmsFetchStatus: 'similarFilms/setFetchStatus',
   SetCurrentFilm: 'currentFilm/setData',
   SetCurrentFilmFetchStatus: 'currentFilm/setFetchStatus',
+  SetAuthorizationError: 'authorization/setError',
   SetCurrentComments: 'currentComments/setData',
   SetCurrentCommentsFetchStatus: 'currentComments/setFetchStatus',
   SetNewCommentFetchStatus: 'newComment/setFetchStatus',
