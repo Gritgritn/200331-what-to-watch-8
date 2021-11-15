@@ -1,41 +1,30 @@
 import { useState, ChangeEvent, FormEvent, Fragment, useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { FetchStatus, Rating } from '../../constants';
 import { postComment } from '../../store/comments/comments-api-actions';
-import { CommentPost, State, ThunkAppDispatch } from '../../types/types';
-import {
-  validateReviewContent,
-  validateReviewRating
-} from '../../utils/common';
+import { useDispatch, useSelector } from 'react-redux';
+import { Rating } from '../../constants';
+import { CommentPost } from '../../types/types';
+import { useIdParam } from '../../hooks/useIdParams';
+import { isNewCommentsLoading } from '../../store/comments/comments-selectors';
+import { validateReviewContent, validateReviewRating } from '../../utils/common';
 
 type AddReviewFormProps = {
   filmId: number;
 };
 
-const mapStateToProps = ({ comments }: State) => ({
-  isFormLoading: comments.newComment.status === FetchStatus.Loading,
-});
+function AddReviewForm(): JSX.Element {
+  const filmId = useIdParam();
 
-const mapDispatchToProps = (
-  dispatch: ThunkAppDispatch,
-  { filmId }: AddReviewFormProps,
-) => ({
-  createReview(formData: CommentPost) {
-    dispatch(postComment(filmId, formData));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function AddReviewForm({
-  isFormLoading,
-  createReview,
-}: PropsFromRedux): JSX.Element {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [isFormValid, setFormValidity] = useState(false);
+
+  const isFormLoading = useSelector(isNewCommentsLoading);
+
+  const dispatch = useDispatch();
+
+  const createReview = (formData: CommentPost) => {
+    dispatch(postComment(filmId, formData));
+  };
 
   useEffect(() => {
     setFormValidity(validateReviewRating(rating));
@@ -122,5 +111,4 @@ function AddReviewForm({
   );
 }
 
-export { AddReviewForm };
-export default connector(AddReviewForm);
+export default AddReviewForm;

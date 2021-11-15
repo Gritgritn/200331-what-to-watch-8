@@ -56,7 +56,7 @@ function AddReviewScreen(): JSX.Element {
 
         <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Small} />
       </div>
-      <AddReviewForm filmId={filmId} />
+      <AddReviewForm />
 
     </section>
   );
