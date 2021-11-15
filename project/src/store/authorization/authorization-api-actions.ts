@@ -3,7 +3,7 @@ import { APIRoute, AppRoute, AuthorizationStatus } from '../../constants';
 import { adaptAuthorizationInfoToClient } from '../../services/adapters';
 import { dropToken, saveToken } from '../../services/token';
 import { ServerAuthInfo, ThunkActionResult, User } from '../../types/types';
-import { redirectToRoute } from '../actions';
+import { redirectToRoute } from '../app/app-actions';
 import { setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
 
 export const getLogin = (): ThunkActionResult =>

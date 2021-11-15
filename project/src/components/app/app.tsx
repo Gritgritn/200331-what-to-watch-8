@@ -1,3 +1,6 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import browserHistory from '../../browser-history';
 import MainScreen from '../main-screen/main-screen';
 import { Router as BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
@@ -6,31 +9,18 @@ import LoginScreen from '../login-screen/login-screen';
 import MyListScreen from '../my-list-screen/my-list-screen';
 import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import type { State, ThunkAppDispatch } from '../../types/types';
-import { connect, ConnectedProps } from 'react-redux';
 import { AppRoute, CustomRouteType, AuthorizationStatus} from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
 import { getLogin } from '../../store/authorization/authorization-api-actions';
 import LoadingScreen from '../loading/loading';
-import { useEffect } from 'react';
-import browserHistory from '../../browser-history';
+import { getAuhorizationStatus } from '../../store/authorization/authorization-selectors';
 
-const mapStateToProps = ({films, authorization}: State) => ({
-  authorizationStatus: authorization.status,
-  fetchedFilms: films,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  checkAuthorization() {
+function App(): JSX.Element {
+  const dispatch = useDispatch();
+  const checkAuthorization = () => {
     dispatch(getLogin());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function App({ authorizationStatus, checkAuthorization }: PropsFromRedux): JSX.Element {
+  };
+  const authorizationStatus = useSelector(getAuhorizationStatus);
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Unknown) {
       checkAuthorization();
@@ -69,5 +59,4 @@ function App({ authorizationStatus, checkAuthorization }: PropsFromRedux): JSX.E
   );
 }
 
-export { App };
-export default connector(App);
+export default App;
