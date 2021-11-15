@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import browserHistory from '../../browser-history';
 import MainScreen from '../main-screen/main-screen';
 import { Router as BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -11,21 +10,11 @@ import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { AppRoute, CustomRouteType, AuthorizationStatus} from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
-import { getLogin } from '../../store/authorization/authorization-api-actions';
 import LoadingScreen from '../loading/loading';
 import { getAuhorizationStatus } from '../../store/authorization/authorization-selectors';
 
 function App(): JSX.Element {
-  const dispatch = useDispatch();
-  const checkAuthorization = () => {
-    dispatch(getLogin());
-  };
   const authorizationStatus = useSelector(getAuhorizationStatus);
-  useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.Unknown) {
-      checkAuthorization();
-    }
-  }, []);
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <LoadingScreen />;
   }
