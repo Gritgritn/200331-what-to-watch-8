@@ -9,6 +9,11 @@ import { useEffect } from 'react';
 import { useIdParam } from '../../hooks/useIdParams';
 import { getСurrentFilm } from '../../store/films/films-api-actions';
 import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
+import Loader from '../loader/loader';
+import round from 'lodash/round';
+import { useVideo } from '../../hooks/useVideo';
+
+const TOGGLER_POSITION_DECIMAL_PRECISION = 2;
 
 function PlayerScreen(): JSX.Element {
   const filmId = useIdParam();
@@ -27,6 +32,19 @@ function PlayerScreen(): JSX.Element {
     fetchCurrentFilm(filmId);
   }, [filmId]);
 
+  const {
+    ref: videoRef,
+    isPlay: isVideoPlay,
+    isReady: isVideoReady,
+    duration: videoDuration,
+    percentage: videoPercentage,
+    elapsedTime: videoElapsedTime,
+    togglePlay: toggleVideoPlay,
+    onLoadedData: onVideoLoadedData,
+    onTimeUpdate: onVideoTimeUpdate,
+    requestFullScreen: requestVideoFullScreen,
+  } = useVideo();
+
   if (isFetchNotReady(filmStatus)) {
     return <LoadingScreen />;
   }
@@ -35,34 +53,78 @@ function PlayerScreen(): JSX.Element {
     return <NotFoundScreen />;
   }
 
-  const progress = Math.random();
-  const playerProgress = Number((progress * 100).toFixed(2));
-  const timeElapsed = film.runTime * (1 - progress);
+  const onFullScreenButtonClick = () => {
+    requestVideoFullScreen();
+  };
+
+  const onPlayButtonClick = () => {
+    toggleVideoPlay();
+  };
+
+  const togglerLeftPosition = `${round(videoPercentage, TOGGLER_POSITION_DECIMAL_PRECISION)}%`;
+  const playButtonIcon = isVideoPlay ? '#pause' : '#play-s';
+  const timeValueTextContent = isVideoReady ? formatElapsedTime(videoElapsedTime) : 'Loading...';
 
   return (
     <div className="player">
-      <video src={film.videoLink} className="player__video" poster={film.previewImage}></video>
+      {!isVideoReady && <Loader />}
 
-      <Link to={AppRoute.Film(filmId)} className="player__exit" style={{textDecoration: 'none'}}>Exit</Link>
+      <video
+        ref={videoRef}
+        src={film.videoLink}
+        className="player__video"
+        poster={film.previewImage}
+        onTimeUpdate={onVideoTimeUpdate}
+        onLoadedData={onVideoLoadedData}
+      />
+
+      <Link
+        to={AppRoute.Film(filmId)}
+        className="player__exit"
+        style={{ textDecoration: 'none' }}
+      >
+        Exit
+      </Link>
 
       <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
-            <progress className="player__progress" value={playerProgress} max="100"></progress>
-            <div className="player__toggler" style={{left: `${playerProgress}%`}}>Toggler</div>
+          <progress
+              className="player__progress"
+              value={videoDuration - videoElapsedTime}
+              max={videoDuration}
+            />
+            <div
+              className="player__toggler"
+              style={{ left: togglerLeftPosition }}
+            >
+              Toggler
+            </div>
           </div>
-          <div className="player__time-value">{formatElapsedTime(timeElapsed)}</div>
+          <div className="player__time-value">
+            {timeValueTextContent}
+          </div>
         </div>
         <div className="player__controls-row">
-          <button type="button" className="player__play">
+        <button
+            type="button"
+            className="player__play"
+            onClick={onPlayButtonClick}
+            disabled={!isVideoReady}
+          >
             <svg viewBox="0 0 19 19" width="19" height="19">
-              <use xlinkHref="#play-s"></use>
+            <use xlinkHref={playButtonIcon}></use>
             </svg>
             <span>Play</span>
           </button>
           <div className="player__name">{film.name}</div>
 
-          <button type="button" className="player__full-screen">
+          <button
+            type="button"
+            className="player__full-screen"
+            onClick={onFullScreenButtonClick}
+            disabled={!isVideoReady}
+          >
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>
             </svg>
