@@ -1,4 +1,5 @@
 import { generatePath } from 'react-router';
+import { FavoriteStatusType } from './types/types';
 
 const MAX_GENRES_COUNT = 9;
 
@@ -17,6 +18,11 @@ const AppRoute = {
   Film: (id:string | number = ':id') => generatePath('/films/:id', { id: id}),
   AddReview: (id:string | number = ':id') => generatePath('/films/:id/review', { id: id}),
   Player: (id:string | number = ':id') => generatePath('/player/:id', { id: id}),
+} as const;
+
+const FavoriteStatus = {
+  Favorite: 1,
+  NotFavorite: 0,
 } as const;
 
 const FilmCardBackgroundSize = {
@@ -86,6 +92,7 @@ const APIRoute = {
   Film: (id:string | number) => `/films/${id}`,
   SimilarFilms: (id:string | number) => `/films/${id}/similar`,
   FavoriteFilms: () => '/favorite',
+  FavoriteFilm: (id:string | number, newStatus: FavoriteStatusType) => `/favorite/${id}/${newStatus}`,
   Comments: (id:string | number) => `/comments/${id}`,
   Login: () => '/login',
   Logout: () => '/logout',
@@ -116,4 +123,4 @@ const ReviewContent = {
   MaxLength: 400,
 } as const;
 
-export { Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+export { FavoriteStatus, Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
