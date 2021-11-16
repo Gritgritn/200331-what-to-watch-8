@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIdParam } from '../../hooks/useIdParams';
+import { useIdParam } from '../../hooks/use-id-param';
 import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import PageHeader from '../header/header';
 import PageTitle from '../title/title';
@@ -12,32 +12,32 @@ import UserBlock from '../user-block/user-block';
 import AddReviewForm from '../add-review-form/add-review-form';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading/loading';
-import { getСurrentFilm } from '../../store/films/films-api-actions';
+import { getCurrentFilm } from '../../store/films/films-api-actions';
 import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
 import { FilmCardBackgroundSize } from '../../constants';
 
 function AddReviewScreen(): JSX.Element {
-  const filmId = useIdParam();
+  const { id: filmId, error } = useIdParam();
   const film = useSelector(getCurrentFilmData);
   const filmStatus = useSelector(getCurrentFilmStatus);
   const dispatch = useDispatch();
   const fetchCurrentFilm = (id: number) => {
-    dispatch(getСurrentFilm(id));
+    dispatch(getCurrentFilm(id));
   };
 
   useEffect(() => {
-    if (film?.id === filmId) {
+    if (!filmId || film?.id === filmId) {
       return;
     }
 
     fetchCurrentFilm(filmId);
-  }, [filmId]);
+  }, [film?.id, filmId]);
 
   if (isFetchNotReady(filmStatus)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(filmStatus) || !film) {
+  if (isFetchError(filmStatus) || !film || error) {
     return <NotFoundScreen />;
   }
 

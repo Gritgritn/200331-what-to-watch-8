@@ -11,6 +11,20 @@ const CATALOG_PAGE_SIZE = 8;
 
 const MAX_SIMILAR_FILMS_COUNT = 4;
 
+const NUMERIC_REGEX = /\d/;
+
+const LATIN_REGEX = /[A-za-z]/;
+
+const AUTH_TOKEN_KEY_NAME = 'wtw-token';
+
+const MIN_PASSWORD_LENGTH = 2;
+
+const EMPTY_SPACE = ' ';
+
+const MAX_OVERVIEW_ACTORS_COUNT = 4;
+
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 const AppRoute = {
   Root: () => '/',
   Login: () => '/login',
@@ -49,6 +63,7 @@ const RatingDescription = {
   VeryGood: 'Very Good',
   Awesome: 'Awesome',
 } as const;
+
 
 const ratingDescriptionToLowerLimit: {
   [key in keyof typeof RatingDescription]: number
@@ -105,14 +120,6 @@ const FetchStatus = {
   Failed: 'FAILED',
 } as const;
 
-const AUTH_TOKEN_KEY_NAME = 'wtw-token';
-
-const MIN_PASSWORD_LENGTH = 2;
-
-const EMPTY_SPACE = ' ';
-
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
 const Rating = {
   MinValue: 1,
   MaxValue: 10,
@@ -123,4 +130,4 @@ const ReviewContent = {
   MaxLength: 400,
 } as const;
 
-export { FavoriteStatus, Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType};
+export { MAX_OVERVIEW_ACTORS_COUNT, FavoriteStatus, Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType, NUMERIC_REGEX, LATIN_REGEX };

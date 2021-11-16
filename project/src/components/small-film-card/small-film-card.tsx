@@ -6,7 +6,7 @@ import SmallFilmCardVideo from '../small-film-card-video/small-film-card-video';
 import classNames from 'classnames';
 import SmallFilmCardPreview from '../small-film-card-preview/small-film-card-preview';
 
-const BASE_CLASSNAME = 'small-film-card';
+const BASE_CLASS_NAME = 'small-film-card';
 
 const HOVER_DELAY = 1000;
 
@@ -52,7 +52,7 @@ function SmallFilmCard({film, className}: SmallFilmCardProps): JSX.Element {
   }, [isDelayedHovered, isHovered]);
 
   return (
-    <article className={classNames(BASE_CLASSNAME, className)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} >
+    <article className={classNames(BASE_CLASS_NAME, className)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} >
       <Link to={AppRoute.Film(film.id)} style={{ color: 'inherit'}}>
         { isDelayedHovered ?
           (<SmallFilmCardVideo src={film.previewVideoLink} poster={film.previewImage} />)

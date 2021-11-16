@@ -11,10 +11,10 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { AppRoute, CustomRouteType, AuthorizationStatus} from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
 import LoadingScreen from '../loading/loading';
-import { getAuhorizationStatus } from '../../store/authorization/authorization-selectors';
+import { getAuthorizationStatus } from '../../store/authorization/authorization-selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useSelector(getAuhorizationStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <LoadingScreen />;
   }

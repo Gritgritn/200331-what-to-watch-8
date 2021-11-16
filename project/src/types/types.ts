@@ -2,7 +2,7 @@ import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { FetchStatus, FavoriteStatus } from '../constants';
 import { redirectToRoute } from '../store/app/app-actions';
-import { setAuthorizationError, setAuthorizationStatus, setAuthorizationInfo } from '../store/authorization/authorization-actions';
+import { setAuthorizationErrorMessage, setAuthorizationStatus, setAuthorizationInfo } from '../store/authorization/authorization-actions';
 import { setCurrentComments, setCurrentCommentsFetchStatus, setNewCommentFetchStatus } from '../store/comments/comments-actions';
 import { setSimilarFilms, setSimilarFilmsFetchStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, setCurrentFilm, setCurrentFilmFetchStatus, setPromoFilm, setPromoFilmFetchStatus, setAllFilms, setAllFilmsFetchStatus } from '../store/films/films-actions';
 import { setFilter } from '../store/filter/filter-actions';
@@ -15,8 +15,8 @@ type Login = {
   password: string;
 };
 
-type ServerAuthInfo = {
-  id: 1;
+type ServerAuthorizationInfo = {
+  id: number;
   email: string;
   name: string;
   'avatar_url': string;
@@ -52,8 +52,8 @@ type FetchedData<T = any> = {
   status: FetchStatusType;
 };
 
-type AuthoarizationInfo  = {
-  id: 1;
+type AuthorizationInfo  = {
+  id: number;
   email: string;
   name: string;
   avatarUrl: string;
@@ -64,7 +64,7 @@ type State = ReturnType<typeof rootReducer>;
 
 type Action = ReturnType<typeof setAuthorizationStatus>
   | ReturnType<typeof setAuthorizationInfo>
-  | ReturnType<typeof setAuthorizationError>
+  | ReturnType<typeof setAuthorizationErrorMessage>
   | ReturnType<typeof setAllFilms>
   | ReturnType<typeof setAllFilmsFetchStatus>
   | ReturnType<typeof setFavoriteFilms>
@@ -127,4 +127,4 @@ type ValuesOf<T> = T[keyof T];
 
 type FavoriteStatusType = ValuesOf<typeof FavoriteStatus>;
 
-export type { FavoriteStatusType, CommentPost, Login, Token, ServerAuthInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthoarizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
+export type { FavoriteStatusType, CommentPost, Login, Token, ServerAuthorizationInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthorizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};

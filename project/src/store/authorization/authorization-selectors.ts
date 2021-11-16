@@ -1,12 +1,12 @@
 import { AuthorizationStatus } from '../../constants';
-import { AuthoarizationInfo, State, ValuesOf } from '../../types/types';
+import { AuthorizationInfo, State, ValuesOf } from '../../types/types';
 
-const getAuhorizationInfo = ({ authorization }: State): AuthoarizationInfo | null => authorization.info;
+const getAuhorizationInfo = ({ authorization }: State): AuthorizationInfo | null => authorization.info;
 
-const getAuhorizationStatus = ({ authorization }: State): ValuesOf<typeof AuthorizationStatus> => authorization.status;
+const getAuthorizationStatus  = ({ authorization }: State): ValuesOf<typeof AuthorizationStatus> => authorization.status;
 
 const getUserAvatar = ({ authorization }: State): string | undefined => authorization.info?.avatarUrl;
 
-const getAuhorizationErrorMessage = ({ authorization }: State): string => authorization.errorMessage;
+const getAuthorizationErrorMessage = ({ authorization }: State): string => authorization.errorMessage;
 
-export { getAuhorizationInfo, getAuhorizationStatus, getUserAvatar, getAuhorizationErrorMessage };
+export { getAuhorizationInfo, getAuthorizationStatus, getUserAvatar, getAuthorizationErrorMessage };

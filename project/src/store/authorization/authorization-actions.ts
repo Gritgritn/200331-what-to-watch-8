@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionType, AuthorizationStatus } from '../../constants';
-import { AuthoarizationInfo, ValuesOf } from '../../types/types';
+import { AuthorizationInfo, ValuesOf } from '../../types/types';
 
 const setAuthorizationStatus = createAction(ActionType.SetAuthorizationStatus, (status: ValuesOf<typeof AuthorizationStatus>) => ({
   payload: {
@@ -8,22 +8,22 @@ const setAuthorizationStatus = createAction(ActionType.SetAuthorizationStatus, (
   },
 }));
 
-const setAuthorizationError = createAction(ActionType.SetAuthorizationError, (errorMessage: string) => ({
+const setAuthorizationErrorMessage = createAction(ActionType.SetAuthorizationError, (errorMessage: string) => ({
   payload: {
     errorMessage,
   },
 }));
 
-const setAuthorizationInfo = createAction(ActionType.SetAuthorizationInfo, (info: AuthoarizationInfo | null) => ({
+const setAuthorizationInfo = createAction(ActionType.SetAuthorizationInfo, (info: AuthorizationInfo | null) => ({
   payload: {
     info,
   },
 }));
 
-const clearAuthorizationError = createAction(ActionType.SetAuthorizationError, () => ({
+const clearAuthorizationErrorMessage = createAction(ActionType.SetAuthorizationError, () => ({
   payload: {
     errorMessage: '',
   },
 }));
 
-export { setAuthorizationStatus, setAuthorizationError, setAuthorizationInfo, clearAuthorizationError };
+export { setAuthorizationStatus, setAuthorizationErrorMessage, setAuthorizationInfo, clearAuthorizationErrorMessage };

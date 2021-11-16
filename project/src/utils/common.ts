@@ -1,5 +1,4 @@
-import type { User } from '../types/types';
-import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH, Rating, ReviewContent } from '../constants';
+import { EMAIL_REGEX, LATIN_REGEX, NUMERIC_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH, Rating, ReviewContent } from '../constants';
 
 const getEmailValidityMessage = ( email: string ): string => {
   if (!email) {
@@ -21,8 +20,16 @@ const getPasswordValidityMessage = (password: string): string => {
     return `Password must have at least ${MIN_PASSWORD_LENGTH} symbols.`;
   }
 
+  if (!NUMERIC_REGEX.test(password.toLowerCase())) {
+    return 'Password must contain at least one number.';
+  }
+
+  if (!LATIN_REGEX.test(password.toLowerCase())) {
+    return 'Password must contain at least one literal symbol.';
+  }
+
   if (password.includes(EMPTY_SPACE)) {
-    return 'Password can not containt empty spaces.';
+    return 'Password can not contain  empty spaces.';
   }
 
   return '';

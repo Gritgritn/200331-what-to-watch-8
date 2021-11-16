@@ -2,7 +2,7 @@ import type { Film } from '../../types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus, FavoriteStatus } from '../../constants';
-import { getAuhorizationStatus } from '../../store/authorization/authorization-selectors';
+import { getAuthorizationStatus } from '../../store/authorization/authorization-selectors';
 import { postFavoriteFilm } from '../../store/films/films-api-actions';
 
 type FilmCardButtonsProps = {
@@ -12,10 +12,10 @@ type FilmCardButtonsProps = {
 }
 
 function FilmCardButtons({film, isFilmFavorite, withAddReview}: FilmCardButtonsProps): JSX.Element {
-  const authorizationStatus = useSelector(getAuhorizationStatus);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
   const dispatch = useDispatch();
 
-  const handleFavoriteButtonClick = () => {
+  const onFavoriteButtonClick = () => {
     const newFavoriteStatus = isFilmFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite;
     dispatch(postFavoriteFilm(film.id, newFavoriteStatus));
   };
@@ -28,7 +28,7 @@ function FilmCardButtons({film, isFilmFavorite, withAddReview}: FilmCardButtonsP
         </svg>
         <span>Play</span>
       </Link>
-      <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteButtonClick}>
+      <button className="btn btn--list film-card__button" type="button" onClick={onFavoriteButtonClick}>
         <svg viewBox="0 0 19 20" width="19" height="20">
           <use xlinkHref={isFilmFavorite ? '#in-list' : '#add'}></use>
         </svg>

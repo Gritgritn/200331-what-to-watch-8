@@ -16,7 +16,6 @@ import { getFilter } from '../../store/filter/filter-selectors';
 import { getAllFilms, getPromoFilm } from '../../store/films/films-api-actions';
 import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
 import { getAllFilmsStatus, getFilteredFilms, getPromoFilmData, getPromoFilmStatus } from '../../store/films/films-selectors';
-import type { Film, State, ThunkAppDispatch } from '../../types/types';
 
 
 function MainScreen(): JSX.Element {
@@ -38,7 +37,7 @@ function MainScreen(): JSX.Element {
     dispatch(setFilter(newFilter));
   }, [dispatch]);
 
-  const handleMoreButtonClick = useCallback(() => {
+  const onMoreButtonClick  = useCallback(() => {
     setCurrentPage((prevCount) => prevCount + 1);
   }, []);
 
@@ -79,7 +78,7 @@ function MainScreen(): JSX.Element {
         <Catalog hiddenTitle="Catalog">
           <CatalogGenresList genres={genres} activeGenre={filter} setActiveGenre={onFilterChange} />
           <CatalogFilmsList films={catalogFilms} />
-          { isMoreButtonVisible && <CatalogMoreButton onClick={handleMoreButtonClick} /> }
+          { isMoreButtonVisible && <CatalogMoreButton onClick={onMoreButtonClick} /> }
         </Catalog>
 
         <PageFooter />

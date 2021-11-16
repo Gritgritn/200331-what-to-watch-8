@@ -1,5 +1,5 @@
 import camelCase from 'lodash/camelCase';
-import { ServerFilm, Film, ServerAuthInfo, AuthoarizationInfo } from '../types/types';
+import { ServerFilm, Film, ServerAuthorizationInfo, AuthorizationInfo } from '../types/types';
 
 const adaptFilmToClient = (serverFilm: ServerFilm): Film => {
   const clientFilm: {
@@ -16,7 +16,7 @@ const adaptFilmToClient = (serverFilm: ServerFilm): Film => {
   return clientFilm as Film;
 };
 
-const adaptAuthorizationInfoToClient = (serverAuthorizationInfo: ServerAuthInfo): AuthoarizationInfo => {
+const adaptAuthorizationInfoToClient = (serverAuthorizationInfo: ServerAuthorizationInfo): AuthorizationInfo => {
   const authInfo: {
     [key: string]: number | string;
   } = {};
@@ -26,7 +26,7 @@ const adaptAuthorizationInfoToClient = (serverAuthorizationInfo: ServerAuthInfo)
   });
 
 
-  return authInfo as AuthoarizationInfo;
+  return authInfo as AuthorizationInfo;
 };
 
 export { adaptFilmToClient, adaptAuthorizationInfoToClient };

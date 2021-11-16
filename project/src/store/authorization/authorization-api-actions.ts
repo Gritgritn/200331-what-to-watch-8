@@ -2,17 +2,17 @@ import toast from 'react-hot-toast';
 import { APIRoute, AppRoute, AuthorizationStatus, FetchStatus } from '../../constants';
 import { adaptAuthorizationInfoToClient } from '../../services/adapters';
 import { dropToken, saveToken } from '../../services/token';
-import { ServerAuthInfo, ThunkActionResult, Login } from '../../types/types';
+import { ServerAuthorizationInfo, ThunkActionResult, Login } from '../../types/types';
 import { redirectToRoute } from '../app/app-actions';
-import { clearAuthorizationError, setAuthorizationError, setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
+import { clearAuthorizationErrorMessage, setAuthorizationErrorMessage, setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
 import { setCurrentFilmFetchStatus, setPromoFilmFetchStatus } from '../films/films-actions';
 
 export const getLogin = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    dispatch(clearAuthorizationError());
+    dispatch(clearAuthorizationErrorMessage());
     try {
       const { data: serverAuthorizationInfo } =
-        await api.get<ServerAuthInfo>(APIRoute.Login());
+        await api.get<ServerAuthorizationInfo>(APIRoute.Login());
 
       const authorizationInfo = adaptAuthorizationInfoToClient(serverAuthorizationInfo);
 
@@ -29,7 +29,7 @@ export const postLogin = (user: Login): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       const { data: serverAuthorizationInfo } =
-        await api.post<ServerAuthInfo>(APIRoute.Login(), user);
+        await api.post<ServerAuthorizationInfo>(APIRoute.Login(), user);
 
       const authorizationInfo = adaptAuthorizationInfoToClient(serverAuthorizationInfo);
 
@@ -40,7 +40,7 @@ export const postLogin = (user: Login): ThunkActionResult =>
 
     } catch (error) {
       if (error instanceof Error ) {
-        dispatch(setAuthorizationError(error.message));
+        dispatch(setAuthorizationErrorMessage(error.message));
       } else {
         toast.error('Unknown error');
       }

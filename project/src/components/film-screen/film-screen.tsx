@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import PageFooter from '../page-footer/page-footer';
-import { useIdParam } from '../../hooks/useIdParams';
+import { useIdParam } from '../../hooks/use-id-param';
 import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
@@ -9,14 +9,14 @@ import LoadingScreen from '../loading/loading';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useEffect } from 'react';
 import { MAX_SIMILAR_FILMS_COUNT } from '../../constants';
-import { getСurrentComments } from '../../store/comments/comments-api-actions';
+import { getCurrentComments } from '../../store/comments/comments-api-actions';
 import { getCurrentCommentsData, getCurrentCommentsStatus } from '../../store/comments/comments-selectors';
-import { getСurrentFilm, getSimilarFilms } from '../../store/films/films-api-actions';
+import { getCurrentFilm, getSimilarFilms } from '../../store/films/films-api-actions';
 import { getCurrentFilmData, getCurrentFilmStatus, getSimilarFilmsData, getSimilarFilmsStatus } from '../../store/films/films-selectors';
 import { isFetchError, isFetchIdle, isFetchNotReady } from '../../utils/fetched-data';
 
 function FilmScreen(): JSX.Element {
-  const filmId = useIdParam();
+  const { id: filmId, error } = useIdParam();
   const film = useSelector(getCurrentFilmData);
   const comments = useSelector(getCurrentCommentsData);
   const similarFilms = useSelector(getSimilarFilmsData);
@@ -27,11 +27,11 @@ function FilmScreen(): JSX.Element {
   const dispatch = useDispatch();
 
   const fetchCurrentFilm = (id: number) => {
-    dispatch(getСurrentFilm(id));
+    dispatch(getCurrentFilm(id));
   };
 
   const fetchCurrentComments = (id: number) => {
-    dispatch(getСurrentComments(id));
+    dispatch(getCurrentComments(id));
   };
 
   const fetchSimilarFilms = (id: number) => {
@@ -39,6 +39,9 @@ function FilmScreen(): JSX.Element {
   };
 
   useEffect(() => {
+    if (!filmId) {
+      return;
+    }
     if (film?.id !== filmId) {
       fetchCurrentFilm(filmId);
       fetchCurrentComments(filmId);
@@ -54,7 +57,7 @@ function FilmScreen(): JSX.Element {
     if (isFetchIdle(similarFilmsStatus)) {
       fetchSimilarFilms(filmId);
     }
-  }, [filmId, filmStatus, commentsStatus, similarFilmsStatus]);
+  }, [film?.id, filmId, filmStatus, commentsStatus, similarFilmsStatus]);
 
   if (
     isFetchNotReady(filmStatus) ||
@@ -68,7 +71,7 @@ function FilmScreen(): JSX.Element {
     isFetchError(filmStatus) ||
     isFetchError(commentsStatus) ||
     isFetchNotReady(similarFilmsStatus) ||
-    !film || !comments || !similarFilms
+    !film || !comments || !similarFilms || error
   ) {
     return <NotFoundScreen />;
   }

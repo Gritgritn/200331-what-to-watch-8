@@ -4,7 +4,7 @@ import { Comment, CommentPost, ThunkActionResult } from '../../types/types';
 import { redirectToRoute } from '../app/app-actions';
 import { setCurrentCommentsFetchStatus, setCurrentComments, setNewCommentFetchStatus } from './comments-actions';
 
-export const getСurrentComments = (filmId: number): ThunkActionResult =>
+export const getCurrentComments = (filmId: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setCurrentCommentsFetchStatus(FetchStatus.Loading));
 

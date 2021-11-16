@@ -6,20 +6,20 @@ type FilmCardBackgroundProps = {
   size?: string,
 }
 
-const BASE_CLASSNAME = 'film-card__poster';
+const BASE_CLASS_NAME = 'film-card__poster';
 
 function FilmCardBackground({src, alt, size}: FilmCardBackgroundProps): JSX.Element {
   let sizedClassName = '';
 
   if (size === FilmCardBackgroundSize.Small) {
-    sizedClassName = `${BASE_CLASSNAME}--small`;
+    sizedClassName = `${BASE_CLASS_NAME}--small`;
   }
 
   if (size === FilmCardBackgroundSize.Big) {
-    sizedClassName = `${BASE_CLASSNAME}--big`;
+    sizedClassName = `${BASE_CLASS_NAME}--big`;
   }
 
-  const fullClassName = `${BASE_CLASSNAME} ${sizedClassName}`;
+  const fullClassName = `${BASE_CLASS_NAME} ${sizedClassName}`;
 
   return (
     <div className={fullClassName}>
