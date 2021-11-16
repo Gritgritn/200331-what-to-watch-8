@@ -8,8 +8,6 @@ import { setSimilarFilms, setSimilarFilmsFetchStatus, setFavoriteFilms, setFavor
 import { setFilter } from '../store/filter/filter-actions';
 import { rootReducer } from '../store/root-reducer';
 
-
-
 type Login = {
   email: string;
   password: string;

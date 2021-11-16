@@ -4,7 +4,7 @@ import { FavoriteStatusType, ServerFilm, ThunkActionResult } from '../../types/t
 import { setAllFilms, setAllFilmsFetchStatus, setCurrentFilm, setCurrentFilmFetchStatus, setFavoriteFilms, setFavoriteFilmsFetchStatus, setPromoFilmFetchStatus, setPromoFilm, setSimilarFilms, setSimilarFilmsFetchStatus } from './films-actions';
 import toast from 'react-hot-toast';
 
-export const getAllFilms = (): ThunkActionResult =>
+const getAllFilms = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setAllFilmsFetchStatus(FetchStatus.Loading));
 
@@ -20,7 +20,7 @@ export const getAllFilms = (): ThunkActionResult =>
     }
   };
 
-export const getPromoFilm = (): ThunkActionResult =>
+const getPromoFilm = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setPromoFilmFetchStatus(FetchStatus.Loading));
 
@@ -36,7 +36,7 @@ export const getPromoFilm = (): ThunkActionResult =>
     }
   };
 
-export const postFavoriteFilm = (id:string | number, newStatus: FavoriteStatusType): ThunkActionResult =>
+const postFavoriteFilm = (id:string | number, newStatus: FavoriteStatusType): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       const { data: serverFilm } = await api.post<ServerFilm>(APIRoute.FavoriteFilm(id, newStatus));
@@ -55,7 +55,7 @@ export const postFavoriteFilm = (id:string | number, newStatus: FavoriteStatusTy
   };
 
 
-export const getFavoriteFilms = (): ThunkActionResult =>
+const getFavoriteFilms = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setFavoriteFilmsFetchStatus(FetchStatus.Loading));
 
@@ -71,8 +71,7 @@ export const getFavoriteFilms = (): ThunkActionResult =>
     }
   };
 
-
-export const getSimilarFilms = (id: number): ThunkActionResult =>
+const getSimilarFilms = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setSimilarFilmsFetchStatus(FetchStatus.Loading));
 
@@ -88,7 +87,7 @@ export const getSimilarFilms = (id: number): ThunkActionResult =>
     }
   };
 
-export const getCurrentFilm = (filmId: number): ThunkActionResult =>
+const getCurrentFilm = (filmId: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     dispatch(setCurrentFilmFetchStatus(FetchStatus.Loading));
 
@@ -103,3 +102,5 @@ export const getCurrentFilm = (filmId: number): ThunkActionResult =>
       dispatch(setCurrentFilmFetchStatus(FetchStatus.Failed));
     }
   };
+
+export { getCurrentFilm, getSimilarFilms, getFavoriteFilms, postFavoriteFilm, getPromoFilm, getAllFilms };
