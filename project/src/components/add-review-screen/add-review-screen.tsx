@@ -12,7 +12,6 @@ import FilmCardBackground from '../film-card-background/film-card-background';
 import FilmCardPoster from '../film-card-poster/film-card-poster';
 import UserBlock from '../user-block/user-block';
 import AddReviewForm from '../add-review-form/add-review-form';
-import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading/loading';
 import { getCurrentFilm } from '../../store/films/films-api-actions';
 import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';

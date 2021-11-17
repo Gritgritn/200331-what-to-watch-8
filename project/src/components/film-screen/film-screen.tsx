@@ -8,7 +8,6 @@ import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
 import PageContent from '../page-content/page-content';
 import LoadingScreen from '../loading/loading';
-import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useEffect, useRef, useState } from 'react';
 import { AppRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT } from '../../constants';
 import { getCurrentComments } from '../../store/comments/comments-api-actions';

@@ -44,7 +44,7 @@ function App(): JSX.Element {
           <NotFoundScreen />
         </Route>
         <Route>
-        <Redirect to={AppRoute.NotFound()} />
+          <Redirect to={AppRoute.NotFound()} />
         </Route>
       </Switch>
     </BrowserRouter>
