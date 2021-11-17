@@ -8,7 +8,7 @@ const UNAUTHORIZED_HTTP_STATUS = 401;
 
 type UnauthorizedCallback = () => void;
 
-const createAPI = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
+const createAPI = (unauthorizedCallback?: UnauthorizedCallback): AxiosInstance => {
   const api = axios.create({
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
@@ -21,7 +21,9 @@ const createAPI = (onUnauthorized: UnauthorizedCallback): AxiosInstance => {
       const {response} = error;
 
       if (response?.status === UNAUTHORIZED_HTTP_STATUS) {
-        onUnauthorized();
+        if (typeof unauthorizedCallback === 'function') {
+          unauthorizedCallback();
+        }
       }
 
       return Promise.reject(error);

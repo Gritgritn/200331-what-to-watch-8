@@ -125,4 +125,13 @@ type ValuesOf<T> = T[keyof T];
 
 type FavoriteStatusType = ValuesOf<typeof FavoriteStatus>;
 
-export type { FavoriteStatusType, CommentPost, Login, Token, ServerAuthorizationInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthorizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
+type ServerCommentGet = CommentPost & {
+  id: number;
+  user: {
+    id: number;
+    name: string;
+  };
+  date: string;
+};
+
+export type { ServerCommentGet, FavoriteStatusType, CommentPost, Login, Token, ServerAuthorizationInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthorizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
