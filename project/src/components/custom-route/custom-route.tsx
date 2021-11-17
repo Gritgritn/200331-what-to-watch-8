@@ -1,34 +1,29 @@
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { AuthorizationStatus, CustomRouteType, AppRoute } from '../../constants';
-import type { State, ValuesOf } from '../../types/types';
+import { getAuthorizationStatus } from '../../store/authorization/authorization-selectors';
 import { isAllCasesChecked } from '../../utils/common';
-import { connect, ConnectedProps } from 'react-redux';
+import { useSelector } from 'react-redux';
+import type { ValuesOf } from '../../types/types';
 
-const mapStateToProps = ({authorization}: State) => ({
-  authorization,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type CustomRouteProps = RouteProps & PropsFromRedux & {
+type CustomRouteProps = RouteProps & {
   type: ValuesOf<typeof CustomRouteType>,
 }
 
-function CustomRoute({authorization, type, ...props}: CustomRouteProps): JSX.Element {
+function CustomRoute({type, ...props}: CustomRouteProps): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
   switch (type) {
     case CustomRouteType.Private: {
       return (
         <Route { ...props }>
-          { authorization.status === AuthorizationStatus.Auth ? props.children : <Redirect to={AppRoute.Login()} />}
+          { authorizationStatus  === AuthorizationStatus.Auth ? props.children : <Redirect to={AppRoute.Login()} />}
         </Route>
       );
     }
     case CustomRouteType.Guest: {
       return (
         <Route { ...props }>
-          { authorization.status === AuthorizationStatus.NotAuth ? props.children : <Redirect to={AppRoute.Root()} />}
+          { authorizationStatus  === AuthorizationStatus.NotAuth ? props.children : <Redirect to={AppRoute.Root()} />}
         </Route>
       );
     }
@@ -37,5 +32,4 @@ function CustomRoute({authorization, type, ...props}: CustomRouteProps): JSX.Ele
   isAllCasesChecked(type);
 }
 
-export {CustomRoute};
-export default connector(CustomRoute);
+export default CustomRoute;

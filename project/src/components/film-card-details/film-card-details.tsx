@@ -7,7 +7,7 @@ type FilmDetailsProps = {
 }
 
 function FilmCardDetails({film}: FilmDetailsProps): JSX.Element {
-  const formatOverviewActors = (actors: string[]) => actors.map((actor, index, array) => {
+  const formattedActors = film.actors.map((actor, index, array) => {
     const key = `${actor}-${index}`;
     const isNotLast = index < array.length - 1;
     return (
@@ -25,7 +25,7 @@ function FilmCardDetails({film}: FilmDetailsProps): JSX.Element {
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
-          {formatOverviewActors(film.actors)}
+          {formattedActors}
         </p>
       </div>
 

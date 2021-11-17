@@ -1,75 +1,82 @@
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { AppRoute, FetchStatus } from '../../constants';
+import { useIdParam } from '../../hooks/use-id-param';
+import { isFetchError, isFetchNotReady, isFetchSuccess } from '../../utils/fetched-data';
+import PageHeader from '../header/header';
+import PageTitle from '../title/title';
+import Logo from '../logo/logo';
+import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import FilmCardBackground from '../film-card-background/film-card-background';
 import FilmCardPoster from '../film-card-poster/film-card-poster';
-import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 import AddReviewForm from '../add-review-form/add-review-form';
-import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import {FilmCardBackgroundSize} from '../../constants';
-import type { Film, State, ThunkAppDispatch } from '../../types/types';
-import PageTitle from '../title/title';
-import PageHeader from '../header/header';
-import { useEffect } from 'react';
-import { getСurrentFilm } from '../../store/api-actions';
-import { connect, ConnectedProps } from 'react-redux';
-import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
-import NotFoundScreen from '../not-found-screen/not-found-screen';
-import { useIdParam } from '../../hooks/useIdParams';
+import { getCurrentFilm } from '../../store/films/films-api-actions';
+import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
+import { FilmCardBackgroundSize } from '../../constants';
+import { setCurrentFilmFetchStatus } from '../../store/films/films-actions';
 
-const mapStateToProps = ({currentFilm}: State) => ({
-  fetchedFilm: currentFilm,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchCurrentFilm(id: number) {
-    dispatch(getСurrentFilm(id));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function AddReviewScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
-  const id = useIdParam();
+function AddReviewScreen(): JSX.Element {
+  const { id: filmId, error } = useIdParam();
+  const film = useSelector(getCurrentFilmData);
+  const filmStatus = useSelector(getCurrentFilmStatus);
+  const filmStatusRef = useRef(filmStatus);
+  const dispatch = useDispatch();
+  const fetchCurrentFilm = (id: number) => {
+    dispatch(getCurrentFilm(id));
+  };
 
   useEffect(() => {
-    if (fetchedFilm.data?.id === id) {
+    if (!filmId || film?.id === filmId) {
       return;
     }
 
-    fetchCurrentFilm(id);
-  }, [id]);
+    fetchCurrentFilm(filmId);
+  }, [film?.id, filmId]);
 
-  if (isFetchNotReady(fetchedFilm)) {
+  useEffect(() => {
+    filmStatusRef.current = filmStatus;
+  }, [filmStatus]);
+
+  useEffect(() => () => {
+    if (!isFetchSuccess(filmStatusRef.current)) {
+      dispatch(setCurrentFilmFetchStatus(FetchStatus.Idle));
+    }
+  }, []);
+
+  if (error || isFetchError(filmStatus)) {
+    return <Redirect to={AppRoute.NotFound()} />;
+  }
+
+  if (isFetchNotReady(filmStatus)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(fetchedFilm)) {
-    return <NotFoundScreen />;
+  if (!film) {
+    return <Redirect to={AppRoute.NotFound()} />;
   }
 
-  const currentFilm = fetchedFilm.data as Film;
   return (
-    <section className="film-card film-card--full" style={{backgroundColor: currentFilm.backgroundColor}}>
+    <section className="film-card film-card--full" style={{backgroundColor: film.backgroundColor}}>
       <div className="film-card__header">
-        <FilmCardBackground src={currentFilm.backgroundImage} alt={currentFilm.name} />
+        <FilmCardBackground src={film.backgroundImage} alt={film.name} />
 
         <PageTitle IsHidden>WTW</PageTitle>
 
         <PageHeader>
           <Logo />
-          <Breadcrumbs film={currentFilm} />
+          <Breadcrumbs film={film} />
           <UserBlock />
         </PageHeader>
 
-        <FilmCardPoster src={currentFilm.posterImage} alt={`${currentFilm.name} poster`} size={FilmCardBackgroundSize.Small} />
+        <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} size={FilmCardBackgroundSize.Small} />
       </div>
-      <AddReviewForm filmId={id} />
+      <AddReviewForm />
 
     </section>
   );
 }
 
-export { AddReviewScreen };
-export default connector(AddReviewScreen);
+export default AddReviewScreen;

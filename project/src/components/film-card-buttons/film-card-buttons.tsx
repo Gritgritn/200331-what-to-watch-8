@@ -1,28 +1,23 @@
 import type { Film } from '../../types/types';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../constants';
-import { State } from '../../types/types';
+import { AppRoute, AuthorizationStatus, FavoriteStatus } from '../../constants';
+import { getAuthorizationStatus } from '../../store/authorization/authorization-selectors';
+import { postFavoriteFilm } from '../../store/films/films-api-actions';
 
-const mapStateToProps = ({authorization}: State) => ({
-  authorization,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-
-type FilmCardButtonsProps = PropsFromRedux & {
+type FilmCardButtonsProps = {
   isFilmFavorite: boolean,
   withAddReview?: boolean,
   film: Film
 }
 
-function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: FilmCardButtonsProps): JSX.Element {
+function FilmCardButtons({film, isFilmFavorite, withAddReview}: FilmCardButtonsProps): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const dispatch = useDispatch();
 
-  const handleFavoriteButtonClick = () => {
-    // Обработка добавления в избранное
+  const onFavoriteButtonClick = () => {
+    const newFavoriteStatus = isFilmFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite;
+    dispatch(postFavoriteFilm(film.id, newFavoriteStatus));
   };
 
   return (
@@ -33,18 +28,14 @@ function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: F
         </svg>
         <span>Play</span>
       </Link>
+      <button className="btn btn--list film-card__button" type="button" onClick={onFavoriteButtonClick}>
+        <svg viewBox="0 0 19 20" width="19" height="20">
+          <use xlinkHref={isFilmFavorite ? '#in-list' : '#add'}></use>
+        </svg>
+        <span>My list</span>
+      </button>
       {
-        authorization.status === AuthorizationStatus.Auth && (
-          <button className="btn btn--list film-card__button" type="button" onClick={handleFavoriteButtonClick}>
-            <svg viewBox="0 0 19 20" width="19" height="20">
-              <use xlinkHref={isFilmFavorite ? '#in-list' : '#add'}></use>
-            </svg>
-            <span>My list</span>
-          </button>
-        )
-      }
-      {
-        withAddReview && authorization.status === AuthorizationStatus.Auth &&
+        withAddReview && authorizationStatus  === AuthorizationStatus.Auth &&
         <Link to={AppRoute.AddReview(film.id)} className="btn film-card__button" type="button">
           <span>Add review</span>
         </Link>
@@ -53,5 +44,4 @@ function FilmCardButtons({film, isFilmFavorite, withAddReview, authorization}: F
   );
 }
 
-export {FilmCardButtons};
-export default connector(FilmCardButtons);
+export default FilmCardButtons;

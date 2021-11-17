@@ -1,34 +1,61 @@
 import classNames from 'classnames';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import toast from 'react-hot-toast';
-import { connect, ConnectedProps } from 'react-redux';
-import { postLogin } from '../../store/api-actions';
-import { ThunkAppDispatch, User } from '../../types/types';
-import { validateLoginFormData } from '../../utils/common';
+import { ChangeEvent, FocusEvent, FormEvent, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Login } from '../../types/types';
+import { postLogin } from '../../store/authorization/authorization-api-actions';
+import { getEmailValidityMessage, getPasswordValidityMessage } from '../../utils/common';
+import { getAuthorizationErrorMessage } from '../../store/authorization/authorization-selectors';
+import { clearAuthorizationErrorMessage } from '../../store/authorization/authorization-actions';
 
-const INITIAL_FORM_STATE: User = {
+const INITIAL_FORM_DATA: Login = {
   email: '',
   password: '',
-};
+} as const;
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  login(user: User) {
-    dispatch(postLogin(user));
-  },
-});
+const INITIAL_FORM_DIRTINESS: {
+  [key in keyof typeof INITIAL_FORM_DATA]: boolean
+} = {
+  email: false,
+  password: false,
+} as const;
 
-const connector = connect(null, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type LoginFormProps = PropsFromRedux & {
+type LoginFormProps = {
   className?: string,
 }
 
-function LoginForm({className, login}: LoginFormProps): JSX.Element {
-  const [ formData, setFormData ] = useState(INITIAL_FORM_STATE);
+function LoginForm({ className }: LoginFormProps): JSX.Element {
+  const serverErrorMessage = useSelector(getAuthorizationErrorMessage);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [formDirtiness, setFormDirtiness] = useState(INITIAL_FORM_DIRTINESS );
+  const emailValidityMessage = useMemo(
+    () => formDirtiness.email ? getEmailValidityMessage(formData.email) : '',
+    [formData.email, formDirtiness.email],
+  );
 
-  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const passwordValidityMessage = useMemo(
+    () => formDirtiness.password ? getPasswordValidityMessage(formData.password) : '',
+    [formData.password, formDirtiness.password],
+  );
+
+  const validityMessage = useMemo(
+    () => `${emailValidityMessage} ${passwordValidityMessage}`.trim(),
+    [emailValidityMessage, passwordValidityMessage],
+  );
+  const onInputBlur = (evt: FocusEvent<HTMLInputElement>) => {
+    const { name } = evt.target;
+    setFormDirtiness({
+      ...formDirtiness,
+      [name]: true,
+    });
+  };
+
+  const dispatch = useDispatch();
+
+  const login = (user: Login) => {
+    dispatch(postLogin(user));
+  };
+
+  const onInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
     setFormData({
       ...formData,
@@ -36,29 +63,95 @@ function LoginForm({className, login}: LoginFormProps): JSX.Element {
     });
   };
 
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    const validityMessage = validateLoginFormData(formData);
 
+    if (!formDirtiness.email || !formDirtiness.password) {
+      setFormDirtiness({
+        email: true,
+        password: true,
+      });
+
+      return;
+    }
     if (validityMessage) {
-      toast.error(validityMessage);
       return;
     }
 
     login(formData);
   };
 
+  useEffect(() => {
+    if (serverErrorMessage) {
+      setFormDirtiness(INITIAL_FORM_DIRTINESS);
+    }
+  }, [serverErrorMessage]);
+
+  useEffect(() => {
+    if (validityMessage) {
+      dispatch(clearAuthorizationErrorMessage());
+    }
+  }, [validityMessage]);
+
   return (
     <div className={classNames('sign-in', className)}>
-      <form action="#" className="sign-in__form" onSubmit={handleFormSubmit}>
+      <form action="#" className="sign-in__form" onSubmit={onFormSubmit}>
         <div className="sign-in__fields">
-          <div className="sign-in__field">
-            <input className="sign-in__input" type="text" placeholder="Email address" name="email" id="user-email" onChange={handleInputChange}/>
-            <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
+          {validityMessage && (
+            <div className="sign-in__message">
+              <p>{validityMessage}</p>
+            </div>
+          )}
+
+          {serverErrorMessage && (
+            <div className="sign-in__message">
+              <p>{serverErrorMessage}</p>
+            </div>
+          )}
+
+          <div
+            className={classNames('sign-in__field', {
+              'sign-in__field--error': !!emailValidityMessage,
+            })}
+          >
+            <input
+              className="sign-in__input"
+              type="text"
+              placeholder="Email address"
+              name="email"
+              id="user-email"
+              value={formData.email}
+              onChange={onInputChange}
+              onBlur={onInputBlur}
+            />
+            <label
+              className="sign-in__label visually-hidden"
+              htmlFor="user-email"
+            >
+              Email address
+            </label>
           </div>
-          <div className="sign-in__field">
-            <input className="sign-in__input" type="password" placeholder="Password" name="password" id="user-password" onChange={handleInputChange} />
-            <label className="sign-in__label visually-hidden" htmlFor="user-password">Password</label>
+          <div
+            className={classNames('sign-in__field', {
+              'sign-in__field--error': !!passwordValidityMessage,
+            })}
+          >
+            <input
+              className="sign-in__input"
+              type="password"
+              placeholder="Password"
+              name="password"
+              id="user-password"
+              value={formData.password}
+              onChange={onInputChange}
+              onBlur={onInputBlur}
+            />
+            <label
+              className="sign-in__label visually-hidden"
+              htmlFor="user-password"
+            >
+              Password
+            </label>
           </div>
         </div>
         <div className="sign-in__submit">
@@ -69,5 +162,4 @@ function LoginForm({className, login}: LoginFormProps): JSX.Element {
   );
 }
 
-export {LoginForm};
-export default connector(LoginForm);
+export default LoginForm;

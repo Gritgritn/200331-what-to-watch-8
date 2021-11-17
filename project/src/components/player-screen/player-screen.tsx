@@ -1,78 +1,150 @@
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../constants';
-import { useIdParam } from '../../hooks/useIdParams';
-import type { Film, State, ThunkAppDispatch } from '../../types/types';
-import { formatElapsedTime } from '../../utils/date';
-import { connect, ConnectedProps } from 'react-redux';
-import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import { Link, Redirect } from 'react-router-dom';
+import { isFetchError, isFetchNotReady, isFetchSuccess } from '../../utils/fetched-data';
 import LoadingScreen from '../loading/loading';
-import NotFoundScreen from '../not-found-screen/not-found-screen';
-import { useEffect } from 'react';
-import { getСurrentFilm } from '../../store/api-actions';
+import { useEffect, useRef } from 'react';
+import { useIdParam } from '../../hooks/use-id-param';
+import { AppRoute, FetchStatus } from '../../constants';
+import { getCurrentFilm } from '../../store/films/films-api-actions';
+import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
+import Loader from '../loader/loader';
+import round from 'lodash/round';
+import { formatElapsedTime } from '../../utils/date';
+import { useSelector, useDispatch } from 'react-redux';
+import { useVideo } from '../../hooks/use-video';
+import { setCurrentFilmFetchStatus } from '../../store/films/films-actions';
 
-const mapStateToProps = ({currentFilm}: State) => ({
-  fetchedFilm: currentFilm,
-});
+const TOGGLER_POSITION_DECIMAL_PRECISION = 2;
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  fetchCurrentFilm(id: number) {
-    dispatch(getСurrentFilm(id));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Element {
-  const id = useIdParam();
+function PlayerScreen(): JSX.Element {
+  const { id: filmId, error } = useIdParam();
+  const film = useSelector(getCurrentFilmData);
+  const filmStatus = useSelector(getCurrentFilmStatus);
+  const filmStatusRef = useRef(filmStatus);
+  const dispatch = useDispatch();
+  const fetchCurrentFilm = (id: number) => {
+    dispatch(getCurrentFilm(id));
+  };
 
   useEffect(() => {
-    if (fetchedFilm.data?.id === id) {
+    filmStatusRef.current = filmStatus;
+  }, [filmStatus]);
+
+  useEffect(() => {
+    if (!filmId || film?.id === filmId) {
       return;
     }
 
-    fetchCurrentFilm(id);
-  }, [id]);
+    fetchCurrentFilm(filmId);
+  }, [film?.id, filmId]);
 
-  if (isFetchNotReady(fetchedFilm)) {
+
+  useEffect(() => () => {
+    if (!isFetchSuccess(filmStatusRef.current)) {
+      dispatch(setCurrentFilmFetchStatus(FetchStatus.Idle));
+    }
+  }, []);
+
+  const {
+    ref: videoRef,
+    isPlay: isVideoPlay,
+    isReady: isVideoReady,
+    duration: videoDuration,
+    percentage: videoPercentage,
+    elapsedTime: videoElapsedTime,
+    togglePlay: toggleVideoPlay,
+    onPlay: onVideoPlay,
+    onPause: onVideoPause,
+    onLoadedData: onVideoLoadedData,
+    onTimeUpdate: onVideoTimeUpdate,
+    requestFullScreen: requestVideoFullScreen,
+  } = useVideo();
+
+  if (error || isFetchError(filmStatus)) {
+    return <Redirect to={AppRoute.NotFound()} />;
+  }
+
+  if (isFetchNotReady(filmStatus)) {
     return <LoadingScreen />;
   }
 
-  if (isFetchError(fetchedFilm)) {
-    return <NotFoundScreen />;
+  if (!film) {
+    return <Redirect to={AppRoute.NotFound()} />;
   }
 
-  const currentFilm = fetchedFilm.data as Film;
+  const onFullScreenButtonClick = () => {
+    requestVideoFullScreen();
+  };
 
-  const progress = Math.random();
-  const playerProgress = Number((progress * 100).toFixed(2));
-  const timeElapsed = currentFilm.runTime * (1 - progress);
+  const onPlayButtonClick = () => {
+    toggleVideoPlay();
+  };
+
+  const togglerLeftPosition = `${round(videoPercentage, TOGGLER_POSITION_DECIMAL_PRECISION)}%`;
+  const playButtonIcon = isVideoPlay ? '#pause' : '#play-s';
+  const timeValueTextContent = isVideoReady ? formatElapsedTime(videoElapsedTime) : 'Loading...';
 
   return (
     <div className="player">
-      <video src={currentFilm.videoLink} className="player__video" poster={currentFilm.previewImage}></video>
+      {!isVideoReady && <Loader />}
 
-      <Link to={AppRoute.Film(id)} className="player__exit" style={{textDecoration: 'none'}}>Exit</Link>
+      <video
+        ref={videoRef}
+        src={film.videoLink}
+        className="player__video"
+        poster={film.previewImage}
+        onPlay={onVideoPlay}
+        onPause={onVideoPause}
+        onTimeUpdate={onVideoTimeUpdate}
+        onLoadedData={onVideoLoadedData}
+      />
+
+      <Link
+        to={AppRoute.Film(filmId)}
+        className="player__exit"
+        style={{ textDecoration: 'none' }}
+      >
+        Exit
+      </Link>
 
       <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
-            <progress className="player__progress" value={playerProgress} max="100"></progress>
-            <div className="player__toggler" style={{left: `${playerProgress}%`}}>Toggler</div>
+            <progress
+              className="player__progress"
+              value={videoDuration - videoElapsedTime}
+              max={videoDuration}
+            />
+            <div
+              className="player__toggler"
+              style={{ left: togglerLeftPosition }}
+            >
+              Toggler
+            </div>
           </div>
-          <div className="player__time-value">{formatElapsedTime(timeElapsed)}</div>
+          <div className="player__time-value">
+            {timeValueTextContent}
+          </div>
         </div>
         <div className="player__controls-row">
-          <button type="button" className="player__play">
+          <button
+            type="button"
+            className="player__play"
+            onClick={onPlayButtonClick}
+            disabled={!isVideoReady}
+          >
             <svg viewBox="0 0 19 19" width="19" height="19">
-              <use xlinkHref="#play-s"></use>
+              <use xlinkHref={playButtonIcon}></use>
             </svg>
             <span>Play</span>
           </button>
-          <div className="player__name">{currentFilm.name}</div>
+          <div className="player__name">{film.name}</div>
 
-          <button type="button" className="player__full-screen">
+          <button
+            type="button"
+            className="player__full-screen"
+            onClick={onFullScreenButtonClick}
+            disabled={!isVideoReady}
+          >
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>
             </svg>
@@ -84,5 +156,4 @@ function PlayerScreen({fetchedFilm, fetchCurrentFilm}: PropsFromRedux): JSX.Elem
   );
 }
 
-export { PlayerScreen };
-export default connector(PlayerScreen);
+export default PlayerScreen;

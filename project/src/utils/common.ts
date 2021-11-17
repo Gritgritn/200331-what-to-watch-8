@@ -1,25 +1,35 @@
-import type { User } from '../types/types';
-import { EMAIL_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH, Rating, ReviewContent } from '../constants';
+import { EMAIL_REGEX, LATIN_REGEX, NUMERIC_REGEX, EMPTY_SPACE, MIN_PASSWORD_LENGTH, Rating, ReviewContent } from '../constants';
 
-const validateLoginFormData = ({email, password}: User): string => {
+const getEmailValidityMessage = ( email: string ): string => {
   if (!email) {
-    return 'E-mail is requred';
+    return 'E-mail is required.';
   }
 
   if (!EMAIL_REGEX.test(email.toLowerCase())) {
-    return 'E-mail is invalid';
+    return 'E-mail is invalid.';
   }
+  return '';
+};
 
+const getPasswordValidityMessage = (password: string): string => {
   if (!password) {
-    return 'Password is required';
+    return 'Password is required.';
   }
 
   if (password.length < MIN_PASSWORD_LENGTH) {
-    return `Password must have at least ${MIN_PASSWORD_LENGTH} symbols`;
+    return `Password must have at least ${MIN_PASSWORD_LENGTH} symbols.`;
+  }
+
+  if (!NUMERIC_REGEX.test(password.toLowerCase())) {
+    return 'Password must contain at least one number.';
+  }
+
+  if (!LATIN_REGEX.test(password.toLowerCase())) {
+    return 'Password must contain at least one literal symbol.';
   }
 
   if (password.includes(EMPTY_SPACE)) {
-    return 'Password can not containt empty spaces';
+    return 'Password can not contain  empty spaces.';
   }
 
   return '';
@@ -49,7 +59,7 @@ const isAllCasesChecked = (argument: never): never => {
 };
 
 const validateReviewRating = (rating: number): boolean => {
-  if (rating >= Rating.MinValue && rating >= Rating.MaxValue) {
+  if (rating >= Rating.MinValue && rating <= Rating.MaxValue) {
     return true;
   }
 
@@ -64,4 +74,4 @@ const validateReviewContent = (content: string): boolean => {
   return false;
 };
 
-export { validateReviewRating, validateReviewContent, validateLoginFormData, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+export { validateReviewRating, validateReviewContent, getPasswordValidityMessage, getEmailValidityMessage, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};

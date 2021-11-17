@@ -1,59 +1,46 @@
-import { useState, ChangeEvent, FormEvent, Fragment, useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { FetchStatus, Rating } from '../../constants';
-import { postComment } from '../../store/api-actions';
-import { CommentPost, State, ThunkAppDispatch } from '../../types/types';
-import {
-  validateReviewContent,
-  validateReviewRating
-} from '../../utils/common';
+import { useState, ChangeEvent, FormEvent, Fragment, useEffect, useMemo } from 'react';
+import { postComment } from '../../store/comments/comments-api-actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { Rating } from '../../constants';
+import { CommentPost } from '../../types/types';
+import { useIdParam } from '../../hooks/use-id-param';
+import { isNewCommentsLoading } from '../../store/comments/comments-selectors';
+import { validateReviewContent, validateReviewRating } from '../../utils/common';
 
-type AddReviewFormProps = {
-  filmId: number;
-};
+const INITIAL_FORM_DATA: CommentPost = {
+  rating: 0,
+  comment: '',
+} as const;
 
-const mapStateToProps = ({ newComment }: State) => ({
-  isFormLoading: newComment.status === FetchStatus.Loading,
-});
-
-const mapDispatchToProps = (
-  dispatch: ThunkAppDispatch,
-  { filmId }: AddReviewFormProps,
-) => ({
-  createReview(formData: CommentPost) {
-    dispatch(postComment(filmId, formData));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function AddReviewForm({
-  isFormLoading,
-  createReview,
-}: PropsFromRedux): JSX.Element {
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
+function AddReviewForm(): JSX.Element {
+  const { id: filmId } = useIdParam() as { id: number };
+  const [rating, setRating] = useState(INITIAL_FORM_DATA.rating);
+  const [comment, setComment] = useState(INITIAL_FORM_DATA.comment);
   const [isFormValid, setFormValidity] = useState(false);
 
-  useEffect(() => {
-    setFormValidity(validateReviewRating(rating));
-  }, [rating]);
+  const isFormLoading = useSelector(isNewCommentsLoading);
+
+  const dispatch = useDispatch();
+
+  const createReview = (formData: CommentPost) => {
+    dispatch(postComment(filmId, formData));
+  };
+  const isRatingValid = useMemo(() => validateReviewRating(rating), [rating]);
+  const isReviewContentValid = useMemo(() => validateReviewContent(comment), [comment]);
 
   useEffect(() => {
-    setFormValidity(validateReviewContent(comment));
-  }, [comment]);
+    setFormValidity(isRatingValid && isReviewContentValid);
+  }, [isRatingValid, isReviewContentValid]);
 
-  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const onRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(Number(evt.currentTarget.value));
   };
 
-  const handleCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+  const onCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(evt.currentTarget.value);
   };
 
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const formData: CommentPost = {
       rating,
@@ -65,7 +52,7 @@ function AddReviewForm({
 
   return (
     <div className="add-review">
-      <form action="#" className="add-review__form" onSubmit={handleFormSubmit}>
+      <form action="#" className="add-review__form" onSubmit={onFormSubmit}>
         <div className="rating">
           <div className="rating__stars">
             { new Array(Rating.MaxValue)
@@ -86,7 +73,7 @@ function AddReviewForm({
                       value={value}
                       checked={IsChecked}
                       disabled={isFormLoading}
-                      onChange={handleRatingChange}
+                      onChange={onRatingChange}
                     />
                     <label className="rating__label" htmlFor={inputId}>
                       Rating {value}
@@ -105,7 +92,7 @@ function AddReviewForm({
             placeholder="Review text"
             value={comment}
             disabled={isFormLoading}
-            onChange={handleCommentChange}
+            onChange={onCommentChange}
           />
           <div className="add-review__submit">
             <button
@@ -122,5 +109,4 @@ function AddReviewForm({
   );
 }
 
-export { AddReviewForm };
-export default connector(AddReviewForm);
+export default AddReviewForm;

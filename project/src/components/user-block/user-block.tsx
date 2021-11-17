@@ -1,39 +1,35 @@
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
-import { deleteLogout } from '../../store/api-actions';
-import { State, ThunkAppDispatch } from '../../types/types';
+import { deleteLogout } from '../../store/authorization/authorization-api-actions';
+import { getAuthorizationStatus, getUserAvatar } from '../../store/authorization/authorization-selectors';
+import { CSSProperties } from 'react';
 
-const mapStateToProps = ({authorization}: State) => ({
-  authorization,
-});
+const USER_BLOCK_STYLES: CSSProperties = {
+  minHeight: 63,
+};
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  logout() {
+function UserBlock():JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const userAvatar = useSelector(getUserAvatar);
+  const dispatch = useDispatch();
+  const logout = () => {
     dispatch(deleteLogout());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function UserBlock({authorization, logout}: PropsFromRedux):JSX.Element {
-
+  };
   return (
-    <ul className="user-block" style={{ minHeight: 63 }}>
-      { authorization.status === AuthorizationStatus.Auth ?
+    <ul className="user-block" style={USER_BLOCK_STYLES}>
+      { authorizationStatus  === AuthorizationStatus.Auth ?
         (
           <>
             <li className="user-block__item">
               <Link to={AppRoute.MyList()}>
                 <div className="user-block__avatar">
-                  <img src={authorization.info?.avatarUrl} alt="User avatar" width="63" height="63" />
+                  <img src={userAvatar} alt="User avatar" width="63" height="63" />
                 </div>
               </Link>
             </li>
             <li className="user-block__item">
-              <span className="user-block__link" onClick={logout}>Sign out</span>
+              <span className="user-block__link" onClick={() => logout()}>Sign out</span>
             </li>
           </>
         )  : (
@@ -45,5 +41,4 @@ function UserBlock({authorization, logout}: PropsFromRedux):JSX.Element {
   );
 }
 
-export {UserBlock};
-export default connector(UserBlock);
+export default UserBlock;
