@@ -25,6 +25,10 @@ const MAX_OVERVIEW_ACTORS_COUNT = 4;
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+const UNKNOWN_ACTION = {
+  type: 'UNKNOWN_ACTION',
+} as const;
+
 const AppRoute = {
   Root: () => '/',
   Login: () => '/login',
@@ -131,4 +135,4 @@ const ReviewContent = {
   MaxLength: 400,
 } as const;
 
-export { MAX_OVERVIEW_ACTORS_COUNT, FavoriteStatus, Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType, NUMERIC_REGEX, LATIN_REGEX };
+export { UNKNOWN_ACTION, MAX_OVERVIEW_ACTORS_COUNT, FavoriteStatus, Rating, ReviewContent, AUTH_TOKEN_KEY_NAME, MIN_PASSWORD_LENGTH, EMPTY_SPACE, EMAIL_REGEX, APIRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT, CATALOG_INITIAL_PAGE, CATALOG_PAGE_SIZE, MAX_GENRES_COUNT, ALL_GENRES, ActionType, FilmCardBackgroundSize, AppRoute, AuthorizationStatus, FilmCardTab, ratingDescriptionToLowerLimit, RatingDescription, CustomRouteType, NUMERIC_REGEX, LATIN_REGEX };
