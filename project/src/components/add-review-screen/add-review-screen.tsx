@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { AppRoute, FetchStatus } from '../../constants';
 import { useIdParam } from '../../hooks/use-id-param';
-import { isFetchError, isFetchNotReady } from '../../utils/fetched-data';
+import { isFetchError, isFetchNotReady, isFetchSuccess } from '../../utils/fetched-data';
 import PageHeader from '../header/header';
 import PageTitle from '../title/title';
 import Logo from '../logo/logo';
@@ -15,11 +17,13 @@ import LoadingScreen from '../loading/loading';
 import { getCurrentFilm } from '../../store/films/films-api-actions';
 import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
 import { FilmCardBackgroundSize } from '../../constants';
+import { setCurrentFilmFetchStatus } from '../../store/films/films-actions';
 
 function AddReviewScreen(): JSX.Element {
   const { id: filmId, error } = useIdParam();
   const film = useSelector(getCurrentFilmData);
   const filmStatus = useSelector(getCurrentFilmStatus);
+  const filmStatusRef = useRef(filmStatus);
   const dispatch = useDispatch();
   const fetchCurrentFilm = (id: number) => {
     dispatch(getCurrentFilm(id));
@@ -33,8 +37,18 @@ function AddReviewScreen(): JSX.Element {
     fetchCurrentFilm(filmId);
   }, [film?.id, filmId]);
 
+  useEffect(() => {
+    filmStatusRef.current = filmStatus;
+  }, [filmStatus]);
+
+  useEffect(() => () => {
+    if (!isFetchSuccess(filmStatusRef.current)) {
+      dispatch(setCurrentFilmFetchStatus(FetchStatus.Idle));
+    }
+  }, []);
+
   if (error || isFetchError(filmStatus)) {
-    return <NotFoundScreen />;
+    return <Redirect to={AppRoute.NotFound()} />;
   }
 
   if (isFetchNotReady(filmStatus)) {
@@ -42,7 +56,7 @@ function AddReviewScreen(): JSX.Element {
   }
 
   if (!film) {
-    return <NotFoundScreen />;
+    return <Redirect to={AppRoute.NotFound()} />;
   }
 
   return (

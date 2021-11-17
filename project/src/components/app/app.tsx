@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import browserHistory from '../../browser-history';
 import MainScreen from '../main-screen/main-screen';
-import { Router as BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router as BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
 import LoginScreen from '../login-screen/login-screen';
@@ -40,8 +40,11 @@ function App(): JSX.Element {
         <CustomRoute path={AppRoute.AddReview()} exact type={CustomRouteType.Private}>
           <AddReviewScreen />
         </CustomRoute>
-        <Route>
+        <Route path={AppRoute.NotFound()} exact>
           <NotFoundScreen />
+        </Route>
+        <Route>
+        <Redirect to={AppRoute.NotFound()} />
         </Route>
       </Switch>
     </BrowserRouter>

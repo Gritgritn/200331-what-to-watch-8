@@ -32,6 +32,7 @@ const AppRoute = {
   Film: (id:string | number = ':id') => generatePath('/films/:id', { id: id}),
   AddReview: (id:string | number = ':id') => generatePath('/films/:id/review', { id: id}),
   Player: (id:string | number = ':id') => generatePath('/player/:id', { id: id}),
+  NotFound: () => '/404',
 } as const;
 
 const FavoriteStatus = {
