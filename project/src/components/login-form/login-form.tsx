@@ -55,7 +55,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
     dispatch(postLogin(user));
   };
 
-  const onInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
     setFormData({
       ...formData,
@@ -121,7 +121,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               name="email"
               id="user-email"
               value={formData.email}
-              onChange={onInputChange}
+              onChange={handleInputChange}
               onBlur={onInputBlur}
             />
             <label
@@ -143,7 +143,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               name="password"
               id="user-password"
               value={formData.password}
-              onChange={onInputChange}
+              onChange={handleInputChange}
               onBlur={onInputBlur}
             />
             <label

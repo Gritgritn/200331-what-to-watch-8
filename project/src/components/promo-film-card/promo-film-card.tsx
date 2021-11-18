@@ -5,8 +5,8 @@ import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 import FilmCardPoster from '../film-card-poster/film-card-poster';
 import FilmCardButtons from '../film-card-buttons/film-card-buttons';
-import PageTitle from '../title/title';
-import PageHeader from '../header/header';
+import PageTitle from '../page-title/page-title';
+import PageHeader from '../page-header/page-header';
 
 type PromoFilmCardProps = {
   film: Film,

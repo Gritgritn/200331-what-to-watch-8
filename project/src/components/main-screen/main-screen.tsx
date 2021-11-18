@@ -8,7 +8,7 @@ import CatalogGenresList from '../catalog-genres-list/catalog-genres-list';
 import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import CatalogMoreButton from '../catalog-more-button/catalog-more-button';
 import PageFooter from '../page-footer/page-footer';
-import LoadingScreen from '../loading/loading';
+import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { getGenres } from '../../store/genres/genres-selectors';
 import { setFilter } from '../../store/filter/filter-actions';

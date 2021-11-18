@@ -1,6 +1,6 @@
 import { Link, Redirect } from 'react-router-dom';
 import { isFetchError, isFetchNotReady, isFetchSuccess } from '../../utils/fetched-data';
-import LoadingScreen from '../loading/loading';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { useEffect, useRef } from 'react';
 import { useIdParam } from '../../hooks/use-id-param';
 import { AppRoute, FetchStatus } from '../../constants';

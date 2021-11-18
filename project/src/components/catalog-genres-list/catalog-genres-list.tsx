@@ -10,7 +10,7 @@ const BASE_CLASS_NAME = 'catalog__genres-item';
 
 
 function CatalogGenresList({genres, activeGenre, setActiveGenre}: CatalogGenresListProps): JSX.Element {
-  const onCatalogItemClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleCatalogItemClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     const newActiveGenre = evt.currentTarget.dataset.value as string;
     setActiveGenre(newActiveGenre);
@@ -23,7 +23,7 @@ function CatalogGenresList({genres, activeGenre, setActiveGenre}: CatalogGenresL
 
           return (
             <li key={genre} className={fullClassName}>
-              <a href="#genre" className="catalog__genres-link" data-value={genre} onClick={onCatalogItemClick}>{genre}</a>
+              <a href="#genre" className="catalog__genres-link" data-value={genre} onClick={handleCatalogItemClick}>{genre}</a>
             </li>
           );
         },

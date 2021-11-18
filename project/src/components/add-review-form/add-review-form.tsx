@@ -32,7 +32,7 @@ function AddReviewForm(): JSX.Element {
     setFormValidity(isRatingValid && isReviewContentValid);
   }, [isRatingValid, isReviewContentValid]);
 
-  const onRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setRating(Number(evt.currentTarget.value));
   };
 
@@ -73,7 +73,7 @@ function AddReviewForm(): JSX.Element {
                       value={value}
                       checked={IsChecked}
                       disabled={isFormLoading}
-                      onChange={onRatingChange}
+                      onChange={handleRatingChange}
                     />
                     <label className="rating__label" htmlFor={inputId}>
                       Rating {value}

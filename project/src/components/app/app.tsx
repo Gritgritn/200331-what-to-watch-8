@@ -9,7 +9,7 @@ import AddReviewScreen from '../add-review-screen/add-review-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { AppRoute, CustomRouteType, AuthorizationStatus} from '../../constants';
 import CustomRoute from '../custom-route/custom-route';
-import LoadingScreen from '../loading/loading';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { getAuthorizationStatus } from '../../store/authorization/authorization-selectors';
 
 function App(): JSX.Element {

@@ -17,7 +17,7 @@ type ServerAuthorizationInfo = {
   id: number;
   email: string;
   name: string;
-  'avatar_url': string;
+  avatar_url: string;
   token: Token;
 };
 

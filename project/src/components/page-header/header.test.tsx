@@ -1,6 +1,6 @@
 import { lorem } from 'faker';
 import { render, screen } from '@testing-library/react';
-import PageHeader from './header';
+import PageHeader from './page-header';
 
 const mockClassName = lorem.word();
 

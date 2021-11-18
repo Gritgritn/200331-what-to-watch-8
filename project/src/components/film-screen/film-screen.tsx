@@ -7,7 +7,7 @@ import CatalogFilmsList from '../catalog-films-list/catalog-films-list';
 import FullFilmCard from '../full-film-card/full-film-card';
 import Catalog from '../catalog/catalog';
 import PageContent from '../page-content/page-content';
-import LoadingScreen from '../loading/loading';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { useEffect, useRef, useState } from 'react';
 import { AppRoute, FetchStatus, MAX_SIMILAR_FILMS_COUNT } from '../../constants';
 import { getCurrentComments } from '../../store/comments/comments-api-actions';
