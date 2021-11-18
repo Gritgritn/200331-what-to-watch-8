@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
-import browserHistory from '../../browser-history';
 import MainScreen from '../main-screen/main-screen';
-import { Router as BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import FilmScreen from '../film-screen/film-screen';
 import PlayerScreen from '../player-screen/player-screen';
 import LoginScreen from '../login-screen/login-screen';
@@ -20,34 +19,32 @@ function App(): JSX.Element {
   }
 
   return (
-    <BrowserRouter history={browserHistory}>
-      <Switch>
-        <Route path={AppRoute.Root()} exact>
-          <MainScreen />
-        </Route>
-        <Route path={AppRoute.Film()} exact>
-          <FilmScreen />
-        </Route>
-        <Route path={AppRoute.Player()} exact>
-          <PlayerScreen />
-        </Route>
-        <CustomRoute path={AppRoute.Login()} exact type={CustomRouteType.Guest}>
-          <LoginScreen />
-        </CustomRoute>
-        <CustomRoute path={AppRoute.MyList()} exact type={CustomRouteType.Private}>
-          <MyListScreen />
-        </CustomRoute>
-        <CustomRoute path={AppRoute.AddReview()} exact type={CustomRouteType.Private}>
-          <AddReviewScreen />
-        </CustomRoute>
-        <Route path={AppRoute.NotFound()} exact>
-          <NotFoundScreen />
-        </Route>
-        <Route>
-          <Redirect to={AppRoute.NotFound()} />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route path={AppRoute.Root()} exact>
+        <MainScreen />
+      </Route>
+      <Route path={AppRoute.Film()} exact>
+        <FilmScreen />
+      </Route>
+      <Route path={AppRoute.Player()} exact>
+        <PlayerScreen />
+      </Route>
+      <CustomRoute path={AppRoute.Login()} exact type={CustomRouteType.Guest}>
+        <LoginScreen />
+      </CustomRoute>
+      <CustomRoute path={AppRoute.MyList()} exact type={CustomRouteType.Private}>
+        <MyListScreen />
+      </CustomRoute>
+      <CustomRoute path={AppRoute.AddReview()} exact type={CustomRouteType.Private}>
+        <AddReviewScreen />
+      </CustomRoute>
+      <Route path={AppRoute.NotFound()} exact>
+        <NotFoundScreen />
+      </Route>
+      <Route>
+        <Redirect to={AppRoute.NotFound()} />
+      </Route>
+    </Switch>
   );
 }
 

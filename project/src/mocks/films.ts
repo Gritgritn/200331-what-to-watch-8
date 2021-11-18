@@ -4,7 +4,10 @@ import type { Film, ServerFilm  } from '../types/types';
 const createFullName = () => `${name.firstName()} ${name.lastName()}`;
 
 const createMockFilm = (): Film => {
-  const actorsAmount = datatype.number(8);
+  const actorsAmount = datatype.number({
+    min: 1,
+    max: 8,
+  });
   const actors = new Array(actorsAmount).fill(null).map(() => createFullName());
 
   return {
@@ -16,11 +19,11 @@ const createMockFilm = (): Film => {
     backgroundColor: internet.color(),
     videoLink: internet.url(),
     previewVideoLink: internet.url(),
-    description: lorem.paragraphs(),
+    description: lorem.paragraph(),
     rating: datatype.number(),
     scoresCount: datatype.number(),
     director: createFullName(),
-    genre: lorem.word(),
+    genre: lorem.word(10),
     runTime: datatype.number(),
     actors,
     released: date.past().getFullYear(),
@@ -29,13 +32,19 @@ const createMockFilm = (): Film => {
 };
 
 const createMockFilms = (): Film[] => {
-  const amount = datatype.number(30);
+  const amount = datatype.number({
+    min: 10,
+    max: 30,
+  });
   const mockFilms = new Array(amount).fill(null).map(() => createMockFilm());
   return mockFilms;
 };
 
 const createMockServerFilm = (): ServerFilm => {
-  const actorsAmount = datatype.number(8);
+  const actorsAmount = datatype.number({
+    min: 1,
+    max: 8,
+  });
   const actors = new Array(actorsAmount).fill(null).map(() => createFullName());
 
   return {
@@ -47,11 +56,11 @@ const createMockServerFilm = (): ServerFilm => {
     'background_color': internet.color(),
     'video_link': internet.url(),
     'preview_video_link': internet.url(),
-    description: lorem.paragraphs(),
+    description: lorem.paragraph(),
     rating: datatype.number(),
     'scores_count': datatype.number(),
     director: createFullName(),
-    genre: lorem.word(),
+    genre: lorem.word(10),
     'run_time': datatype.number(),
     starring: actors,
     released: date.past().getFullYear(),
@@ -60,7 +69,10 @@ const createMockServerFilm = (): ServerFilm => {
 };
 
 const createMockServerFilms = (): ServerFilm[] => {
-  const amount = datatype.number(30);
+  const amount = datatype.number({
+    min: 10,
+    max: 30,
+  });
   const mockFilms = new Array(amount).fill(null).map(() => createMockServerFilm());
   return mockFilms;
 };

@@ -1,5 +1,6 @@
 import { datatype, date, internet, lorem } from 'faker';
 import type { Comment, CommentPost, ServerCommentGet } from '../types/types';
+import { LINE_BREAK } from '../constants';
 
 const createMockComment = (): Comment  => ({
   id: datatype.number(),
@@ -9,11 +10,14 @@ const createMockComment = (): Comment  => ({
   },
   date: date.recent(),
   rating: datatype.number(),
-  comment: lorem.paragraphs(),
+  comment: lorem.paragraphs(3, LINE_BREAK),
 });
 
 const createMockComments = (): Comment[] => {
-  const amount = datatype.number(10);
+  const amount = datatype.number({
+    min: 1,
+    max: 10,
+  });
 
   const mockComments = new Array(amount).fill(null).map(() => createMockComment());
 
@@ -33,11 +37,14 @@ const createMockServerComment = (): ServerCommentGet  => ({
   },
   date: date.recent().toISOString(),
   rating: datatype.number(),
-  comment: lorem.paragraphs(),
+  comment: lorem.paragraphs(3, LINE_BREAK),
 });
 
 const createServerMockComments = (): ServerCommentGet[] => {
-  const amount = datatype.number(10);
+  const amount = datatype.number({
+    min: 1,
+    max: 10,
+  });
 
   const mockComments = new Array(amount).fill(null).map(() => createMockServerComment());
 
