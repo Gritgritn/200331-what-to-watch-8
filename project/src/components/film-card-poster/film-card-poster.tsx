@@ -22,8 +22,8 @@ function FilmCardPoster({src, alt, size}: FilmCardBackgroundProps): JSX.Element 
   const fullClassName = `${BASE_CLASS_NAME} ${sizedClassName}`;
 
   return (
-    <div className={fullClassName}>
-      <img src={src} alt={alt} width="218" height="327" />
+    <div className={fullClassName} data-testid="film-card-poster-container">
+      <img src={src} alt={alt} width="218" height="327" data-testid="film-card-poster" />
     </div>
   );
 }

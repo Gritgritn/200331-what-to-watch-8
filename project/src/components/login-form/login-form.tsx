@@ -94,17 +94,17 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
   }, [validityMessage]);
 
   return (
-    <div className={classNames('sign-in', className)}>
-      <form action="#" className="sign-in__form" onSubmit={onFormSubmit}>
+    <div className={classNames('sign-in', className)} data-testid="login-form-container">
+      <form action="#" className="sign-in__form" onSubmit={onFormSubmit} data-testid="login-form">
         <div className="sign-in__fields">
           {validityMessage && (
-            <div className="sign-in__message">
+            <div className="sign-in__message" data-testid="validity-message">
               <p>{validityMessage}</p>
             </div>
           )}
 
           {serverErrorMessage && (
-            <div className="sign-in__message">
+            <div className="sign-in__message" data-testid="validity-message">
               <p>{serverErrorMessage}</p>
             </div>
           )}
@@ -123,6 +123,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               value={formData.email}
               onChange={handleInputChange}
               onBlur={onInputBlur}
+              data-testid="email-input"
             />
             <label
               className="sign-in__label visually-hidden"
@@ -145,6 +146,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               value={formData.password}
               onChange={handleInputChange}
               onBlur={onInputBlur}
+              data-testid="password-input"
             />
             <label
               className="sign-in__label visually-hidden"
@@ -155,7 +157,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
           </div>
         </div>
         <div className="sign-in__submit">
-          <button className="sign-in__btn" type="submit">Sign in</button>
+          <button className="sign-in__btn" type="submit" data-testid="submit-button">Sign in</button>
         </div>
       </form>
     </div>

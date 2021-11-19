@@ -19,7 +19,13 @@ const createMockComments = (): Comment[] => {
     max: 10,
   });
 
-  const mockComments = new Array(amount).fill(null).map(() => createMockComment());
+  const mockComments = new Array(amount)
+    .fill(null)
+    .map(() => createMockComment())
+    .map((comment, index) => ({
+      ...comment,
+      id: index + 1,
+    }));
 
   return mockComments;
 };

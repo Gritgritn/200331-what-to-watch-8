@@ -1,13 +1,13 @@
 import { lorem } from 'faker';
-import { createMockAuthorizationInfo } from '../../mocks/authorization';
 import { AuthorizationStatus, UNKNOWN_ACTION } from '../../constants';
+import { createMockAuthorizationInfo } from '../../mocks/authorization';
 import { clearAuthorizationErrorMessage, setAuthorizationErrorMessage, setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
 import { authorizationInitialState } from './authorization-initial-state';
 import { authorizationReducer } from './authorization-reducer';
 
 const mockErrorMessage = lorem.sentence();
 
-const mockAuthorizationInfo = createMockAuthorizationInfo;
+const mockAuthorizationInfo = createMockAuthorizationInfo();
 
 describe('Reducer: Authorization', () => {
   it('without additional parameters should return initial state', () => {
@@ -34,7 +34,7 @@ describe('Reducer: Authorization', () => {
   it('should clear authorization error message', () => {
     expect(authorizationReducer({
       ...authorizationInitialState,
-      errorMessage: mockErrorMessage ,
+      errorMessage: mockErrorMessage,
     }, clearAuthorizationErrorMessage()))
       .toEqual({
         ...authorizationInitialState,

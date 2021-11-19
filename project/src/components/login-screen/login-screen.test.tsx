@@ -3,35 +3,29 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
-import { AuthorizationStatus } from '../../constants';
 import { State } from '../../types/types';
-import { createMockComments } from '../../mocks/comments';
-import { createMockFilm } from '../../mocks/films';
-import FullFilmCard from './full-film-card';
+import LoginScreen from './login-screen';
 
 const history = createMemoryHistory();
-
-const mockFilm = createMockFilm();
-const mockComments = createMockComments();
 
 const mockStore = configureMockStore<State>();
 
 const store = mockStore({
   authorization: {
-    status: AuthorizationStatus.Auth,
+    errorMessage: '',
   },
 });
 
-describe('Component: FullFilmCard', () => {
+describe('Component: LoginScreen', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <FullFilmCard film={mockFilm} comments={mockComments} />
-        </Router>,
+          <LoginScreen />
+        </Router>
       </Provider>,
     );
 
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
+    expect(screen.queryByTestId('login-form')).toBeInTheDocument();
   });
 });

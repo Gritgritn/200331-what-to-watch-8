@@ -1,32 +1,21 @@
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import ReactRouter from 'react-router';
-import { ThunkDispatch } from '@reduxjs/toolkit';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { datatype } from 'faker';
-import { Action, State } from '../../types/types';
-import { createAPI } from '../../services/api';
+import { State } from '../../types/types';
 import { AppRoute, AuthorizationStatus, FetchStatus } from '../../constants';
 import App from './app';
 
-const UNKOWN_PATH = '/unkown-path';
+const UNKNOWN_PATH = '/unknown-path';
 
 const history = createMemoryHistory();
 
 const mockId = datatype.number();
 
-const fakeUnauthorizedCallback = jest.fn();
-const api = createAPI(fakeUnauthorizedCallback());
-const middlewares = [thunk.withExtraArgument(api)];
-
-const mockStore = configureMockStore<
-  State,
-  Action,
-  ThunkDispatch<State, typeof api, Action>
->(middlewares);
+const mockStore = configureMockStore<State>();
 
 const initialStore = mockStore({
   films: {
@@ -90,7 +79,14 @@ const userStore = mockStore({
   },
 });
 
+initialStore.dispatch = jest.fn();
+userStore.dispatch = jest.fn();
+
 describe('Component: App', () => {
+  beforeEach(() => {
+    jest.spyOn(ReactRouter, 'useParams').mockReturnValue({ id: String(mockId)});
+  });
+
   it('should render correctly', () => {
     render(
       <Provider store={initialStore}>
@@ -107,7 +103,7 @@ describe('Component: App', () => {
   });
 
 
-  it('root screen should render correctty', () => {
+  it('root screen should render correctly', () => {
     history.push(AppRoute.Root());
 
     render(
@@ -124,7 +120,7 @@ describe('Component: App', () => {
     expect(screen.queryByText(/Go to main page/i)).not.toBeInTheDocument();
   });
 
-  it('login screen should render correctty', () => {
+  it('login screen should render correctly', () => {
     history.push(AppRoute.Login());
 
     render(
@@ -140,7 +136,7 @@ describe('Component: App', () => {
     expect(screen.queryByText(/Go to main page/i)).not.toBeInTheDocument();
   });
 
-  it('my list screen should render correctty', () => {
+  it('my list screen should render correctly', () => {
     history.push(AppRoute.MyList());
 
     render(
@@ -157,9 +153,7 @@ describe('Component: App', () => {
     expect(screen.queryByText(/Go to main page/i)).not.toBeInTheDocument();
   });
 
-  it('film screen should render correctty', () => {
-    jest.spyOn(ReactRouter, 'useParams').mockReturnValue({ id: String(mockId)});
-
+  it('film screen should render correctly', () => {
     history.push(AppRoute.Film());
 
     render(
@@ -175,9 +169,7 @@ describe('Component: App', () => {
     expect(screen.queryByText(/Go to main page/i)).not.toBeInTheDocument();
   });
 
-  it('add review screen should render correctty', () => {
-    jest.spyOn(ReactRouter, 'useParams').mockReturnValue({ id: String(mockId)});
-
+  it('add review screen should render correctly', () => {
     history.push(AppRoute.AddReview());
 
     render(
@@ -195,8 +187,6 @@ describe('Component: App', () => {
   });
 
   it('player screen should render correctly', () => {
-    jest.spyOn(ReactRouter, 'useParams').mockReturnValue({ id: String(mockId)});
-
     history.push(AppRoute.Player());
 
     render(
@@ -214,7 +204,7 @@ describe('Component: App', () => {
   });
 
   it('not found screen should render correctly', async () => {
-    history.push(UNKOWN_PATH);
+    history.push(UNKNOWN_PATH);
 
     render(
       <Provider store={userStore}>

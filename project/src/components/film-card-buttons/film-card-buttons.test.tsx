@@ -1,6 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
-import { datatype } from 'faker';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { AuthorizationStatus } from '../../constants';
 import { State } from '../../types/types';
 import FilmCardButtons from './film-card-buttons';
 import { createMockFilm } from '../../mocks/films';
+import userEvent from '@testing-library/user-event';
 
 const mockFilm = createMockFilm();
 
@@ -26,6 +26,8 @@ const guestStore = mockStore({
     status: AuthorizationStatus.NotAuth,
   },
 });
+
+userStore.dispatch = jest.fn();
 
 describe('Component: FilmCardButtons', () => {
   it('should render correctly with isFilmFavorite', () => {
@@ -96,5 +98,31 @@ describe('Component: FilmCardButtons', () => {
     expect(screen.queryByText(/Play/i)).toBeInTheDocument();
     expect(screen.queryByText(/My list/i)).toBeInTheDocument();
     expect(screen.queryByText(/Add Review/i)).not.toBeInTheDocument();
+  });
+  it('should handle post request to put film in my list', () => {
+    render(
+      <Provider store={userStore}>
+        <Router history={history}>
+          <FilmCardButtons film={mockFilm} isFilmFavorite withAddReview />
+        </Router>,
+      </Provider>,
+    );
+
+    userEvent.click(screen.getByText(/My list/i));
+    expect(userStore.dispatch).toHaveBeenCalledTimes(1);
+  });
+
+
+  it('should handle post request to remove film from my list', () => {
+    render(
+      <Provider store={userStore}>
+        <Router history={history}>
+          <FilmCardButtons film={mockFilm} isFilmFavorite={false} withAddReview />
+        </Router>,
+      </Provider>,
+    );
+
+    userEvent.click(screen.getByText(/My list/i));
+    expect(userStore.dispatch).toHaveBeenCalledTimes(1);
   });
 });

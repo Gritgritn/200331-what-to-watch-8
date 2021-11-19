@@ -96,6 +96,7 @@ function PlayerScreen(): JSX.Element {
         onPause={onVideoPause}
         onTimeUpdate={onVideoTimeUpdate}
         onLoadedData={onVideoLoadedData}
+        data-testid="video-player"
       />
 
       <Link
