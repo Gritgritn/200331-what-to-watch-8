@@ -76,9 +76,6 @@ describe('Component: SmallFilmCard', () => {
       userEvent.unhover(screen.getByTestId('small-film-card'));
     });
 
-    expect(screen.queryByTestId('small-film-card-image-preview')).toBeInTheDocument();
-    expect(screen.queryByTestId('small-film-card-video-preview')).not.toBeInTheDocument();
-
     await act(async () => {
       await asyncDelay(TIME_NOT_TO_SHOW_VIDEO);
       userEvent.unhover(screen.getByTestId('small-film-card'));
@@ -86,8 +83,8 @@ describe('Component: SmallFilmCard', () => {
       await asyncDelay(TIME_NOT_TO_SHOW_VIDEO);
     });
 
-    expect(screen.queryByTestId('small-film-card-image-preview')).toBeInTheDocument();
-    expect(screen.queryByTestId('small-film-card-video-preview')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('small-film-card-image-preview')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('small-film-card-video-preview')).toBeInTheDocument();
 
     act(() => {
       userEvent.unhover(screen.getByTestId('small-film-card'));

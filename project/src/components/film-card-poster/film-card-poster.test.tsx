@@ -36,14 +36,4 @@ describe('Component: FilmCardPoster', () => {
     expect(screen.getByTestId('film-card-poster-container')).toHaveClass('film-card__poster--big');
     expect(screen.getByTestId('film-card-poster-container')).not.toHaveClass('film-card__poster--small');
   });
-
-  it('should render correctly with small and big props', () => {
-    render(
-      <FilmCardPoster src={mockSource} alt={mockAltText} size={FilmCardBackgroundSize.Small && FilmCardBackgroundSize.Big} />,
-    );
-
-    expect(screen.getByAltText(mockAltText)).toHaveAttribute('src', mockSource);
-    expect(screen.getByTestId('film-card-poster-container')).toHaveClass('film-card__poster--big');
-    expect(screen.getByTestId('film-card-poster-container')).toHaveClass('film-card__poster--small');
-  });
 });

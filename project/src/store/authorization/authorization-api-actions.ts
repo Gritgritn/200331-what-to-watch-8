@@ -9,7 +9,6 @@ import { setCurrentFilmFetchStatus, setPromoFilmFetchStatus } from '../films/fil
 
 const getLogin = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    dispatch(clearAuthorizationErrorMessage());
     try {
       const { data: serverAuthorizationInfo } =
         await api.get<ServerAuthorizationInfo>(APIRoute.Login());
@@ -26,22 +25,24 @@ const getLogin = (): ThunkActionResult =>
   };
 
 const postLogin = (user: Login): ThunkActionResult =>
-  async (dispatch, _getState, api): Promise<void> => {
-    try {
-      const { data: serverAuthorizationInfo } =
-        await api.post<ServerAuthorizationInfo>(APIRoute.Login(), user);
+async (dispatch, _getState, api): Promise<void> => {
+  dispatch(clearAuthorizationErrorMessage());
 
-      const authorizationInfo = adaptAuthorizationInfoToClient(serverAuthorizationInfo);
+  try {
+    const { data: serverAuthorizationInfo } =
+      await api.post<ServerAuthorizationInfo>(APIRoute.Login(), user);
 
-      saveToken(authorizationInfo.token);
-      dispatch(redirectToRoute(AppRoute.Root()));
-      dispatch(setAuthorizationInfo(authorizationInfo));
-      dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+    const authorizationInfo = adaptAuthorizationInfoToClient(serverAuthorizationInfo);
 
-    } catch (error) {
-      dispatch(setAuthorizationErrorMessage(error instanceof Error ? error.message : 'Unknown error'));
-    }
-  };
+    saveToken(authorizationInfo.token);
+    dispatch(redirectToRoute(AppRoute.Root()));
+    dispatch(setAuthorizationInfo(authorizationInfo));
+    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+
+  } catch (error) {
+    dispatch(setAuthorizationErrorMessage((error as Error).message));
+  }
+};
 
 const deleteLogout = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
