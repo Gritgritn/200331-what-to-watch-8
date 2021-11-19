@@ -14,11 +14,11 @@ type Login = {
 };
 
 type ServerAuthorizationInfo = {
-  id: number;
-  email: string;
-  name: string;
-  avatar_url: string;
-  token: Token;
+  'id': number;
+  'email': string;
+  'name': string;
+  'avatar_url': string;
+  'token': Token;
 };
 
 type Token = string;

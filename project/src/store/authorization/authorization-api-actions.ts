@@ -25,24 +25,24 @@ const getLogin = (): ThunkActionResult =>
   };
 
 const postLogin = (user: Login): ThunkActionResult =>
-async (dispatch, _getState, api): Promise<void> => {
-  dispatch(clearAuthorizationErrorMessage());
+  async (dispatch, _getState, api): Promise<void> => {
+    dispatch(clearAuthorizationErrorMessage());
 
-  try {
-    const { data: serverAuthorizationInfo } =
-      await api.post<ServerAuthorizationInfo>(APIRoute.Login(), user);
+    try {
+      const { data: serverAuthorizationInfo } =
+        await api.post<ServerAuthorizationInfo>(APIRoute.Login(), user);
 
-    const authorizationInfo = adaptAuthorizationInfoToClient(serverAuthorizationInfo);
+      const authorizationInfo = adaptAuthorizationInfoToClient(serverAuthorizationInfo);
 
-    saveToken(authorizationInfo.token);
-    dispatch(redirectToRoute(AppRoute.Root()));
-    dispatch(setAuthorizationInfo(authorizationInfo));
-    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+      saveToken(authorizationInfo.token);
+      dispatch(redirectToRoute(AppRoute.Root()));
+      dispatch(setAuthorizationInfo(authorizationInfo));
+      dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
 
-  } catch (error) {
-    dispatch(setAuthorizationErrorMessage((error as Error).message));
-  }
-};
+    } catch (error) {
+      dispatch(setAuthorizationErrorMessage((error as Error).message));
+    }
+  };
 
 const deleteLogout = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
