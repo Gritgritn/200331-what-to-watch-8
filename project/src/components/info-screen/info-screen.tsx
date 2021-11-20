@@ -1,14 +1,5 @@
-import { CSSProperties, ReactNode } from 'react';
-
-const INFO_SCREEN_STYLES: CSSProperties = {
-  position: 'fixed',
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
+import { ReactNode } from 'react';
+import { INFO_SCREEN_STYLES } from '../../styles/styles';
 
 type InfoScreenProps = {
   children?: ReactNode,

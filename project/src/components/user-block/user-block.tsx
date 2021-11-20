@@ -3,11 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { deleteLogout } from '../../store/authorization/authorization-api-actions';
 import { getAuthorizationStatus, getUserAvatar } from '../../store/authorization/authorization-selectors';
-import { CSSProperties } from 'react';
-
-const USER_BLOCK_STYLES: CSSProperties = {
-  minHeight: 63,
-};
+import { USER_BLOCK_STYLES } from '../../styles/styles';
 
 function UserBlock():JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus);
