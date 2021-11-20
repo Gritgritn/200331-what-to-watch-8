@@ -48,22 +48,22 @@ const createMockServerFilm = (): ServerFilm => {
   const actors = new Array(actorsAmount).fill(null).map(() => createFullName());
 
   return {
-    id: datatype.number(),
-    name: lorem.words(),
+    'id': datatype.number(),
+    'name': lorem.words(),
     'poster_image': internet.url(),
     'preview_image': internet.url(),
     'background_image': internet.url(),
     'background_color': internet.color(),
     'video_link': internet.url(),
     'preview_video_link': internet.url(),
-    description: lorem.paragraph(),
-    rating: datatype.number(),
+    'description': lorem.paragraph(),
+    'rating': datatype.number(),
     'scores_count': datatype.number(),
-    director: createFullName(),
-    genre: lorem.word(10),
+    'director': createFullName(),
+    'genre': lorem.word(10),
     'run_time': datatype.number(),
-    starring: actors,
-    released: date.past().getFullYear(),
+    'starring': actors,
+    'released': date.past().getFullYear(),
     'is_favorite': datatype.boolean(),
   };
 };
