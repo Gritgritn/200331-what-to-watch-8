@@ -305,7 +305,7 @@ describe('Component: PlayerScreen', () => {
 
     expect(screen.queryByTestId('not-found-screen')).toBeInTheDocument();
 
-    expect(screen.queryByText(/Loading Screen/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Loading Screen/i)).toBeInTheDocument();
     expect(screen.queryByText(/Exit/i)).not.toBeInTheDocument();
 
     expect(successStore.dispatch).toHaveBeenCalledTimes(0);

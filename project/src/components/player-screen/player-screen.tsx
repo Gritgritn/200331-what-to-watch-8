@@ -6,7 +6,6 @@ import { useIdParam } from '../../hooks/use-id-param';
 import { AppRoute, FetchStatus } from '../../constants';
 import { getCurrentFilm } from '../../store/films/films-api-actions';
 import { getCurrentFilmData, getCurrentFilmStatus } from '../../store/films/films-selectors';
-import Loader from '../loader/loader';
 import round from 'lodash/round';
 import { formatElapsedTime } from '../../utils/date';
 import { useSelector, useDispatch } from 'react-redux';
@@ -85,7 +84,7 @@ function PlayerScreen(): JSX.Element {
 
   return (
     <div className="player">
-      {!isVideoReady && <Loader />}
+      {!isVideoReady && <LoadingScreen />}
 
       <video
         ref={videoRef}

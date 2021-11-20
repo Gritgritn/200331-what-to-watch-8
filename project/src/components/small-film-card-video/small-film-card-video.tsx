@@ -1,7 +1,4 @@
-type SmallFilmCardVideoProps = {
-  src: string,
-  poster?: string,
-}
+import type { SmallFilmCardVideoProps } from '../../types/types';
 
 function SmallFilmCardVideo({src, poster}: SmallFilmCardVideoProps): JSX.Element {
   return (

@@ -134,4 +134,9 @@ type ServerCommentGet = CommentPost & {
   date: string;
 };
 
-export type { ServerCommentGet, FavoriteStatusType, CommentPost, Login, Token, ServerAuthorizationInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthorizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
+type SmallFilmCardVideoProps = {
+  src: string,
+  poster?: string,
+}
+
+export type { SmallFilmCardVideoProps, ServerCommentGet, FavoriteStatusType, CommentPost, Login, Token, ServerAuthorizationInfo, FetchStatusType, ThunkAppDispatch, ThunkActionResult, FetchedData, ServerFilm, AuthorizationInfo, State, Action, ParamsWithId, Comment, Film, ValuesOf};
