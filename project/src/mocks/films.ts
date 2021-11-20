@@ -48,8 +48,8 @@ const createMockServerFilm = (): ServerFilm => {
   const actors = new Array(actorsAmount).fill(null).map(() => createFullName());
 
   return {
-    id: datatype.number(),
-    name: lorem.words(),
+    'id': datatype.number(),
+    'name': lorem.words(),
     'poster_image': internet.url(),
     'preview_image': internet.url(),
     'background_image': internet.url(),
