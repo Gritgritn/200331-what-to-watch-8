@@ -78,7 +78,7 @@ describe('Component: PlayerScreen', () => {
     expect(screen.queryByTestId('video-player')).toBeInTheDocument();
 
     expect(screen.queryByTestId('not-found-screen')).not.toBeInTheDocument();
-    expect(screen.queryByText(/Loading Screen/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Loading Screen/i)).toBeInTheDocument();
 
     expect(successStore.dispatch).toHaveBeenCalledTimes(0);
     expect(window.HTMLVideoElement.prototype.pause).toHaveBeenCalledTimes(1);
