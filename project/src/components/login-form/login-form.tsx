@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import { ChangeEvent, FocusEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { Login } from '../../types/types';
-import { postLogin } from '../../store/authorization/authorization-api-actions';
 import { getEmailValidityMessage, getPasswordValidityMessage } from '../../utils/common';
+import { postLogin } from '../../store/authorization/authorization-api-actions';
 import { getAuthorizationErrorMessage } from '../../store/authorization/authorization-selectors';
 import { clearAuthorizationErrorMessage } from '../../store/authorization/authorization-actions';
 
@@ -20,13 +20,14 @@ const INITIAL_FORM_DIRTINESS: {
 } as const;
 
 type LoginFormProps = {
-  className?: string,
-}
+  className?: string;
+};
 
 function LoginForm({ className }: LoginFormProps): JSX.Element {
   const serverErrorMessage = useSelector(getAuthorizationErrorMessage);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
-  const [formDirtiness, setFormDirtiness] = useState(INITIAL_FORM_DIRTINESS );
+  const [formDirtiness, setFormDirtiness] = useState(INITIAL_FORM_DIRTINESS);
+
   const emailValidityMessage = useMemo(
     () => formDirtiness.email ? getEmailValidityMessage(formData.email) : '',
     [formData.email, formDirtiness.email],
@@ -41,18 +42,19 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
     () => `${emailValidityMessage} ${passwordValidityMessage}`.trim(),
     [emailValidityMessage, passwordValidityMessage],
   );
+
+  const dispatch = useDispatch();
+
+  const login = (user: Login) => {
+    dispatch(postLogin(user));
+  };
+
   const onInputBlur = (evt: FocusEvent<HTMLInputElement>) => {
     const { name } = evt.target;
     setFormDirtiness({
       ...formDirtiness,
       [name]: true,
     });
-  };
-
-  const dispatch = useDispatch();
-
-  const login = (user: Login) => {
-    dispatch(postLogin(user));
   };
 
   const onInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +76,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
 
       return;
     }
+
     if (validityMessage) {
       return;
     }
@@ -94,17 +97,17 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
   }, [validityMessage]);
 
   return (
-    <div className={classNames('sign-in', className)}>
-      <form action="#" className="sign-in__form" onSubmit={onFormSubmit}>
+    <div className={classNames('sign-in', className)} data-testid="login-form-container">
+      <form action="#" className="sign-in__form" onSubmit={onFormSubmit} data-testid="login-form">
         <div className="sign-in__fields">
           {validityMessage && (
-            <div className="sign-in__message">
+            <div className="sign-in__message" data-testid="validity-message">
               <p>{validityMessage}</p>
             </div>
           )}
 
           {serverErrorMessage && (
-            <div className="sign-in__message">
+            <div className="sign-in__message" data-testid="server-message">
               <p>{serverErrorMessage}</p>
             </div>
           )}
@@ -123,6 +126,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               value={formData.email}
               onChange={onInputChange}
               onBlur={onInputBlur}
+              data-testid="email-input"
             />
             <label
               className="sign-in__label visually-hidden"
@@ -145,6 +149,7 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
               value={formData.password}
               onChange={onInputChange}
               onBlur={onInputBlur}
+              data-testid="password-input"
             />
             <label
               className="sign-in__label visually-hidden"
@@ -155,7 +160,9 @@ function LoginForm({ className }: LoginFormProps): JSX.Element {
           </div>
         </div>
         <div className="sign-in__submit">
-          <button className="sign-in__btn" type="submit">Sign in</button>
+          <button className="sign-in__btn" type="submit" data-testid="submit-button">
+            Sign in
+          </button>
         </div>
       </form>
     </div>

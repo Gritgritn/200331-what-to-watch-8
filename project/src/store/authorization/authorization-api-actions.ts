@@ -7,9 +7,8 @@ import { redirectToRoute } from '../app/app-actions';
 import { clearAuthorizationErrorMessage, setAuthorizationErrorMessage, setAuthorizationInfo, setAuthorizationStatus } from './authorization-actions';
 import { setCurrentFilmFetchStatus, setPromoFilmFetchStatus } from '../films/films-actions';
 
-export const getLogin = (): ThunkActionResult =>
+const getLogin = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    dispatch(clearAuthorizationErrorMessage());
     try {
       const { data: serverAuthorizationInfo } =
         await api.get<ServerAuthorizationInfo>(APIRoute.Login());
@@ -25,8 +24,10 @@ export const getLogin = (): ThunkActionResult =>
     }
   };
 
-export const postLogin = (user: Login): ThunkActionResult =>
+const postLogin = (user: Login): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
+    dispatch(clearAuthorizationErrorMessage());
+
     try {
       const { data: serverAuthorizationInfo } =
         await api.post<ServerAuthorizationInfo>(APIRoute.Login(), user);
@@ -39,15 +40,11 @@ export const postLogin = (user: Login): ThunkActionResult =>
       dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
 
     } catch (error) {
-      if (error instanceof Error ) {
-        dispatch(setAuthorizationErrorMessage(error.message));
-      } else {
-        toast.error('Unknown error');
-      }
+      dispatch(setAuthorizationErrorMessage((error as Error).message));
     }
   };
 
-export const deleteLogout = (): ThunkActionResult =>
+const deleteLogout = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       await api.delete(APIRoute.Logout());
@@ -60,3 +57,5 @@ export const deleteLogout = (): ThunkActionResult =>
       toast.error('Logout is falied');
     }
   };
+
+export { deleteLogout, postLogin, getLogin };

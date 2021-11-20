@@ -54,10 +54,6 @@ const splitArrayInTwo = <T>(items: T[]): [T[], T[]] => {
   return [ items.slice(0, middleIndex), items.slice(middleIndex)];
 };
 
-const isAllCasesChecked = (argument: never): never => {
-  throw new Error('Not all cases was checked');
-};
-
 const validateReviewRating = (rating: number): boolean => {
   if (rating >= Rating.MinValue && rating <= Rating.MaxValue) {
     return true;
@@ -74,4 +70,6 @@ const validateReviewContent = (content: string): boolean => {
   return false;
 };
 
-export { validateReviewRating, validateReviewContent, getPasswordValidityMessage, getEmailValidityMessage, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo, isAllCasesChecked};
+const asyncDelay = (delay: number): Promise<void> => new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+
+export { asyncDelay, validateReviewRating, validateReviewContent, getPasswordValidityMessage, getEmailValidityMessage, getRandomInteger, shuffle, getRandomItemFromArray, splitArrayInTwo };

@@ -11,8 +11,8 @@ import FilmCardTabs from '../film-card-tabs/film-card-tabs';
 import FilmCardOverview from '../film-card-overview/film-card-overview';
 import FilmCardDetails from '../film-card-details/film-card-details';
 import FilmCardReviews from '../film-card-reviews/film-card-reviews';
-import PageTitle from '../title/title';
-import PageHeader from '../header/header';
+import PageTitle from '../page-title/page-title';
+import PageHeader from '../page-header/page-header';
 
 type FullFilmCardProps = {
   film: Film,

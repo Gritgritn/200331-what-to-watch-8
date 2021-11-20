@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import PageTitle from '../title/title';
+import PageTitle from '../page-title/page-title';
 import InfoScreen from '../info-screen/info-screen';
 import { AppRoute } from '../../constants';
 

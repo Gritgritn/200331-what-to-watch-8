@@ -6,11 +6,11 @@ import UserBlock from '../user-block/user-block';
 import FilmCardsList from '../catalog-films-list/catalog-films-list';
 import PageFooter from '../page-footer/page-footer';
 import Catalog from '../catalog/catalog';
-import PageTitle from '../title/title';
-import PageHeader from '../header/header';
+import PageTitle from '../page-title/page-title';
+import PageHeader from '../page-header/page-header';
 import { getFavoriteFilms } from '../../store/films/films-api-actions';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
-import LoadingScreen from '../loading/loading';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { getFavoriteFilmsData, getFavoriteFilmsStatus } from '../../store/films/films-selectors';
 
 function MyListScreen(): JSX.Element {

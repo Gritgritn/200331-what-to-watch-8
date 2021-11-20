@@ -1,7 +1,7 @@
 import { FetchStatus } from '../../constants';
 import { FetchedData, Comment, FetchStatusType } from '../../types/types';
 
-export type CommentsState = {
+type CommentsState = {
   currentComments: FetchedData<Comment[]>,
   newComment: {
     status: FetchStatusType,
@@ -18,4 +18,5 @@ const commentsInitialState: CommentsState = {
   },
 };
 
-export {commentsInitialState};
+export type { CommentsState };
+export { commentsInitialState };

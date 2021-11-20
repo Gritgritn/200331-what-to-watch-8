@@ -5,8 +5,8 @@ import Logo from '../logo/logo';
 import UserBlock from '../user-block/user-block';
 import FilmCardPoster from '../film-card-poster/film-card-poster';
 import FilmCardButtons from '../film-card-buttons/film-card-buttons';
-import PageTitle from '../title/title';
-import PageHeader from '../header/header';
+import PageTitle from '../page-title/page-title';
+import PageHeader from '../page-header/page-header';
 
 type PromoFilmCardProps = {
   film: Film,
@@ -29,10 +29,10 @@ function PromoFilmCard({film}: PromoFilmCardProps): JSX.Element {
           <FilmCardPoster src={film.posterImage} alt={`${film.name} poster`} />
 
           <div className="film-card__desc">
-            <h2 className="film-card__title">{film.name}</h2>
+            <h2 className="film-card__title" data-testid="film-card-title">{film.name}</h2>
             <p className="film-card__meta">
-              <span className="film-card__genre">{film.genre}</span>
-              <span className="film-card__year">{film.released}</span>
+              <span className="film-card__genre" data-testid="film-card-genre">{film.genre}</span>
+              <span className="film-card__year" data-testid="film-card-year">{film.released}</span>
             </p>
             <FilmCardButtons isFilmFavorite={film.isFavorite} film={film} />
           </div>

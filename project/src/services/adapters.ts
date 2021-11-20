@@ -1,5 +1,6 @@
 import camelCase from 'lodash/camelCase';
-import { ServerFilm, Film, ServerAuthorizationInfo, AuthorizationInfo } from '../types/types';
+import { ServerFilm, Film, ServerAuthorizationInfo, AuthorizationInfo, Comment, ServerCommentGet } from '../types/types';
+import dayjs from 'dayjs';
 
 const adaptFilmToClient = (serverFilm: ServerFilm): Film => {
   const clientFilm: {
@@ -29,4 +30,9 @@ const adaptAuthorizationInfoToClient = (serverAuthorizationInfo: ServerAuthoriza
   return authInfo as AuthorizationInfo;
 };
 
-export { adaptFilmToClient, adaptAuthorizationInfoToClient };
+const adaptCommentToClient = (serverComment: ServerCommentGet): Comment => ({
+  ...serverComment,
+  date: dayjs(serverComment.date).toDate(),
+} as Comment);
+
+export { adaptFilmToClient, adaptAuthorizationInfoToClient, adaptCommentToClient };
