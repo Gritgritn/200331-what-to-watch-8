@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.js": "/200331-what-to-watch-8/static/js/main.68b6a380.chunk.js",
-    "main.js.map": "/200331-what-to-watch-8/static/js/main.68b6a380.chunk.js.map",
-    "runtime-main.js": "/200331-what-to-watch-8/static/js/runtime-main.3def48f9.js",
-    "runtime-main.js.map": "/200331-what-to-watch-8/static/js/runtime-main.3def48f9.js.map",
-    "static/js/2.23ba5c59.chunk.js": "/200331-what-to-watch-8/static/js/2.23ba5c59.chunk.js",
-    "static/js/2.23ba5c59.chunk.js.map": "/200331-what-to-watch-8/static/js/2.23ba5c59.chunk.js.map",
-    "index.html": "/200331-what-to-watch-8/index.html",
-    "static/js/2.23ba5c59.chunk.js.LICENSE.txt": "/200331-what-to-watch-8/static/js/2.23ba5c59.chunk.js.LICENSE.txt"
+    "main.js": "/my-app/static/js/main.68b6a380.chunk.js",
+    "main.js.map": "/my-app/static/js/main.68b6a380.chunk.js.map",
+    "runtime-main.js": "/my-app/static/js/runtime-main.85cc3e8f.js",
+    "runtime-main.js.map": "/my-app/static/js/runtime-main.85cc3e8f.js.map",
+    "static/js/2.23ba5c59.chunk.js": "/my-app/static/js/2.23ba5c59.chunk.js",
+    "static/js/2.23ba5c59.chunk.js.map": "/my-app/static/js/2.23ba5c59.chunk.js.map",
+    "index.html": "/my-app/index.html",
+    "static/js/2.23ba5c59.chunk.js.LICENSE.txt": "/my-app/static/js/2.23ba5c59.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.3def48f9.js",
+    "static/js/runtime-main.85cc3e8f.js",
     "static/js/2.23ba5c59.chunk.js",
     "static/js/main.68b6a380.chunk.js"
   ]
